@@ -45,5 +45,9 @@ public class UserService {
 		
 		return user;
 	}
+	
+	public Optional<User> findByUser(String user) {
+		return userDAO.findByUser(user);
+	}
 
 }
