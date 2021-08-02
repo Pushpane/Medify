@@ -10,5 +10,5 @@ import com.psl.entity.User;
 
 @Repository
 public interface IUserDAO extends JpaRepository<User, Long>{
-	Optional<User> findByUser(String user);
+
 }
