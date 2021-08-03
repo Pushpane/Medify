@@ -1,9 +1,16 @@
 package com.psl.dto;
 
-public class RegisterAddressRequest {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-	private String user;
-	private String store;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class RegisterAddressRequest {
+	
+	private String email;
+	private String name;
 	private String address1;
 	private String address2;
 	private String pincode;
