@@ -40,5 +40,6 @@ public class User {
 	private String phoneNumber;
 	@NotBlank(message = "Joining Date is required.")
 	private Instant dateJoined;
+	private boolean enabled;
 	
 }

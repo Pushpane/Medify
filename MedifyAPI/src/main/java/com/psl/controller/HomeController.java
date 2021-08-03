@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 public class HomeController {
 
 	@GetMapping("/hello")
