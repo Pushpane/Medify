@@ -1,19 +1,17 @@
 package com.psl.service;
 
-import java.time.Instant;
+
 import java.util.Optional;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.psl.dao.IStoreDAO;
-import com.psl.dao.IUserDAO;
+
 import com.psl.dto.RegisterStoreRequest;
-import com.psl.dto.RegisterUserRequest;
-import com.psl.entity.Role;
 import com.psl.entity.Store;
 import com.psl.entity.User;
+import com.psl.exception.MedifyException;
 
 import lombok.AllArgsConstructor;
 
@@ -33,20 +31,21 @@ public class StoreService {
 	
 	private Store fillStore(RegisterStoreRequest request) {
 		Store store = new Store();
-		store.setName(request.getName);
-		store.setDescription(request.getDescription);
+
+		store.setName(request.getName());
+		store.setDescription(request.getDescription());
 		
-		Optional<User> user = userService.findByUser(request.getUser());
+		Optional<User> user = userService.getUser(request.getEmail());
 		//checking if role is null if role is null throw exception
-		user.orElseThrow(()-> new RuntimeException("Role not found"));
+		user.orElseThrow(()-> new MedifyException("Role not found"));
 		
 		store.setUserId(user.get());
 		
 		return store;
 	}
 	
-	public Optional<Store> findByStore(String store) {
-		return storeDAO.findByStore(store);
-	}
 
+	public Optional<Store> findStoreByName(String store) {
+		return storeDAO.findByName(store);
+	}
 }

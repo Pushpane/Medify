@@ -1,16 +1,22 @@
 package com.psl.service;
 
-import java.time.Instant;
+
 import java.util.Optional;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.psl.dao.IAddressDAO;
 import com.psl.dto.RegisterAddressRequest;
+import com.psl.entity.Address;
 import com.psl.entity.Store;
 import com.psl.entity.User;
-import com.psl.entity.Address;
 
+import lombok.AllArgsConstructor;
+
+@Service
+@AllArgsConstructor
+@Transactional
 public class AddressService {
 	private final IAddressDAO addressDAO;
 	private final StoreService storeService;
@@ -30,17 +36,20 @@ public class AddressService {
 		address.setCity(request.getCity());
 		address.setState(request.getState());
 		
-		Optional<User> user = userService.findByUser(request.getUser());
-		user.orElseThrow(()-> new RuntimeException("User not found"));
+
+		Optional<User> user=null;
+		if(request.getEmail()!=null) {
+			user = userService.getUser(request.getEmail());
+		}
 		
-		Optional<Store> store = storeService.findByStore(request.getStore());
-		//checking if role is null if role is null throw exception
-		store.orElseThrow(()-> new RuntimeException("Store not found"));
+		Optional<Store> store = null;
+		if(request.getName()!=null) {
+			store = storeService.findStoreByName(request.getName());
+		}
 		
 		address.setStoreId(store.get());
 		address.setUserId(user.get());
 		
 		return address;
 	}
-
 }
