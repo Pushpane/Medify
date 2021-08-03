@@ -2,6 +2,7 @@ package com.psl.service;
 
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,8 +12,7 @@ import com.psl.dto.RegisterAddressRequest;
 import com.psl.entity.Store;
 import com.psl.entity.User;
 import com.psl.entity.Address;
-
-
+import com.psl.entity.Role;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +30,7 @@ public class AddressService {
 	private final StoreService storeService;
 	private final UserService userService;
 	
+	//Register address for new user
 	public void registerAddress(RegisterAddressRequest request) {
 		Address address = fillAddress(request);
 		
@@ -61,5 +62,29 @@ public class AddressService {
 		
 		return address;
 	}
-
+	
+	//Update address of existing user
+	public void updateAddress(Address address) {
+		addressDAO.save(address);
+	}
+	
+	//Delete address of existing user
+	public void deleteAddress(long id) {
+		addressDAO.deleteById(id);
+	}
+	
+	//Get all addresses
+	public List<Address> getAllAddress(){
+		return addressDAO.findAll();
+	}
+	
+	//Get address in a particular city
+	public Optional<Address> findByCity(String city) {
+		return addressDAO.findByCity(city);
+	}
+	
+	//Get address in a particular city
+	public Optional<Address> findByPincode(String pincode) {
+		return addressDAO.findByPincode(pincode);
+	}
 }
