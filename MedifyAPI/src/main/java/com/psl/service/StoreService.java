@@ -1,6 +1,7 @@
 package com.psl.service;
 
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -51,8 +52,30 @@ public class StoreService {
 	}
 	
 
+	//finding store by name
 	public Optional<Store> findStoreByName(String store) {
 		return storeDAO.findByName(store);
 	}
+	
+	//updating store
+	public void updateStore(Store store) {
+		storeDAO.save(store);
+	}
+	
+	//deleting store
+	public void deleteStore(long id) {
+		storeDAO.deleteById(id);
+	}
+	
+	//finding store by ID
+	public Store getStoreById(long id) {
+		return storeDAO.findById(id).get();
+	}
+	
+	//Listing all stores
+	public List<Store> getAllStores(){
+		return storeDAO.findAll();
+	}
+	
 
 }
