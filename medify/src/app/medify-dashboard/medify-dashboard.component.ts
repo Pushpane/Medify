@@ -19,7 +19,7 @@ export class MedifyDashboardComponent implements OnInit {
 
   }
 
-  login() {
+  showLoginPopUp() {
     const dialogConfig = new MatDialogConfig();
     this.loginDialog.open(LoginComponent,dialogConfig);
   }
