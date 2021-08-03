@@ -70,7 +70,7 @@ public class UserService {
 		user.setPassword(passwordEncoder.encode(request.getPassword()));
 		user.setPhoneNumber(request.getPhone());
 		
-		Optional<Role> role = roleService.findByRole(request.getUserId());
+		Optional<Role> role = roleService.findByRole(request.getRole());
 		//checking if role is null if role is null throw exception
 		role.orElseThrow(()-> new MedifyException("Role not found"));
 		
@@ -123,7 +123,7 @@ public class UserService {
 	}
 
 	public Optional<User> findByUser(String user) {
-		return userDAO.findByUser(user);
+		return userDAO.findByEmail(user);
 	}
 
 }

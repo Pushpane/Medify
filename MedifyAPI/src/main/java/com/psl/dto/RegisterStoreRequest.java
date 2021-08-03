@@ -13,4 +13,5 @@ public class RegisterStoreRequest {
 	private String email;
 	private String name;
 	private String description;
+
 }
