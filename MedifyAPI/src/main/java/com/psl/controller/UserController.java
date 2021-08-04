@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +16,10 @@ import com.psl.dto.AuthenticationResponse;
 import com.psl.dto.LoginRequest;
 import com.psl.dto.RefreshTokenRequest;
 import com.psl.dto.RegisterUserRequest;
+import com.psl.entity.Role;
+import com.psl.entity.Store;
 import com.psl.service.RefreshTokenService;
+import com.psl.service.StoreService;
 import com.psl.service.UserService;
 
 import lombok.AllArgsConstructor;
