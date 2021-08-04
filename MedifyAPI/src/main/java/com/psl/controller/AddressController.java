@@ -61,35 +61,35 @@ public class AddressController {
 		return addressService.getAllAddress();
 	}
 	
-	@GetMapping("/getAddress/{city}")
+	@GetMapping("/getAddressByCity/{city}")
 	public Address getAddress(@PathVariable String city) {
 		Optional<Address> address = addressService.findByCity(city);
 		address.orElseThrow(()-> new MedifyException("city not found"));
 		return address.get();
 	}
 	
-	@GetMapping("/getAddress/{pincode}")
+	@GetMapping("/getAddressByPin/{pincode}")
 	public Address getAddressByPincode(@PathVariable String pincode) {
 		Optional<Address> address = addressService.findByPincode(pincode);
 		address.orElseThrow(()-> new MedifyException("pincode not found"));
 		return address.get();
 	}
 	
-	@GetMapping("/getAddress/{user}")
+	@GetMapping("/getAddressByUser/{user}")
 	public Address getAddressByUser(@PathVariable String user) {
 		Optional<Address> address = addressService.findByUser(user);
 		address.orElseThrow(()-> new MedifyException("User not found"));
 		return address.get();
 	}
 	
-	@GetMapping("/getAddress/{store}")
+	@GetMapping("/getAddressByStore/{store}")
 	public Address getAddressByStore(@PathVariable String store) {
 		Optional<Address> address = addressService.findByStore(store);
 		address.orElseThrow(()-> new MedifyException("Store not found"));
 		return address.get();
 	}
 	
-	//http://localhost:8081/api/user/getAddress?user=user_id&store=store_id
+	//http://localhost:8081/api/user/getAddress?user=user_email&store=store_name
 	@GetMapping("/getAddress")
 	public Address getAddressByUserAndStore(@RequestParam String user,@RequestParam String store) {
 		Optional<Address> address = addressService.findByUserAndStore(user,store);
