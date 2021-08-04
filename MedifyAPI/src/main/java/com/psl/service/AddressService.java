@@ -90,16 +90,16 @@ public class AddressService {
 	}
 	
 	//Get address for a particular user
-	public Optional<Address> findByUser(String user) {
+	public List<Address> findByUser(String user) {
 			return addressDAO.findByUserId(user);
 	}
 	
 	//Get address for a particular store
-	public Optional<Address> findByStore(String store) {
+	public List<Address> findByStore(String store) {
 			return addressDAO.findByStoreId(store);
 	}
 	//Get address for a particular store owned by user given
-	public Optional<Address> findByUserAndStore(String user,String store) {
+	public List<Address> findByUserAndStore(String user,String store) {
 			return addressDAO.findByUserIdAndStoreId(user,store);
 	}
 	

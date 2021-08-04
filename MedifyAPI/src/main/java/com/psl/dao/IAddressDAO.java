@@ -1,5 +1,6 @@
 package com.psl.dao;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,11 +19,11 @@ public interface IAddressDAO extends JpaRepository<Address, Long> {
 	Optional<Address> findByPincode(String pincode);
 	
 	//will send address if user is found otherwise null 
-	Optional<Address> findByUserId(String user);
+	List<Address> findByUserId(String user);
 	
 	//will send address if store is found otherwise null 
-	Optional<Address> findByStoreId(String store);
+	List<Address> findByStoreId(String store);
 	
 	//will send address if store and user is found otherwise null 
-	Optional<Address> findByUserIdAndStoreId(String user, String store);
+	List<Address> findByUserIdAndStoreId(String user, String store);
 }
