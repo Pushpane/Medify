@@ -87,4 +87,19 @@ public class AddressService {
 	public Optional<Address> findByPincode(String pincode) {
 		return addressDAO.findByPincode(pincode);
 	}
+	
+	//Get address for a particular user
+	public Optional<Address> findByUser(String user) {
+			return addressDAO.findByUserId(user);
+	}
+	
+	//Get address for a particular store
+	public Optional<Address> findByStore(String store) {
+			return addressDAO.findByStoreId(store);
+	}
+	//Get address for a particular store owned by user given
+	public Optional<Address> findByUserAndStore(String user,String store) {
+			return addressDAO.findByUserIdAndStoreId(user,store);
+	}
+	
 }

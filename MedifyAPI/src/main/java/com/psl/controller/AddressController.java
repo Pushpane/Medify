@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.psl.dto.RegisterAddressRequest;
@@ -71,6 +72,29 @@ public class AddressController {
 		address.orElseThrow(()-> new MedifyException("pincode not found"));
 		return address.get();
 	}
+	
+	@GetMapping("/getAddress/{user}")
+	public Address getAddressByUser(@PathVariable String user) {
+		Optional<Address> address = addressService.findByUser(user);
+		address.orElseThrow(()-> new MedifyException("User not found"));
+		return address.get();
+	}
+	
+	@GetMapping("/getAddress/{store}")
+	public Address getAddressByStore(@PathVariable String store) {
+		Optional<Address> address = addressService.findByStore(store);
+		address.orElseThrow(()-> new MedifyException("Store not found"));
+		return address.get();
+	}
+	
+	//http://localhost:8081/api/user/getAddress?user=user_id&store=store_id
+	@GetMapping("/getAddress")
+	public Address getAddressByUserAndStore(@RequestParam String user,@RequestParam String store) {
+		Optional<Address> address = addressService.findByUserAndStore(user,store);
+		address.orElseThrow(()-> new MedifyException("User or Store not found"));
+		return address.get();
+	}
+	
 
 
 }

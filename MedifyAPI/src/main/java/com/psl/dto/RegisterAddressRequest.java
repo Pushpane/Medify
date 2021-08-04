@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RegisterAddressRequest {
 	
+	private String user;
+	private String store;
 	private String email;
 	private String name;
 	private String address1;
