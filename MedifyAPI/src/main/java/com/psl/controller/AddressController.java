@@ -21,6 +21,8 @@ import com.psl.dto.RegisterAddressRequest;
 import com.psl.dto.RegisterUserRequest;
 import com.psl.entity.Address;
 import com.psl.entity.Role;
+import com.psl.entity.Store;
+import com.psl.entity.User;
 import com.psl.exception.MedifyException;
 import com.psl.service.AddressService;
 import com.psl.service.UserService;
@@ -62,34 +64,27 @@ public class AddressController {
 	}
 	
 	@GetMapping("/getAddressByCity/{city}")
-	public Address getAddress(@PathVariable String city) {
-		Optional<Address> address = addressService.findByCity(city);
-		address.orElseThrow(()-> new MedifyException("city not found"));
-		return address.get();
-	}
-	
-	@GetMapping("/getAddressByPin/{pincode}")
-	public Address getAddressByPincode(@PathVariable String pincode) {
-		Optional<Address> address = addressService.findByPincode(pincode);
-		address.orElseThrow(()-> new MedifyException("pincode not found"));
-		return address.get();
-	}
-	
-	@GetMapping("/getAddressByUser/{user}")
-	public List<Address> getAddressByUser(@PathVariable String user) {
-		List<Address> address = addressService.findByUser(user);
+	public List<Address> getAddress(@PathVariable String city) {
+		List<Address> address = addressService.findByCity(city);
 		return address;
 	}
 	
+	@GetMapping("/getAddressByPin/{pincode}")
+	public List<Address> getAddressByPincode(@PathVariable String pincode) {
+		List<Address> address = addressService.findByPincode(pincode);
+		return address;
+	}
+	
+
 	@GetMapping("/getAddressByStore/{store}")
-	public List<Address> getAddressByStore(@PathVariable String store) {
+	public List<Address> getAddressByStore(@PathVariable Store store) {
 		List<Address> address = addressService.findByStore(store);
 		return address;
 	}
 	
 	//http://localhost:8081/api/user/getAddress?user=user_email&store=store_name
 	@GetMapping("/getAddress")
-	public List<Address> getAddressByUserAndStore(@RequestParam String user,@RequestParam String store) {
+	public List<Address> getAddressByUserAndStore(@RequestParam User user,@RequestParam Store store) {
 		List<Address> address = addressService.findByUserAndStore(user,store);
 		return address;
 	}

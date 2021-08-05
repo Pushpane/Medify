@@ -80,26 +80,22 @@ public class AddressService {
 	}
 	
 	//Get address in a particular city
-	public Optional<Address> findByCity(String city) {
+	public List<Address> findByCity(String city) {
 		return addressDAO.findByCity(city);
 	}
 	
 	//Get address in a particular city
-	public Optional<Address> findByPincode(String pincode) {
+	public List<Address> findByPincode(String pincode) {
 		return addressDAO.findByPincode(pincode);
 	}
 	
-	//Get address for a particular user
-	public List<Address> findByUser(String user) {
-			return addressDAO.findByUserId(user);
-	}
 	
 	//Get address for a particular store
-	public List<Address> findByStore(String store) {
+	public List<Address> findByStore(Store store) {
 			return addressDAO.findByStoreId(store);
 	}
 	//Get address for a particular store owned by user given
-	public List<Address> findByUserAndStore(String user,String store) {
+	public List<Address> findByUserAndStore(User user,Store store) {
 			return addressDAO.findByUserIdAndStoreId(user,store);
 	}
 	

@@ -7,23 +7,21 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.psl.entity.Address;
+import com.psl.entity.Store;
+import com.psl.entity.User;
 
 
 @Repository
 public interface IAddressDAO extends JpaRepository<Address, Long> {
 	
 	//will send address if city is found otherwise null 
-	Optional<Address> findByCity(String city);
+	List<Address> findByCity(String city);
 	
 	//will send address if pincode is found otherwise null 
-	Optional<Address> findByPincode(String pincode);
+	List<Address> findByPincode(String pincode);
 	
-	//will send address if user is found otherwise null 
-	List<Address> findByUserId(String user);
 	
-	//will send address if store is found otherwise null 
-	List<Address> findByStoreId(String store);
+	List<Address> findByStoreId(Store store);
 	
-	//will send address if store and user is found otherwise null 
-	List<Address> findByUserIdAndStoreId(String user, String store);
+	List<Address> findByUserIdAndStoreId(User user, Store store);
 }
