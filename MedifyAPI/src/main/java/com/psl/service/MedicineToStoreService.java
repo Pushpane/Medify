@@ -57,13 +57,5 @@ public class MedicineToStoreService {
 		medicineToStoreDAO.deleteById(id);
 	}
 	
-	public void deleteByStoreId(long id) {
-//		Optional<Store> store = null;
-//		if(request.getStoreName()!=null) {
-//			store = storeService.findStoreByName(request.getStoreName());
-//		}
-		
-		medicineToStoreDAO.deleteByStoreId(id);
-	}
 	
 }
