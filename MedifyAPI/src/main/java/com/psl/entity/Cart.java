@@ -1,5 +1,7 @@
 package com.psl.entity;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,4 +30,7 @@ public class Cart {
 	@NotBlank(message = "Medicine is required")
 	@ManyToOne
 	private MedicineToStore medicineToStoreId;
+	@NotBlank(message = "Quantity is required")
+	private int quantity;
+	private BigDecimal cost;
 }
