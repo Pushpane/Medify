@@ -33,11 +33,4 @@ public class MedicineToStoreController {
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/deleteMedicineByStore/{id}")
-	public ResponseEntity<HttpStatus> deleteByStoreId(@PathVariable long id){
-		medicineToStoreService.deleteByStoreId(id);
-		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
-	}
-	
-	
 }
