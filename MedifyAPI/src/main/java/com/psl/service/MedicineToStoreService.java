@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.psl.dao.IMedicineToStoreDAO;
 import com.psl.dto.RegisterMedicineToStoreRequest;
 import com.psl.entity.MedicineToStore;
-//import com.psl.entity.Medicines;
+import com.psl.entity.Medicines;
 import com.psl.entity.Store;
 
 import lombok.AllArgsConstructor;
@@ -22,7 +22,7 @@ public class MedicineToStoreService {
 	
 	private IMedicineToStoreDAO medicineToStoreDAO;
 	private final StoreService storeService;
-	//private final MedicineService medicineService;
+	private final MedicineService medicineService;
 	
 	public void registerMedicineToStore(RegisterMedicineToStoreRequest request) {
 		MedicineToStore medToStore = fillMedicineToStore(request);
@@ -34,20 +34,15 @@ public class MedicineToStoreService {
 		MedicineToStore medToStoreEntity = new MedicineToStore();
 		
 		
-		//Remove Comment After adding MedicineService
-//		Optional<Medicines> medicine = null;
-//		if(request.getMedicineName()!=null) {
-//			medicine = medicineService.findMedicineByName(request.getMedicineName())
-//			
-//		}
+		
+		Optional<Medicines> medicine = medicineService.findMedicineByName(request.getMedicineName());
+		
 		
 		Optional<Store> store = storeService.findStoreByName(request.getStoreName());
-//		if(request.getStoreName()!=null) {
-//			store = storeService.findStoreByName(request.getStoreName());
-//		}
+
 		
-		medToStoreEntity.setMedicineId(null);
-		medToStoreEntity.setStoreId(null);;
+		medToStoreEntity.setMedicineId(medicine.get());
+		medToStoreEntity.setStoreId(store.get());;
 		medToStoreEntity.setAvailable(true);
 		
 		return medToStoreEntity;
@@ -57,5 +52,14 @@ public class MedicineToStoreService {
 		medicineToStoreDAO.deleteById(id);
 	}
 	
+	//unComplete
+	
+//	public Optional<Medicines> getMedicineByStore(String storeName) {
+//		
+//	}
+//	
+//	public Optional<Store> getStoreByMedicine(String medicineName){
+//		
+//	}
 	
 }
