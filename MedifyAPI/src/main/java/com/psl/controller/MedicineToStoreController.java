@@ -46,10 +46,12 @@ public class MedicineToStoreController {
 		return medicines;
 	}
 	
+
 	@GetMapping("/getStoreByMedicines/{medicineName}")
 	public List<MedicineToStore> getStoreByMedicines(@PathVariable String medicineName) {
 		List<MedicineToStore> store = medicineToStoreService.getStoreByMedicine(medicineName);
 		return store;
+
 	}
 	
 }
