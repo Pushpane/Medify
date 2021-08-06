@@ -31,7 +31,7 @@ public class CartController {
 	}
 	
 	@DeleteMapping("/deleteCartItem/{id}")
-	public ResponseEntity<HttpStatus> deleteCartItem(@PathVariable long id) throws Exception {
+	public ResponseEntity<HttpStatus> deleteCartItem(@PathVariable long id){
 		cartService.deleteCartItem(id);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
@@ -42,10 +42,6 @@ public class CartController {
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 	
-	@PostMapping("/totalCartCost")
-	public ResponseEntity<HttpStatus> totalCartCost(@RequestBody CartRequest cartRequest){
-		cartService.totalCartCost(cartRequest);
-		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
-	}
+	
 	
 }

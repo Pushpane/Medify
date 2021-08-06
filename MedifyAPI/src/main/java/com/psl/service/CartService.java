@@ -40,11 +40,6 @@ public class CartService {
 	}
 	
 	
-	 public static CartRequest getDtoFromCart(Cart cart) {
-	        CartRequest cartRequest = new CartRequest(cart);
-	        return cartRequest;
-	    }
-	
 	private Cart addCart(CartRequest request) {
 		Cart cart = new Cart();
 		//MedticineToStore md = medicineToStoreService.getById(request.getId());
@@ -57,14 +52,14 @@ public class CartService {
 		user.orElseThrow(()-> new MedifyException("User not found"));
 		
 		cart.setUserId(user.get());
-		
+		//cart.setCost(totalCost(md));
 		
 		return cart;
 	}
 	
-	public void deleteCartItem(long cartId) throws Exception{
+	public void deleteCartItem(long cartId){
 		if (!cartDAO.existsById(cartId))
-			throw new Exception("Cart id is invalid : " + cartId);
+			throw new MedifyException("Cart id is invalid : " + cartId);
 		cartDAO.deleteById(cartId);
 	}
 	
@@ -76,30 +71,10 @@ public class CartService {
 		cartDAO.save(cart);
 	}
 	
-	 public BigDecimal totalCartCost(CartRequest request) {
-		    Optional<User> user= userService.getUser(request.getEmail());
-			user.orElseThrow(()-> new MedifyException("User not found"));
+	 public BigDecimal totalCost(MedicineToStore request, int quantity) {
 	        
-			List<Cart> cartList = cartDAO.findAllByUserId(user);
-	        List<CartRequest> cartItems = new ArrayList<>();
-	        for (Cart cart:cartList){
-	            CartRequest cartRequest = getDtoFromCart(cart);
-	            cartItems.add(cartRequest);
-	        }
-	        BigDecimal totalCost = BigDecimal.ZERO;
-	        for (CartRequest cartRequest:cartItems){
-	            totalCost += (cartRequest.getMedicineId().getPrice()* cartRequest.getQuantity());
-	        }
-	        //CartCost cartCost = new CartCost(cartItems,totalCost);
+	        BigDecimal totalCost = BigDecimal.valueOf(request.getMedicineId().getPrice()*quantity);
 	        return totalCost;
 	    }
 	
-//	
-//	public void addCart(Cart cartId,MedicineToStore medicineToStoreId,Integer quantity) {
-//		
-//		cart.set
-//		
-//		cartDAO.save(null);
-//	}
-//	
 }
