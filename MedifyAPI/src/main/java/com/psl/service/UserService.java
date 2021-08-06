@@ -130,7 +130,7 @@ public class UserService {
 		return userDAO.findByEmail(user);
 	}
 	
-	public Optional<User> findById(long id) {
+	public Optional<User> getUserById(long id) {
 		return userDAO.findById(id);
 	}
 
