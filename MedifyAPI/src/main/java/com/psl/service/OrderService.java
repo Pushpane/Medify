@@ -3,7 +3,9 @@ package com.psl.service;
 import com.psl.dao.IOrdersDAO;
 import com.psl.dto.OrderRequest;
 import com.psl.entity.Address;
-import com.psl.entity.Orders;
+import com.psl.entity.MedicineToStore;
+import com.psl.entity.Order;
+
 import com.psl.entity.User;
 
 import com.psl.exception.MedifyException;
@@ -24,16 +26,16 @@ public class OrderService {
     private IOrdersDAO ordersDAO;
     private UserService userService;
     private AddressService addressService;
-    //TODO private MedicineToStoreService medicineToStoreService;
+    private MedicineToStoreService medicineToStoreService;
 
     public void registerOrder(OrderRequest orderRequest) {
-        Orders order = fillOrder(orderRequest);
+        Order order = fillOrder(orderRequest);
 
         ordersDAO.save(order);
     }
 
-    private Orders fillOrder(OrderRequest request) {
-        Orders order = new Orders();
+    private Order fillOrder(OrderRequest request) {
+        Order order = new Order();
 
         order.setCreatedAt(Instant.now());
         order.setOrderStatus(request.getOrderStatus());
@@ -45,16 +47,18 @@ public class OrderService {
         Optional<Address> address = Optional.ofNullable(addressService.getAddressById(request.getAddressId()));
         address.orElseThrow(() -> new MedifyException("Address not found"));
 
-        //TODO : Add MedicineToStoreService Class
-        // Optional<MedicineToStore> medicineToStore =
+        Optional<MedicineToStore> medicineToStore = medicineToStoreService.getMedicinesToStoreById(request.getMedicineToStoreId());
+        medicineToStore.orElseThrow(() -> new MedifyException("Medicine/Store not found"));
+        
         order.setUserId(user.get());
         order.setAddressId(address.get());
+        order.setMedicineToStoreId(medicineToStore.get());
 
 
         return order;
     }
 
-    public void saveOrder(Orders order) {
+    public void saveOrder(Order order) {
         ordersDAO.save(order);
     }
 
@@ -62,11 +66,11 @@ public class OrderService {
         ordersDAO.deleteById(id);
     }
 
-    public List<Orders> getAllOrders() {
+    public List<Order> getAllOrders() {
         return ordersDAO.findAll();
     }
 
-    public List<Orders> getAllOrdersByUser(long userId) {
+    public List<Order> getAllOrdersByUser(long userId) {
         return ordersDAO.findAllByUserId(userId);
     }
 

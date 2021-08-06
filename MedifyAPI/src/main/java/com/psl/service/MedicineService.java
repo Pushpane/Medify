@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.psl.dao.IMedicinesDAO;
 import com.psl.dto.RegisterMedicineRequest;
-import com.psl.entity.Medicines;
+import com.psl.entity.Medicine;
 
 import lombok.AllArgsConstructor;
 
@@ -21,13 +21,13 @@ public class MedicineService {
 	private final IMedicinesDAO medicineDAO;
 
 	public void registerMedicine(RegisterMedicineRequest request) {
-		Medicines medicine = fillMedicine(request);
+		Medicine medicine = fillMedicine(request);
 
 		medicineDAO.save(medicine);
 	}
 
-	private Medicines fillMedicine(RegisterMedicineRequest request) {
-		Medicines medicine = new Medicines();
+	private Medicine fillMedicine(RegisterMedicineRequest request) {
+		Medicine medicine = new Medicine();
 
 		medicine.setName(request.getName());
 		medicine.setDescription(request.getDescription());
@@ -38,7 +38,7 @@ public class MedicineService {
 	}
 
 	//updating medicine
-	public void updateMedicine(Medicines medicine) {
+	public void updateMedicine(Medicine medicine) {
 		medicineDAO.save(medicine);
 	}
 
@@ -48,12 +48,12 @@ public class MedicineService {
 	}
 
 	//Listing all medicine
-	public List<Medicines> getAllMedicines(){
+	public List<Medicine> getAllMedicines(){
 		return medicineDAO.findAll();
 	}
 
 	//finding medicine by name
-	public Optional<Medicines> findMedicineByName(String medicine) {
+	public Optional<Medicine> findMedicineByName(String medicine) {
 		return medicineDAO.findByName(medicine);
 	}
 	

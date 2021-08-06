@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.psl.dao.IMedicineToStoreDAO;
 import com.psl.dto.RegisterMedicineToStoreRequest;
 import com.psl.entity.MedicineToStore;
-import com.psl.entity.Medicines;
+import com.psl.entity.Medicine;
 import com.psl.entity.Store;
 import com.psl.exception.MedifyException;
 
@@ -35,7 +35,7 @@ public class MedicineToStoreService {
 	private MedicineToStore fillMedicineToStore(RegisterMedicineToStoreRequest request) {
 		MedicineToStore medToStoreEntity = new MedicineToStore();
 		
-		Optional<Medicines> medicine = medicineService.findMedicineByName(request.getMedicineName());
+		Optional<Medicine> medicine = medicineService.findMedicineByName(request.getMedicineName());
 		medicine.orElseThrow(()-> new MedifyException("Medicine Not Found"));
 		Optional<Store> store = storeService.findStoreByName(request.getStoreName());
 		store.orElseThrow(()-> new MedifyException("Store Not Found"));
@@ -58,12 +58,17 @@ public class MedicineToStoreService {
 	}
 	
 	public List<MedicineToStore> getStoreByMedicine(String medicineName){
-		Optional<Medicines> medicine = medicineService.findMedicineByName(medicineName);
+		Optional<Medicine> medicine = medicineService.findMedicineByName(medicineName);
 		return medicineToStoreDAO.getStoreByMedicineId(medicine.get());
 	}
 	
 	public List<MedicineToStore> getAllMedicine(){
 		return medicineToStoreDAO.findAll();
 	}
+	
+	public Optional<MedicineToStore> getMedicinesToStoreById(long id){
+		return medicineToStoreDAO.findById(id);
+	}
+	
 	
 }

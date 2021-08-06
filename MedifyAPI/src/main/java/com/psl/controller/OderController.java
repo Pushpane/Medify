@@ -3,7 +3,7 @@ package com.psl.controller;
 import java.util.List;
 
 import com.psl.dto.OrderRequest;
-import com.psl.entity.Orders;
+import com.psl.entity.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,7 +33,7 @@ public class OderController {
     }
 
     @PutMapping("/updateOrder")
-    public ResponseEntity<HttpStatus> updateOrder(@RequestBody Orders order) {
+    public ResponseEntity<HttpStatus> updateOrder(@RequestBody Order order) {
         orderService.saveOrder(order);
         return new ResponseEntity<HttpStatus>(HttpStatus.OK);
     }
@@ -47,12 +47,12 @@ public class OderController {
 
 
     @GetMapping("/getAllOrders")
-    public List<Orders> getAllOrders() {
+    public List<Order> getAllOrders() {
         return orderService.getAllOrders();
     }
 
     @GetMapping("/getUserOrder/{UserId}")
-    public List<Orders> getAllUserOrders(@PathVariable long UserId) {
+    public List<Order> getAllUserOrders(@PathVariable long UserId) {
         return orderService.getAllOrdersByUser(UserId);
     }
 

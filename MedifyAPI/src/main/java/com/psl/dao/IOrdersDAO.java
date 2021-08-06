@@ -3,12 +3,12 @@ package com.psl.dao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.psl.entity.Orders;
+import com.psl.entity.Order;
 
 import java.util.List;
 
 @Repository
-public interface IOrdersDAO extends JpaRepository<Orders, Long>{
+public interface IOrdersDAO extends JpaRepository<Order, Long>{
 
-    List<Orders> findAllByUserId(long userId);
+    List<Order> findAllByUserId(long userId);
 }
