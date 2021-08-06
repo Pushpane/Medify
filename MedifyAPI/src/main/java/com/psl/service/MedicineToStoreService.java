@@ -62,4 +62,8 @@ public class MedicineToStoreService {
 		return medicineToStoreDAO.getStoreByMedicineId(medicine.get());
 	}
 	
+	public List<MedicineToStore> getAllMedicine(){
+		return medicineToStoreDAO.findAll();
+	}
+	
 }
