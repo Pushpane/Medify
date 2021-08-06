@@ -1,6 +1,7 @@
 package com.psl.service;
 
 import java.lang.StackWalker.Option;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -33,10 +34,7 @@ public class MedicineToStoreService {
 	private MedicineToStore fillMedicineToStore(RegisterMedicineToStoreRequest request) {
 		MedicineToStore medToStoreEntity = new MedicineToStore();
 		
-		
-		
 		Optional<Medicines> medicine = medicineService.findMedicineByName(request.getMedicineName());
-		
 		
 		Optional<Store> store = storeService.findStoreByName(request.getStoreName());
 
@@ -52,14 +50,14 @@ public class MedicineToStoreService {
 		medicineToStoreDAO.deleteById(id);
 	}
 	
-	//unComplete
+	public List<MedicineToStore> getMedicinesByStore(String storeName){
+		Optional<Store> store = storeService.findStoreByName(storeName);
+		return medicineToStoreDAO.getMedicinesByStoreId(store.get());
+	}
 	
-//	public Optional<Medicines> getMedicineByStore(String storeName) {
-//		
-//	}
-//	
-//	public Optional<Store> getStoreByMedicine(String medicineName){
-//		
-//	}
+	public List<MedicineToStore> getStoreByMedicine(String medicineName){
+		Optional<Medicines> medicine = medicineService.findMedicineByName(medicineName);
+		return medicineToStoreDAO.getStoreByMedicineId(medicine.get());
+	}
 	
 }

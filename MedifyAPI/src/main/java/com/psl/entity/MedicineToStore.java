@@ -23,7 +23,7 @@ public class MedicineToStore {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long medicineToStoreId;
 	@ManyToOne
-	@NotBlank(message = "Medicines is reuired")
+	@NotBlank(message = "Medicines is required")
 	private Medicines medicineId;
 	@ManyToOne
 	@NotBlank(message = "Store is required")

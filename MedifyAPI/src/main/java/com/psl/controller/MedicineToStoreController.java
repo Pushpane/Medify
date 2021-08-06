@@ -1,6 +1,6 @@
 package com.psl.controller;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,12 +8,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.psl.dto.RegisterMedicineToStoreRequest;
+import com.psl.entity.Address;
+import com.psl.entity.MedicineToStore;
 import com.psl.entity.Medicines;
+import com.psl.entity.Store;
 import com.psl.service.MedicineToStoreService;
 
 import lombok.AllArgsConstructor;
@@ -26,7 +28,7 @@ public class MedicineToStoreController {
 	private final MedicineToStoreService medicineToStoreService;
 	
 	@PostMapping("/addMedicineToStore")
-	public ResponseEntity<HttpStatus> registerMedicineToStore(@RequestBody RegisterMedicineToStoreRequest registerMedicineToStoreRequest) {
+	public ResponseEntity<HttpStatus> registerMedicineToStore(RegisterMedicineToStoreRequest registerMedicineToStoreRequest) {
 		medicineToStoreService.registerMedicineToStore(registerMedicineToStoreRequest);
 		
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
@@ -38,16 +40,16 @@ public class MedicineToStoreController {
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 	
-	//UnComplete
-	
 	@GetMapping("/getMedicinesByStore/{storeName}")
-	public void getMedicineByStore(@PathVariable String storeName) {
-		
+	public List<MedicineToStore> getMedicinesByStore(@PathVariable String storeName) {
+		List<MedicineToStore> medicines = medicineToStoreService.getMedicinesByStore(storeName);
+		return medicines;
 	}
 	
-	@GetMapping("/getStoreByMedicine/{medicineName}")
-	public void getStoreByMedicine(@PathVariable String storeName) {
-		
+	@GetMapping("/getStoreByMedicines/{medicineName}")
+	public List<MedicineToStore> getStoreByMedicines(@PathVariable String medicineName) {
+		List<MedicineToStore> store = medicineToStoreService.getStoreByMedicine(medicineName);
+		return store;
 	}
 	
 }

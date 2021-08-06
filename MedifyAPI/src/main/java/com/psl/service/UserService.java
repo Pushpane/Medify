@@ -122,4 +122,8 @@ public class UserService {
                 .build();
 	}
 
+	public Optional<User> findByUser(String user) {
+		return userDAO.findByEmail(user);
+	}
+
 }
