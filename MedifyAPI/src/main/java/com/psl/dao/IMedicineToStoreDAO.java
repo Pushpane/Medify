@@ -13,6 +13,7 @@ import com.psl.entity.Store;
 
 @Repository
 public interface IMedicineToStoreDAO extends JpaRepository<MedicineToStore, Long> {
-	 List<MedicineToStore> getMedicinesByStoreId(Store store);
-	 List<MedicineToStore> getStoreByMedicineId(Medicine medicines);
+
+	 List<MedicineToStore> findByStoreId(Store store);
+	 List<MedicineToStore> findByMedicineId(Medicine medicine);
 }

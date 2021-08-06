@@ -54,12 +54,13 @@ public class MedicineToStoreService {
 	
 	public List<MedicineToStore> getMedicinesByStore(String storeName){
 		Optional<Store> store = storeService.findStoreByName(storeName);
-		return medicineToStoreDAO.getMedicinesByStoreId(store.get());
+		return medicineToStoreDAO.findByStoreId(store.get());
 	}
 	
 	public List<MedicineToStore> getStoreByMedicine(String medicineName){
+
 		Optional<Medicine> medicine = medicineService.findMedicineByName(medicineName);
-		return medicineToStoreDAO.getStoreByMedicineId(medicine.get());
+		return medicineToStoreDAO.findByMedicineId(medicine.get());
 	}
 	
 	public List<MedicineToStore> getAllMedicine(){
