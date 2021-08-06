@@ -56,8 +56,8 @@ public class MedicineToStoreController {
 	}
 	
 	@GetMapping("/getAllMedicine")
-	public List<MedicineToStore> getStoreByMedicines() {
-		List<MedicineToStore> med = medicineToStoreService.getAllMedicine(medicineName);
+	public List<MedicineToStore> getAllMedicine() {
+		List<MedicineToStore> med = medicineToStoreService.getAllMedicine();
 		return med;
 
 	}

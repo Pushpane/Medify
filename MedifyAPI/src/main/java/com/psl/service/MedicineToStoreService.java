@@ -38,7 +38,7 @@ public class MedicineToStoreService {
 		Optional<Medicines> medicine = medicineService.findMedicineByName(request.getMedicineName());
 		medicine.orElseThrow(()-> new MedifyException("Medicine Not Found"));
 		Optional<Store> store = storeService.findStoreByName(request.getStoreName());
-		store..orElseThrow(()-> new MedifyException("Store Not Found"));
+		store.orElseThrow(()-> new MedifyException("Store Not Found"));
 
 		
 		medToStoreEntity.setMedicineId(medicine.get());
