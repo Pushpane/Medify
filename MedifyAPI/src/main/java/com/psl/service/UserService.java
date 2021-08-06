@@ -81,6 +81,10 @@ public class UserService {
 		return user;
 	}
 	
+	public void updateUser(User user) {
+		userDAO.save(user);
+	}
+	
 	public Optional<User> getUser(String email){
 		return userDAO.findByEmail(email);
 	}
@@ -120,6 +124,10 @@ public class UserService {
                 .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
                 .username(refreshTokenRequest.getEmail())
                 .build();
+	}
+
+	public Optional<User> findByUser(String user) {
+		return userDAO.findByEmail(user);
 	}
 
 }
