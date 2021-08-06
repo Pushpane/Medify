@@ -24,7 +24,7 @@ public class MedicineToStore {
 	private long medicineToStoreId;
 	@ManyToOne
 	@NotBlank(message = "Medicines is required")
-	private Medicines medicineId;
+	private Medicine medicineId;
 	@ManyToOne
 	@NotBlank(message = "Store is required")
 	private Store storeId;

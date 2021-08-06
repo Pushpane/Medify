@@ -129,5 +129,9 @@ public class UserService {
 	public Optional<User> findByUser(String user) {
 		return userDAO.findByEmail(user);
 	}
+	
+	public Optional<User> getUserById(long id) {
+		return userDAO.findById(id);
+	}
 
 }
