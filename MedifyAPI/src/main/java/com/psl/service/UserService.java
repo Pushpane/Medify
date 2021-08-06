@@ -81,6 +81,10 @@ public class UserService {
 		return user;
 	}
 	
+	public void updateUser(User user) {
+		userDAO.save(user);
+	}
+	
 	public Optional<User> getUser(String email){
 		return userDAO.findByEmail(email);
 	}
