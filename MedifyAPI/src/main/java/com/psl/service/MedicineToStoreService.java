@@ -13,6 +13,7 @@ import com.psl.dto.RegisterMedicineToStoreRequest;
 import com.psl.entity.MedicineToStore;
 import com.psl.entity.Medicines;
 import com.psl.entity.Store;
+import com.psl.exception.MedifyException;
 
 import lombok.AllArgsConstructor;
 
@@ -35,8 +36,9 @@ public class MedicineToStoreService {
 		MedicineToStore medToStoreEntity = new MedicineToStore();
 		
 		Optional<Medicines> medicine = medicineService.findMedicineByName(request.getMedicineName());
-		
+		medicine.orElseThrow(()-> new MedifyException("Medicine Not Found"));
 		Optional<Store> store = storeService.findStoreByName(request.getStoreName());
+		store..orElseThrow(()-> new MedifyException("Store Not Found"));
 
 		
 		medToStoreEntity.setMedicineId(medicine.get());
