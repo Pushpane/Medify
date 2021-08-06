@@ -98,5 +98,9 @@ public class AddressService {
 	public List<Address> findByUserAndStore(User user,Store store) {
 			return addressDAO.findByUserIdAndStoreId(user,store);
 	}
-	
+
+	public Address getAddressById(long id){
+		return addressDAO.getById(id);
+	}
+
 }
