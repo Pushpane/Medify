@@ -1,7 +1,6 @@
 package com.psl.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.psl.dto.RegisterAddressRequest;
 
 
-import com.psl.dto.RegisterUserRequest;
 import com.psl.entity.Address;
-import com.psl.entity.Role;
 import com.psl.entity.Store;
 import com.psl.entity.User;
-import com.psl.exception.MedifyException;
 import com.psl.service.AddressService;
-import com.psl.service.UserService;
 
 
 import lombok.AllArgsConstructor;

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.psl.dto.RegisterStoreRequest;
-import com.psl.entity.Role;
 import com.psl.entity.Store;
 import com.psl.exception.MedifyException;
 import com.psl.service.StoreService;

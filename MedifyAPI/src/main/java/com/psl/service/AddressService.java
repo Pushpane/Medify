@@ -2,18 +2,15 @@ package com.psl.service;
 
 
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.psl.dao.IAddressDAO;
 import com.psl.dto.RegisterAddressRequest;
 import com.psl.entity.Store;
 import com.psl.entity.User;
 import com.psl.entity.Address;
-import com.psl.entity.Role;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
