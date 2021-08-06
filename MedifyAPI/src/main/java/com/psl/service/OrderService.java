@@ -73,7 +73,7 @@ public class OrderService {
     public List<Order> getAllOrdersByUser(long userId) {
         Optional<User> user = userService.getUserById(userId);
         user.orElseThrow(() -> new MedifyException("Role not found"));
-        return ordersDAO.findAllByUserId(user);
+        return ordersDAO.findAllByUserId(user.get());
     }
 
 }
