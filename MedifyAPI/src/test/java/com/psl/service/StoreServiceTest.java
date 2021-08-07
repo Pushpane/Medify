@@ -1,10 +1,7 @@
 package com.psl.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.CoreMatchers.any;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -36,7 +33,7 @@ class StoreServiceTest {
 	
 	@Test
 	public void registerStoreTest() {
-		
+		fail("Not yet implemented");
 	}
 	
 	@Test
@@ -80,9 +77,9 @@ class StoreServiceTest {
 		User user1 = new User(1L, "UserName1", "UserName1@email.com", "Password", role1, "1234567890", null, true);
 		Store store1 = new Store(1L, user1, "StoreName1", "StoreDescription");
 		
-		Role role2 = new Role(1L, "Owner");
-		User user2 = new User(1L, "UserName2", "UserName2@email.com", "Password", role2, "1234567890", null, true);
-		Store store2 = new Store(1L, user2, "StoreName2", "StoreDescription");
+		Role role2 = new Role(2L, "Owner");
+		User user2 = new User(2L, "UserName2", "UserName2@email.com", "Password", role2, "1234567890", null, true);
+		Store store2 = new Store(2L, user2, "StoreName2", "StoreDescription");
 		
 		when(repository.findAll()).thenReturn(Stream.of( store1, store2).collect(Collectors.toList()));
 		assertEquals(2, storeService.getAllStores().size());
