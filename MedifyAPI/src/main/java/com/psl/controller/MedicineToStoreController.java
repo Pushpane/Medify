@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.psl.dto.RegisterMedicineToStoreRequest;
-import com.psl.entity.Address;
 import com.psl.entity.MedicineToStore;
-import com.psl.entity.Medicine;
-import com.psl.entity.Store;
 import com.psl.service.MedicineToStoreService;
 
 import lombok.AllArgsConstructor;

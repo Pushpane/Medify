@@ -1,6 +1,5 @@
 package com.psl.dto;
 
-import com.psl.entity.MedicineToStore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

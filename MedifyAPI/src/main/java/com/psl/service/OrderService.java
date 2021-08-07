@@ -4,7 +4,7 @@ import com.psl.dao.IOrdersDAO;
 import com.psl.dto.OrderRequest;
 import com.psl.entity.Address;
 import com.psl.entity.MedicineToStore;
-import com.psl.entity.Order;
+import com.psl.entity.Orders;
 
 import com.psl.entity.User;
 
@@ -29,13 +29,13 @@ public class OrderService {
     private MedicineToStoreService medicineToStoreService;
 
     public void registerOrder(OrderRequest orderRequest) {
-        Order order = fillOrder(orderRequest);
+        Orders order = fillOrder(orderRequest);
 
         ordersDAO.save(order);
     }
 
-    private Order fillOrder(OrderRequest request) {
-        Order order = new Order();
+    private Orders fillOrder(OrderRequest request) {
+        Orders order = new Orders();
 
         order.setCreatedAt(Instant.now());
         order.setOrderStatus(request.getOrderStatus());
@@ -58,7 +58,7 @@ public class OrderService {
         return order;
     }
 
-    public void saveOrder(Order order) {
+    public void saveOrder(Orders order) {
         ordersDAO.save(order);
     }
 
@@ -66,11 +66,11 @@ public class OrderService {
         ordersDAO.deleteById(id);
     }
 
-    public List<Order> getAllOrders() {
+    public List<Orders> getAllOrders() {
         return ordersDAO.findAll();
     }
 
-    public List<Order> getAllOrdersByUser(long userId) {
+    public List<Orders> getAllOrdersByUser(long userId) {
         Optional<User> user = userService.getUserById(userId);
         user.orElseThrow(() -> new MedifyException("Role not found"));
         return ordersDAO.findAllByUserId(user.get());

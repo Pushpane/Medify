@@ -11,8 +11,6 @@ import com.psl.dao.IStoreDAO;
 
 
 import com.psl.dto.RegisterStoreRequest;
-import com.psl.dto.RegisterUserRequest;
-import com.psl.entity.Role;
 import com.psl.entity.Store;
 import com.psl.entity.User;
 
