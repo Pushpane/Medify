@@ -43,7 +43,7 @@ class StoreServiceTest {
 		
 		Role role = new Role(2L, "Owner");
 		User user = new User(2L, "UserName", "UserName@email.com", "Password", role, "1234567890", null, true);
-		Store store = new Store(1L, user, "StoreName", "StoreDescription");
+		Store store = new Store(0L, user, "StoreName", "StoreDescription");
 		
 		RegisterStoreRequest request = new RegisterStoreRequest("UserName@email.com", "StoreName", "StoreDescription");
 		when(repository.save(store)).thenReturn(store);
