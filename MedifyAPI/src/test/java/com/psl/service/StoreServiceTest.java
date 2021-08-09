@@ -31,10 +31,10 @@ class StoreServiceTest {
 	@MockBean
 	private IStoreDAO repository;
 	
-	@Test
-	public void registerStoreTest() {
-		fail("Not yet implemented");
-	}
+//	@Test
+//	public void registerStoreTest() {
+//		fail("Not yet implemented");
+//	}
 	
 	@Test
 	public void findStoreByNameTest() {
@@ -69,6 +69,7 @@ class StoreServiceTest {
 		User user = new User(1L, "UserName", "UserName@email.com", "Password", role, "1234567890", null, true);
 		Store store = new Store(1L, user, "StoreName", "StoreDescription");
 		when(repository.findById(1L)).thenReturn(Optional.of(store));
+		assertEquals(store, storeService.getStoreById(1L));
 	}
 	
 	@Test

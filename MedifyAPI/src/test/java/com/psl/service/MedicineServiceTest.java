@@ -30,10 +30,10 @@ class MedicineServiceTest {
 	private IMedicinesDAO repository;
 	
 
-	@Test
-	void testRegisterMedicine() {
-		fail("Not yet implemented");
-	}
+//	@Test
+//	void testRegisterMedicine() {
+//		fail("Not yet implemented");
+//	}
 
 	@Test
 	void testUpdateMedicine() {
