@@ -20,24 +20,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 public class Orders {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long orderId;
 	@ManyToOne
-	@NotBlank(message = "User is reuired")
+	@NotBlank(message = "User is required")
 	private User userId;
 	@ManyToOne
-	@NotBlank(message = "Address is reuired")
+	@NotBlank(message = "Address is rqeuired")
 	private Address addressId;
 	@ManyToOne
-	@NotBlank(message = "Medicine to Store is reuired")
+	@NotBlank(message = "Medicine to Store is required")
 	private MedicineToStore medicineToStoreId;
-	@NotBlank(message = "Quantity is reuired")
+	@NotBlank(message = "Quantity is required")
 	private int quantity;
-	@NotBlank(message = "Order Status is reuired")
+	@NotBlank(message = "Order Status is required")
 	private String orderStatus;
-	@NotBlank(message = "CreatedAt is reuired")
+	@NotBlank(message = "CreatedAt is required")
 	private Instant createdAt;
-	
 }

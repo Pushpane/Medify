@@ -10,10 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.psl.dao.IStoreDAO;
 
 
-import com.psl.dao.IUserDAO;
 import com.psl.dto.RegisterStoreRequest;
-import com.psl.dto.RegisterUserRequest;
-import com.psl.entity.Role;
 import com.psl.entity.Store;
 import com.psl.entity.User;
 

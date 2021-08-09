@@ -1,0 +1,42 @@
+<div fxLayoutAlign="center center" fxFlexFill>
+    <mat-card fxFlex="30" fxFlex.sm="50" fxFlex.xs="92" class="p-0">
+      <mat-toolbar color="primary" class="text-center mat-elevation-z2"><span>Login</span></mat-toolbar>
+      <div></div>
+      <form [formGroup]="loginForm" (ngSubmit)="Login()" fxLayoutAlign="stretch" fxLayout="column" class="p-4">
+        <mat-form-field>
+          <input [formControlName]="'email'" matInput type="email" placeholder="Username ( Email )" required>
+        </mat-form-field>
+        <span class="text-danger">
+          <span *ngIf="loginForm.get('email')?.errors?.required && loginForm.get('email').touched">
+            Please enter your Email.
+          </span>
+          <span *ngIf="loginForm.get('email')?.errors?.minlength">
+            Email must be longer than 5 characters.
+          </span>
+          <span *ngIf="loginForm.get('email')?.errors?.email">
+            Please Specify an Email.
+          </span>
+        </span>
+        <mat-form-field>
+          <input [formControlName]="'password'" matInput type="password" placeholder="Password" required>
+        </mat-form-field>
+        <span class="text-danger">
+          <span *ngIf="loginForm.get('password')?.errors?.required && loginForm.get('password').touched">
+            Please enter Password.
+          </span>
+          <span *ngIf="loginForm.get('password')?.errors?.minlength">
+            Password must be longer than 8 characters.
+          </span>
+          <span *ngIf="loginForm.get('password')?.errors?.pattern">
+            Password must contain atleast 1 number, 1 special character and 1 letter.
+          </span>
+        </span>
+        <button mat-raised-button type="submit" color="accent">Login</button>
+      </form>
+      <div class="text-center pb-2">
+        Don't have an account?
+        <a routerLink='/AdminSignup'>Signup here</a>.<br>
+        <a routerLink="/ForgotPassword">Forgot Password?</a>
+      </div>
+    </mat-card>
+  </div>
