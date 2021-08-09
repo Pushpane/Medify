@@ -10,6 +10,7 @@ import com.psl.dao.IAddressDAO;
 import com.psl.dto.RegisterAddressRequest;
 import com.psl.entity.Store;
 import com.psl.entity.User;
+import com.psl.exception.MedifyException;
 import com.psl.entity.Address;
 
 import org.springframework.stereotype.Service;

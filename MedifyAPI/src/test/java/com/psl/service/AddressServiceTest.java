@@ -1,13 +1,10 @@
 package com.psl.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -16,16 +13,13 @@ import java.util.stream.Stream;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
+
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.psl.dao.IAddressDAO;
-import com.psl.dao.IStoreDAO;
 import com.psl.dto.RegisterAddressRequest;
 import com.psl.entity.Address;
 import com.psl.entity.Role;
@@ -41,18 +35,20 @@ class AddressServiceTest {
 	
 	@MockBean
 	private IAddressDAO addressRepository;
+	
 	@Test
 	void testRegisterAddress() {
 		
-//		RegisterAddressRequest addressRequest = new RegisterAddressRequest("email","name","address1","address2","pincode","city","state"); 
-//		//fillAddress is private
-//		Address address = addressService.fillAddress(addressRequest); 
-//			//when(repository.save(address)).thenReturn(address);
-//			//assertEquals(address, addressService.registerAddress(addressRequest));
-//		addressService.registerAddress(addressRequest);
-//		verify(repository, times(1)).save(address);
-//		
+		Role role = new Role(2L, "Owner");
+		User user = new User(2L, "UserName", "UserName@email.com", "Password", role, "1234567890", null, true);
+		Store store = new Store(1, user, "StoreName", "StoreDescription");
+		Address address = new Address(0,user,store,"address1","address2","pincode","city","state");
 		
+		RegisterAddressRequest addressRequest = new RegisterAddressRequest("UserName@email.com","StoreName","address1","address2","pincode","city","state"); 
+		when(addressRepository.save(address)).thenReturn(address);
+		addressService.registerAddress(addressRequest);
+		verify(addressRepository,times(1)).save(address);	
+	
 	}
 
 	@Test
@@ -96,6 +92,7 @@ class AddressServiceTest {
 		
 		String city = "city";
 		when(addressRepository.findByCity(city)).thenReturn(Stream.of(address).collect(Collectors.toList()));
+		//when(addressRepository.save()).thenReturn(Stream.of(address).collect(Collectors.toList()));
 		
 	}
 	@Test
