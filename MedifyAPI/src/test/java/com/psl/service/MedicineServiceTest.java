@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 import java.util.stream.Collectors;
 
 import com.psl.dao.IMedicinesDAO;
-import com.psl.entity.Medicines;
+import com.psl.entity.Medicine;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -37,7 +37,7 @@ class MedicineServiceTest {
 
 	@Test
 	void testUpdateMedicine() {
-		Medicines medicine = new Medicines(1, "MedicineName", "Description", 200L, "Image");
+		Medicine medicine = new Medicine(1, "MedicineName", "Description", 200L, "Image");
 		medicineService.updateMedicine(medicine);
 		verify(repository, times(1)).save(medicine);
 	}
@@ -50,8 +50,8 @@ class MedicineServiceTest {
 
 	@Test
 	void testGetAllMedicines() {
-		Medicines medicine1 = new Medicines(1, "MedicineName1", "Description1", 200L, "Image");
-		Medicines medicine2 = new Medicines(2, "MedicineName2", "Description2", 200L, "Image");
+		Medicine medicine1 = new Medicine(1, "MedicineName1", "Description1", 200L, "Image");
+		Medicine medicine2 = new Medicine(2, "MedicineName2", "Description2", 200L, "Image");
 		
 		when(repository.findAll()).thenReturn(Stream.of( medicine1, medicine2).collect(Collectors.toList()));
 		assertEquals(2, medicineService.getAllMedicines().size());
@@ -59,7 +59,7 @@ class MedicineServiceTest {
 
 	@Test
 	void testFindMedicineByName() {
-		Medicines medicine = new Medicines(1, "MedicineName", "Description", 200L, "Image");
+		Medicine medicine = new Medicine(1, "MedicineName", "Description", 200L, "Image");
 		when(repository.findByName("MedicineName")).thenReturn(Optional.of(medicine));
 	}
 
