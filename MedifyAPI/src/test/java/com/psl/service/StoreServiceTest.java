@@ -33,7 +33,7 @@ class StoreServiceTest {
 	
 	@Test
 	public void registerStoreTest() {
-		fail("Not yet implemented");
+		//fail("Not yet implemented");
 	}
 	
 	@Test

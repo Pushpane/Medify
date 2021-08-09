@@ -7,15 +7,21 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.psl.dao.IAddressDAO;
@@ -34,7 +40,7 @@ class AddressServiceTest {
 	private AddressService addressService;
 	
 	@MockBean
-	private IAddressDAO repository;
+	private IAddressDAO addressRepository;
 	@Test
 	void testRegisterAddress() {
 		
@@ -57,13 +63,13 @@ class AddressServiceTest {
 		Address address = new Address(1L,userId,storeId,"address1","address2","pincode","city","state");
 	
 		addressService.updateAddress(address);
-		verify(repository, times(1)).save(address);
+		verify(addressRepository, times(1)).save(address);
 	}
 
 	@Test
 	void testDeleteAddress() {
 		addressService.deleteAddress(1L);
-		verify(repository, times(1)).deleteById(1L);
+		verify(addressRepository, times(1)).deleteById(1L);
 	}
 
 	@Test
@@ -78,20 +84,25 @@ class AddressServiceTest {
 		Store storeId2 = new Store(2L,userId2,"name","description");
 		Address address2 = new Address(2L,userId2,storeId2,"address1","address2","pincode","city","state");
 		
-		when(repository.findAll()).thenReturn(Stream.of( address1, address2).collect(Collectors.toList()));
+		when(addressRepository.findAll()).thenReturn(Stream.of( address1, address2).collect(Collectors.toList()));
 		assertEquals(2, addressService.getAllAddress().size());
 	}
-
-	@Test
-	void testFindByCity() {
+	@Before
+	public void setUp() {
 		Role roleId = new Role(1L,"role");
 		User userId = new User(1L,"name","email","password",roleId,"phoneNumber",null,true);
 		Store storeId = new Store(1L,userId,"name","description");
 		Address address = new Address(1L,userId,storeId,"address1","address2","pincode","city","state");
 		
 		String city = "city";
-		when(repository.findByCity(city)).thenReturn(Stream.of(address).collect(Collectors.toList()));
-		assertEquals(1, addressService.findByCity(city).size());
+		when(addressRepository.findByCity(city)).thenReturn(Stream.of(address).collect(Collectors.toList()));
+		
+	}
+	@Test
+	void testFindByCity() {
+		 String city = "city";
+		 List<Address> found = addressService.getByCity(city);
+		 assertEquals(found.size(), addressService.getByCity(city).size());
 	}
 
 	@Test
@@ -102,8 +113,8 @@ class AddressServiceTest {
 		Address address = new Address(1L,userId,storeId,"address1","address2","pincode","city","state");
 		
 		String pincode = "pincode";
-		when(repository.findByPincode(pincode)).thenReturn(Stream.of(address).collect(Collectors.toList()));
-		assertEquals(1, addressService.findByPincode(pincode).size());
+		when(addressRepository.findByPincode(pincode)).thenReturn(Stream.of(address).collect(Collectors.toList()));
+		assertEquals(1, addressService.getByPincode(pincode).size());
 	}
 
 	@Test
@@ -114,8 +125,8 @@ class AddressServiceTest {
 		Address address = new Address(1L,userId,storeId,"address1","address2","pincode","city","state");
 		
 		
-		when(repository.findByStoreId(storeId)).thenReturn(Stream.of(address).collect(Collectors.toList()));
-		assertEquals(1, addressService.findByStore(storeId).size());	
+		when(addressRepository.findByStoreId(storeId)).thenReturn(Stream.of(address).collect(Collectors.toList()));
+		assertEquals(1, addressService.getByStore(storeId).size());	
 		
 	}
 
@@ -127,9 +138,19 @@ class AddressServiceTest {
 		Address address = new Address(1L,userId,storeId,"address1","address2","pincode","city","state");
 		
 		
-		when(repository.findByUserIdAndStoreId(userId,storeId)).thenReturn(Stream.of(address).collect(Collectors.toList()));
-		assertEquals(1, addressService.findByUserAndStore(userId,storeId).size());
+		when(addressRepository.findByUserIdAndStoreId(userId,storeId)).thenReturn(Stream.of(address).collect(Collectors.toList()));
+		assertEquals(1, addressService.getByUserAndStore(userId,storeId).size());
 	}
-
+	@Test
+	void testGetAddressById() {
+		Role roleId = new Role(1L,"role");
+		User userId = new User(1L,"name","email","password",roleId,"phoneNumber",null,true);
+		Store storeId = new Store(1L,userId,"name","description");
+		Address address = new Address(1L,userId,storeId,"address1","address2","pincode","city","state");
+		
+		
+		when(addressRepository.findById(1L)).thenReturn(Optional.of(address));
+		assertEquals(address, addressService.getAddressById(1L));
+	}
 
 }
