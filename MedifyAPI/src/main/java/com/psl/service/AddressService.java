@@ -77,27 +77,28 @@ public class AddressService {
 	}
 	
 	//Get address in a particular city
-	public List<Address> findByCity(String city) {
+	public List<Address> getByCity(String city) {
 		return addressDAO.findByCity(city);
 	}
 	
 	//Get address in a particular city
-	public List<Address> findByPincode(String pincode) {
+	public List<Address> getByPincode(String pincode) {
 		return addressDAO.findByPincode(pincode);
 	}
 	
 	
 	//Get address for a particular store
-	public List<Address> findByStore(Store store) {
+	public List<Address> getByStore(Store store) {
 			return addressDAO.findByStoreId(store);
 	}
 	//Get address for a particular store owned by user given
-	public List<Address> findByUserAndStore(User user,Store store) {
+	public List<Address> getByUserAndStore(User user,Store store) {
 			return addressDAO.findByUserIdAndStoreId(user,store);
 	}
 
 	public Address getAddressById(long id){
-		return addressDAO.getById(id);
+		return addressDAO.findById(id).get();
+		
 	}
 
 }

@@ -34,6 +34,7 @@ class StoreServiceTest {
 	
 	@Test
 	public void registerStoreTest() {
+
 //		Role role1 = new Role(2L, "Owner");
 //		User user1 = new User(1L, "Steve Ghost", "abcd12@gmail.com", "$2a$10$C4Lmi63axmFAjIEZf5FiO.ioY/blusesIrw7LTwxJwBfJaUNWVyL.", role1, "9876543210", null, true);
 //		Store store1 = new Store(0L, user1, "StoreName1", "StoreDescription");
@@ -48,6 +49,8 @@ class StoreServiceTest {
 		when(repository.save(store)).thenReturn(store);
 		storeService.registerStore(request);
 		verify(repository,times(1)).save(store);
+
+		//fail("Not yet implemented");
 	}
 	
 	@Test

@@ -61,27 +61,31 @@ public class AddressController {
 	
 	@GetMapping("/getAddressByCity/{city}")
 	public List<Address> getAddress(@PathVariable String city) {
-		List<Address> address = addressService.findByCity(city);
+		List<Address> address = addressService.getByCity(city);
 		return address;
 	}
 	
 	@GetMapping("/getAddressByPin/{pincode}")
 	public List<Address> getAddressByPincode(@PathVariable String pincode) {
-		List<Address> address = addressService.findByPincode(pincode);
+		List<Address> address = addressService.getByPincode(pincode);
 		return address;
 	}
 	
 
 	@GetMapping("/getAddressByStore/{store}")
 	public List<Address> getAddressByStore(@PathVariable Store store) {
-		List<Address> address = addressService.findByStore(store);
+		List<Address> address = addressService.getByStore(store);
 		return address;
 	}
-	
+	@GetMapping("/getAddressById/{id}")
+	public Address getAddressById(@PathVariable Long id) {
+		Address address = addressService.getAddressById(id);
+		return address;
+	}
 	//http://localhost:8081/api/user/getAddress?user=user_email&store=store_name
 	@GetMapping("/getAddress")
 	public List<Address> getAddressByUserAndStore(@RequestParam User user,@RequestParam Store store) {
-		List<Address> address = addressService.findByUserAndStore(user,store);
+		List<Address> address = addressService.getByUserAndStore(user,store);
 		return address;
 	}
 	
