@@ -57,7 +57,7 @@ class AddressServiceTest {
 		User userId = new User(1L,"name","email","password",roleId,"phoneNumber",null,true);
 		Store storeId = new Store(1L,userId,"name","description");
 		Address address = new Address(1L,userId,storeId,"address1","address2","pincode","city","state");
-	
+		
 		addressService.updateAddress(address);
 		verify(addressRepository, times(1)).save(address);
 	}

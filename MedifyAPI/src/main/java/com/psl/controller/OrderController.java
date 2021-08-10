@@ -23,7 +23,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 
 @RequestMapping("/api/user")
-public class OderController {
+public class OrderController {
 
     private final OrderService orderService;
 

@@ -1,6 +1,6 @@
 package com.psl.service;
 
-import com.psl.dao.IOrdersDAO;
+import com.psl.dao.IOrderDAO;
 import com.psl.dto.OrderRequest;
 import com.psl.entity.Address;
 import com.psl.entity.MedicineToStore;
@@ -23,7 +23,7 @@ import java.util.Optional;
 @Transactional
 public class OrderService {
 
-    private IOrdersDAO ordersDAO;
+    private IOrderDAO ordersDAO;
     private UserService userService;
     private AddressService addressService;
     private MedicineToStoreService medicineToStoreService;

@@ -9,7 +9,7 @@ import com.psl.entity.User;
 import java.util.List;
 
 @Repository
-public interface IOrdersDAO extends JpaRepository<Orders, Long>{
+public interface IOrderDAO extends JpaRepository<Orders, Long>{
 
     List<Orders> findAllByUserId(User userId);
 }
