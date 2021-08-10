@@ -50,20 +50,18 @@ class RoleServiceTest {
 		verify(roleRepository, times(1)).save(role);
 	}
 
-//	@Test
-//	void testGetRoleById() {
-//		//NoSuchElementFoundException -> Optional
-//		//Role role = new Role(1L,"Admin");
-//		Optional<Role> role = Optional.ofNullable(new Role(0, "Admin"));
-//		roleService.getRoleById(0);
-//		when(roleRepository.findById(0L)).thenReturn(role);
-//		assertEquals(role, roleService.getRoleById(0));
-//	}
+	@Test
+	void testGetRoleById() {
+		//Role role = new Role(1L,"Admin");
+		Role role = new Role(1L, "Admin");
+		when(roleRepository.findById(1L)).thenReturn(Optional.of(role));
+		assertEquals(role, roleService.getRoleById(1L));
+	}
 
 	@Test
 	void testFindByRole() {
 		//Role role = new Role(1,"Admin");
-		Optional<Role> role = Optional.ofNullable(new Role(1, "Admin"));
+		Optional<Role> role = Optional.ofNullable(new Role(1L, "Admin"));
 		String roleName = "Admin";
 		when(roleRepository.findByRole(roleName)).thenReturn(role);
 		assertEquals(role, roleService.findByRole(roleName));
