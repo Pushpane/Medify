@@ -60,6 +60,8 @@ import { AdminSignupComponent } from './auth/admin-signup.component';
 import { AdminLoginComponent } from './auth/admin-login.component';
 import { ForgotPasswordComponent } from './auth/forgot-password.component';
 import { UpdatePasswordComponent } from './auth/update-password.component';
+import { OrderStatusComponent } from './order-status/order-status.component';
+import { OrderStatusCancelComponent } from './order-status/order-status-cancel.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +74,9 @@ import { UpdatePasswordComponent } from './auth/update-password.component';
     AdminSignupComponent,
     AdminLoginComponent,
     ForgotPasswordComponent,
-    UpdatePasswordComponent
+    UpdatePasswordComponent,
+    OrderStatusComponent,
+    OrderStatusCancelComponent
   ],
   imports: [
     BrowserModule,
