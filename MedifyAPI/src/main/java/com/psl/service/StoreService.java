@@ -38,9 +38,14 @@ public class StoreService {
 		store.setName(request.getName());
 		store.setDescription(request.getDescription());
 		
-		Optional<User> user = userService.getUser(request.getEmail());
+		//Optional<User> user = userService.getUser(request.getEmail());
 		//checking if role is null if role is null throw exception
-		user.orElseThrow(()-> new MedifyException("Role not found"));
+		//user.orElseThrow(()-> new MedifyException("Role not found"));
+		
+		Optional<User> user=null;
+		if(request.getEmail()!=null) {
+			user = userService.getUser(request.getEmail());
+		}
 
 		
 		store.setUserId(user.get());

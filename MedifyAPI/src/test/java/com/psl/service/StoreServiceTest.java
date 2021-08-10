@@ -49,8 +49,6 @@ class StoreServiceTest {
 		when(repository.save(store)).thenReturn(store);
 		storeService.registerStore(request);
 		verify(repository,times(1)).save(store);
-
-		//fail("Not yet implemented");
 	}
 	
 	@Test
@@ -69,7 +67,6 @@ class StoreServiceTest {
 		//storeService.findStoreByName(storeName);
 		//verify(repository, times(1)).findByName(storeName);
 		assertEquals(store1, storeService.findStoreByName(storeName));
-		verify(repository, times(1)).findByName(storeName);
 	}
 
 	@Test
