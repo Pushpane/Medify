@@ -33,7 +33,7 @@ public class CartService {
 	}
 	
 	
-	private Cart addCart(CartRequest request) {
+	public Cart addCart(CartRequest request) {
 		Cart cart = new Cart();
 		Optional<MedicineToStore> md = medicineToStoreService.getMedicinesToStoreById(request.getId());
 		md.get().getMedicineId().getPrice();
