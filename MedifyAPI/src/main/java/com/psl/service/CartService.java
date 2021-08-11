@@ -22,7 +22,7 @@ import lombok.AllArgsConstructor;
 @Transactional
 public class CartService {
 
-	private final ICartDAO cartDAO = null;
+	private final ICartDAO cartDAO;
 	private final UserService userService;
 	private final MedicineToStoreService medicineToStoreService;
 	
@@ -33,7 +33,7 @@ public class CartService {
 	}
 	
 	
-	public Cart addCart(CartRequest request) {
+	private Cart addCart(CartRequest request) {
 		Cart cart = new Cart();
 		Optional<MedicineToStore> md = medicineToStoreService.getMedicinesToStoreById(request.getId());
 		md.get().getMedicineId().getPrice();
@@ -64,7 +64,7 @@ public class CartService {
 		cartDAO.save(cart);
 	}
 	
-	 public BigDecimal totalCost(MedicineToStore request, int quantity) {
+	 private BigDecimal totalCost(MedicineToStore request, int quantity) {
 	        
 	        BigDecimal totalCost = BigDecimal.valueOf(request.getMedicineId().getPrice()*quantity);
 	        return totalCost;
