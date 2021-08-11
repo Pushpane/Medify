@@ -1,5 +1,6 @@
 package com.psl.service;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -49,8 +50,8 @@ class RefreshTokenServiceTest {
 		
 		RefreshToken refreshToken = new RefreshToken(0L, uuid.toString(), instant);
 		when(repository.save(refreshToken)).thenReturn(refreshToken);
-		refreshTokenService.generateRefreshToken();
-		verify(repository, times(1)).save(refreshToken);
+		assertEquals(refreshToken, refreshTokenService.generateRefreshToken());
+		//verify(repository, times(1)).save(refreshToken);
 	}
 
 //	@Test

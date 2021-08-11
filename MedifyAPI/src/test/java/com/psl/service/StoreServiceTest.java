@@ -5,17 +5,18 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.psl.service.StoreService;
+import com.psl.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
+
 import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
-import java.time.Instant;  
-
 import com.psl.dao.IStoreDAO;
 import com.psl.dto.RegisterStoreRequest;
 import com.psl.entity.Role;
@@ -27,10 +28,13 @@ import com.psl.entity.User;
 class StoreServiceTest {
 	
 	@Autowired
+//	@MockBean
 	private StoreService storeService;
 	
 	@MockBean
 	private IStoreDAO repository;
+	@MockBean
+	private UserService userService;
 	
 	@Test
 	public void registerStoreTest() {
@@ -40,13 +44,16 @@ class StoreServiceTest {
 //		Store store1 = new Store(0L, user1, "StoreName1", "StoreDescription");
 //		
 //		RegisterStoreRequest request = new RegisterStoreRequest("abcd12@gmail.com", "StoreName1", "StoreDescription");
-		
+		//UserService userService = Mockito.mock(UserService.class);
 		Role role = new Role(2L, "Owner");
-		User user = new User(2L, "UserName", "UserName@email.com", "Password", role, "1234567890", null, true);
+		User user = new User(2L, "UserName", "UserName1@email.com", "Password", role, "1234567890", null, true);
 		Store store = new Store(0L, user, "StoreName", "StoreDescription");
 		
-		RegisterStoreRequest request = new RegisterStoreRequest("UserName@email.com", "StoreName", "StoreDescription");
+		RegisterStoreRequest request = new RegisterStoreRequest("UserName1@email.com", "StoreName", "StoreDescription");
 		when(repository.save(store)).thenReturn(store);
+		when(userService.getUser(request.getEmail())).thenReturn(Optional.of(user));
+
+		//Assertions.assertThrows(NoSuchElementException.class, () -> storeService.registerStore(request));
 		storeService.registerStore(request);
 		verify(repository,times(1)).save(store);
 	}
