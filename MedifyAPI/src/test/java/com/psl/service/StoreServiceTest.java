@@ -5,8 +5,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.psl.service.StoreService;
-import com.psl.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +36,6 @@ class StoreServiceTest {
 	
 	@Test
 	public void registerStoreTest() {
-
-//		Role role1 = new Role(2L, "Owner");
-//		User user1 = new User(1L, "Steve Ghost", "abcd12@gmail.com", "$2a$10$C4Lmi63axmFAjIEZf5FiO.ioY/blusesIrw7LTwxJwBfJaUNWVyL.", role1, "9876543210", null, true);
-//		Store store1 = new Store(0L, user1, "StoreName1", "StoreDescription");
-//		
 //		RegisterStoreRequest request = new RegisterStoreRequest("abcd12@gmail.com", "StoreName1", "StoreDescription");
 		//UserService userService = Mockito.mock(UserService.class);
 		Role role = new Role(2L, "Owner");
@@ -63,10 +56,6 @@ class StoreServiceTest {
 		Role role1 = new Role(1L, "Owner");
 		User user1 = new User(1L, "UserName1", "UserName1@email.com", "Password", role1, "1234567890", null, true);
 		Optional<Store> store1 = Optional.ofNullable(new Store(1L, user1, "StoreName1", "StoreDescription"));
-		
-		Role role2 = new Role(2L, "Owner");
-		User user2 = new User(2L, "UserName2", "UserName2@email.com", "Password", role2, "1234567890", null, true);
-		Optional<Store> store2 = Optional.ofNullable(new Store(2L, user2, "StoreName2", "StoreDescription"));
 		
 		String storeName = "StoreName1";
 		when(repository.findByName(storeName)).thenReturn((store1));

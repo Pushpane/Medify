@@ -33,17 +33,23 @@ class MedicineToStoreServiceTest {
 	
 	@MockBean
 	private IMedicineToStoreDAO repository;
+	@MockBean
+	MedicineService medicineService;
+	@MockBean
+	StoreService storeService;
 
 	@Test
 	void testRegisterMedicineToStore() {
 		Role role = new Role(2L, "Owner");
 		User user = new User(2L, "UserName", "UserName@email.com", "Password", role, "1234567890", null, true);
-		Store store = new Store(1L, user, "StoreName", "StoreDescription");
-		Medicine medicine = new Medicine(1L, "MedicineName", "Description", 200L, "Image");
+		Store store = new Store(1L, user, "StoreName1", "StoreDescription");
+		Medicine medicine = new Medicine(1L, "MedicineName1", "Description", 200L, "Image");
 		MedicineToStore medicineToStore = new MedicineToStore(0L, medicine, store, true);
 		
-		RegisterMedicineToStoreRequest request = new RegisterMedicineToStoreRequest("MedicineName", "StoreName");
+		RegisterMedicineToStoreRequest request = new RegisterMedicineToStoreRequest("MedicineName1", "StoreName1");
 		when(repository.save(medicineToStore)).thenReturn(medicineToStore);
+		when(medicineService.findMedicineByName(request.getMedicineName())).thenReturn(Optional.of(medicine));
+		when(storeService.findStoreByName(request.getStoreName())).thenReturn(Optional.of(store));
 		medicineToStoreService.registerMedicineToStore(request);
 		verify(repository, times(1)).save(medicineToStore);
 	}

@@ -33,8 +33,8 @@ class MedicineServiceTest {
 
 	@Test
 	void testRegisterMedicine() {
-		Medicine medicine = new Medicine(0, "MedicineName", "Description", 200L, "Image");
-		RegisterMedicineRequest request = new RegisterMedicineRequest("MedicineName", "Description", 200L, "Image");
+		Medicine medicine = new Medicine(0, "MedicineName1", "Description", 200L, "Image");
+		RegisterMedicineRequest request = new RegisterMedicineRequest("MedicineName1", "Description", 200L, "Image");
 		
 		when(repository.save(medicine)).thenReturn(medicine);
 		medicineService.registerMedicine(request);

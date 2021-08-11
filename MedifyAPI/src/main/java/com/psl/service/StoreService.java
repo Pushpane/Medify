@@ -4,7 +4,6 @@ package com.psl.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,8 +13,6 @@ import com.psl.dao.IStoreDAO;
 import com.psl.dto.RegisterStoreRequest;
 import com.psl.entity.Store;
 import com.psl.entity.User;
-
-import com.psl.exception.MedifyException;
 
 import lombok.AllArgsConstructor;
 
