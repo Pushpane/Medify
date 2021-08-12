@@ -30,8 +30,8 @@ public class StoreController {
 	private final StoreService storeService;
 
 	@PostMapping("/addStore")
-	public void addStore(@RequestBody RegisterStoreRequest registerUserRequest) {
-		storeService.registerStore(registerUserRequest);
+	public Store addStore(@RequestBody RegisterStoreRequest registerUserRequest) {
+		return storeService.registerStore(registerUserRequest);
 	}
 	
 	@PutMapping("/updateStore")
@@ -61,6 +61,12 @@ public class StoreController {
 		Optional<Store> store = storeService.findStoreByName(storename);
 		store.orElseThrow(()-> new MedifyException("Store not found"));
 		return store.get();
+	}
+	
+	@GetMapping("/getStoreByUser/{username}")
+	public ResponseEntity<List<Store>> getStoreByUser(@PathVariable String username) {
+		List<Store> store = storeService.findStoreByUser(username);
+		return new ResponseEntity<>(store, HttpStatus.OK);
 	}
 
 }

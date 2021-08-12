@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MedifyDashboardComponent } from './medify-dashboard.component';
+import { OrderStatusComponent } from './order-status.component';
 
-describe('MedifyDashboardComponent', () => {
-  let component: MedifyDashboardComponent;
-  let fixture: ComponentFixture<MedifyDashboardComponent>;
+describe('OrderStatusComponent', () => {
+  let component: OrderStatusComponent;
+  let fixture: ComponentFixture<OrderStatusComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MedifyDashboardComponent ]
+      declarations: [ OrderStatusComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MedifyDashboardComponent);
+    fixture = TestBed.createComponent(OrderStatusComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

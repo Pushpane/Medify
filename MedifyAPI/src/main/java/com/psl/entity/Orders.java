@@ -20,7 +20,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 public class Orders {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long orderId;
@@ -39,5 +38,4 @@ public class Orders {
 	private String orderStatus;
 	@NotBlank(message = "CreatedAt is required")
 	private Instant createdAt;
-	
 }

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class RegisterMedicineToStoreRequest {
 	
-	private String medicineName;
-	private String storeName;
+	private long medicineId;
+	private long storeId;
 
 }

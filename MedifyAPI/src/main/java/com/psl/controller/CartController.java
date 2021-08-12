@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.psl.dto.CartRequest;
-import com.psl.entity.Role;
 import com.psl.service.CartService;
 
 import lombok.AllArgsConstructor;

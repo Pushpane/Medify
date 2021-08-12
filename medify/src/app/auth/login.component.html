@@ -4,31 +4,33 @@
     <div></div>
     <form [formGroup]="loginForm" (ngSubmit)="Login()" fxLayoutAlign="stretch" fxLayout="column" class="p-4">
       <mat-form-field>
-        <input [formControlName]="'email'" matInput type="email" placeholder="* UserName ( Email )">
+        <input [formControlName]="'email'" matInput type="email" placeholder="Username ( Email )" required>
+        <mat-icon matSuffix>account_circle</mat-icon>
       </mat-form-field>
       <span class="text-danger">
         <span *ngIf="loginForm.get('email')?.errors?.required && loginForm.get('email').touched">
           Please enter your Email.
         </span>
         <span *ngIf="loginForm.get('email')?.errors?.minlength">
-          Email must be longer than 5 charcters.
+          Email must be longer than 5 characters.
         </span>
         <span *ngIf="loginForm.get('email')?.errors?.email">
           Please Specify an Email.
         </span>
       </span>
       <mat-form-field>
-        <input [formControlName]="'password'" matInput type="password" placeholder="* Password">
+        <input [formControlName]="'password'" matInput [type]="hide ? 'text' : 'password'" placeholder="Password" required>
+        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
       </mat-form-field>
       <span class="text-danger">
         <span *ngIf="loginForm.get('password')?.errors?.required && loginForm.get('password').touched">
           Please enter Password.
         </span>
         <span *ngIf="loginForm.get('password')?.errors?.minlength">
-          Password must be longer than 8 charcters.
+          Password must be longer than 8 characters.
         </span>
         <span *ngIf="loginForm.get('password')?.errors?.pattern">
-          Password must conatin atleast 1 number, 1 special character and 1 letter.
+          Password must contain atleast 1 number, 1 special character and 1 letter.
         </span>
       </span>
       <button mat-raised-button type="submit" color="accent">Login</button>

@@ -21,6 +21,7 @@ public interface IAddressDAO extends JpaRepository<Address, Long> {
 	
 	
 	List<Address> findByStoreId(Store store);
-	
+
+	List<Address> findByUserId(User user);
 	List<Address> findByUserIdAndStoreId(User user, Store store);
 }

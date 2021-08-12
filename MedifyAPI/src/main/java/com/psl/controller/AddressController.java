@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.psl.dto.RegisterAddressRequest;
@@ -19,9 +18,7 @@ import com.psl.dto.RegisterAddressRequest;
 
 import com.psl.entity.Address;
 import com.psl.entity.Store;
-import com.psl.entity.User;
 import com.psl.service.AddressService;
-import com.psl.service.UserService;
 
 
 
@@ -80,9 +77,9 @@ public class AddressController {
 	}
 	
 	//http://localhost:8081/api/user/getAddress?user=user_email&store=store_name
-	@GetMapping("/getAddress")
-	public List<Address> getAddressByUserAndStore(@RequestParam User user,@RequestParam Store store) {
-		List<Address> address = addressService.findByUserAndStore(user,store);
+	@GetMapping("/getAddressByUser/{email}")
+	public List<Address> getAddressByUserAndStore(@PathVariable String email) {
+		List<Address> address = addressService.findByUser(email);
 		return address;
 	}
 	

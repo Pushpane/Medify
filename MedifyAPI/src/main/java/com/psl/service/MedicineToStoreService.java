@@ -1,6 +1,5 @@
 package com.psl.service;
 
-import java.lang.StackWalker.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.psl.dao.IMedicineToStoreDAO;
 import com.psl.dto.RegisterMedicineToStoreRequest;
 import com.psl.entity.MedicineToStore;
-import com.psl.entity.Medicines;
+import com.psl.entity.Medicine;
 import com.psl.entity.Store;
 import com.psl.exception.MedifyException;
 
@@ -35,14 +34,13 @@ public class MedicineToStoreService {
 	private MedicineToStore fillMedicineToStore(RegisterMedicineToStoreRequest request) {
 		MedicineToStore medToStoreEntity = new MedicineToStore();
 		
-		Optional<Medicines> medicine = medicineService.findMedicineByName(request.getMedicineName());
+		Optional<Medicine> medicine = medicineService.findMedicineById(request.getMedicineId());
 		medicine.orElseThrow(()-> new MedifyException("Medicine Not Found"));
-		Optional<Store> store = storeService.findStoreByName(request.getStoreName());
-		store..orElseThrow(()-> new MedifyException("Store Not Found"));
+		Store store = storeService.getStoreById(request.getStoreId());
 
 		
 		medToStoreEntity.setMedicineId(medicine.get());
-		medToStoreEntity.setStoreId(store.get());;
+		medToStoreEntity.setStoreId(store);
 		medToStoreEntity.setAvailable(true);
 		
 		return medToStoreEntity;
@@ -54,16 +52,22 @@ public class MedicineToStoreService {
 	
 	public List<MedicineToStore> getMedicinesByStore(String storeName){
 		Optional<Store> store = storeService.findStoreByName(storeName);
-		return medicineToStoreDAO.getMedicinesByStoreId(store.get());
+		return medicineToStoreDAO.findByStoreId(store.get());
 	}
 	
 	public List<MedicineToStore> getStoreByMedicine(String medicineName){
-		Optional<Medicines> medicine = medicineService.findMedicineByName(medicineName);
-		return medicineToStoreDAO.getStoreByMedicineId(medicine.get());
+
+		Optional<Medicine> medicine = medicineService.findMedicineByName(medicineName);
+		return medicineToStoreDAO.findByMedicineId(medicine.get());
 	}
 	
 	public List<MedicineToStore> getAllMedicine(){
 		return medicineToStoreDAO.findAll();
 	}
+	
+	public Optional<MedicineToStore> getMedicinesToStoreById(long id){
+		return medicineToStoreDAO.findById(id);
+	}
+	
 	
 }

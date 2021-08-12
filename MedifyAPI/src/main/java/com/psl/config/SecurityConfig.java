@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configure(HttpSecurity httpSecurity) throws Exception{
 		httpSecurity.csrf().disable()
 			.authorizeRequests()
-			.antMatchers("/api/auth/**")
+			.antMatchers("/api/auth/**","/image/**","/static/**","/src/**")
 			.permitAll()
 		    .antMatchers("/v3/api-docs/**",
 		    		"/configuration/ui",
@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/api/admin/**").hasAuthority("ADMIN") // (1)
             .antMatchers("/api/owner/**").hasAnyAuthority("ADMIN", "OWNER") // (2)
             .antMatchers("/api/user/**").hasAnyAuthority("ADMIN", "OWNER", "USER") // (3)
-            .anyRequest().authenticated();
+            .anyRequest().authenticated().and().cors();
 		httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 	

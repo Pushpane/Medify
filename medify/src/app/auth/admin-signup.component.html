@@ -4,49 +4,49 @@
       <div></div>
       <form [formGroup]="signupForm" (ngSubmit)="Signup()" fxLayoutAlign="stretch" fxLayout="column" class="p-4">
         <mat-form-field>
-          <input [formControlName]="'name'" matInput placeholder="* Name"><br>
+          <input [formControlName]="'name'" matInput placeholder="Name" required><br>
         </mat-form-field>
         <span class="text-danger">
           <span *ngIf="signupForm.get('name')?.errors?.required && signupForm.get('name').touched">
             Please enter your Name.
           </span>
           <span *ngIf="signupForm.get('name')?.errors?.minlength">
-            FirstName must be longer than 3 charcters.
+            FirstName must be longer than 3 characters.
           </span>
           <span *ngIf="signupForm.get('name')?.errors?.pattern">
             FirstName can only contain alphabets and spaces.
           </span>
         </span>
         <mat-form-field>
-          <input [formControlName]="'email'" matInput type="email" placeholder="* Email (For Verification)">
+          <input [formControlName]="'email'" matInput type="email" placeholder="Email (For Verification)" required>
         </mat-form-field>
         <span class="text-danger">
           <span *ngIf="signupForm.get('email')?.errors?.required && signupForm.get('email').touched">
             Please enter your Email.
           </span>
           <span *ngIf="signupForm.get('email')?.errors?.minlength">
-            Email must be longer than 5 charcters.
+            Email must be longer than 5 characters.
           </span>
           <span *ngIf="signupForm.get('email')?.errors?.email">
             Please Specify an Email.
           </span>
         </span>
         <mat-form-field>
-          <input [formControlName]="'password'" matInput type="password" placeholder="* Password">
+          <input [formControlName]="'password'" matInput type="password" placeholder="Password" required>
         </mat-form-field>
         <span class="text-danger">
           <span *ngIf="signupForm.get('password')?.errors?.required && signupForm.get('password').touched">
             Please enter Password.
           </span>
           <span *ngIf="signupForm.get('password')?.errors?.minlength">
-            Password must be longer than 8 charcters.
+            Password must be longer than 8 characters.
           </span>
           <span *ngIf="signupForm.get('password')?.errors?.pattern">
-            Password must conatin atleast 1 number, 1 special character and 1 letter.
+            Password must contain atleast 1 number, 1 special character and 1 letter.
           </span>
         </span>
         <mat-form-field>
-          <input [formControlName]="'phone'" matInput placeholder="* Phone Number">
+          <input [formControlName]="'phone'" matInput placeholder="Phone Number" required>
         </mat-form-field>
         <span class="text-danger">
           <span *ngIf="signupForm.get('phone')?.errors?.required && signupForm.get('phone').touched">
