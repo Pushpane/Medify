@@ -135,6 +135,8 @@ class OrderServiceTest {
 		MedicineToStore medicineToStoreId = new MedicineToStore(1L,medicineId,storeId,true);
 		
 		Orders order = new Orders(1L,userId,addressId,medicineToStoreId,10,"orderStatus",null);
+		when(orderRepository.save(order)).thenReturn(order);
+		when(userService.getUserById(userId.getUserId())).thenReturn(Optional.of(userId));
 		
 		when(orderRepository.findAllByUserId(userId)).thenReturn(Stream.of( order).collect(Collectors.toList()));
 		assertEquals(1, orderService.getAllOrdersByUser(2L).size());
