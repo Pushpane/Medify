@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import java.time.Clock;
 import java.time.Instant;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.time.ZoneId;
@@ -40,6 +41,17 @@ class OrderServiceTest {
 	
 	@MockBean
 	private IOrderDAO orderRepository;
+	@MockBean
+	private UserService userService;
+	@MockBean
+	private StoreService storeService;
+	@MockBean
+	private AddressService addressService;
+	@MockBean
+	private MedicineService medicineService;
+	@MockBean
+	private MedicineToStoreService medicineToStoreService;
+	
 	
 	
 	private Instant instant;
@@ -54,7 +66,7 @@ class OrderServiceTest {
 		when(Instant.now()).thenReturn(instant);
 		
 		Role roleId = new Role(2L, "Owner");
-		User userId = new User(2L, "UserName", "UserName@email.com", "Password", roleId, "1234567890", null, true);
+		User userId = new User(2L, "UserName", "UserName1@email.com", "Password", roleId, "1234567890", null, true);
 		Store storeId = new Store(1L, userId, "StoreName", "StoreDescription");
 		
 		Address addressId = new Address(1L,userId,storeId,"address1","address2","pincode","city","state");
@@ -62,9 +74,13 @@ class OrderServiceTest {
 		MedicineToStore medicineToStoreId = new MedicineToStore(1L,medicineId,storeId,true);
 		
 		Orders order = new Orders(0L,userId,addressId,medicineToStoreId,10,"orderStatus",instant);
-		OrderRequest orderRequest = new OrderRequest(1L,10,"orderStatus","UserName@email.com",1L);
+		OrderRequest orderRequest = new OrderRequest(1L,10,"orderStatus","UserName1@email.com",1L);
 		
 		when(orderRepository.save(order)).thenReturn(order);
+		when(userService.getUser(orderRequest.getEmail())).thenReturn(Optional.of(userId));
+		when(addressService.getAddressById(orderRequest.getAddressId())).thenReturn(addressId);
+		when(medicineToStoreService.getMedicinesToStoreById(orderRequest.getMedicineToStoreId())).thenReturn(Optional.of(medicineToStoreId));
+		
 		orderService.registerOrder(orderRequest);
 		verify(orderRepository,times(1)).save(order);
 	}

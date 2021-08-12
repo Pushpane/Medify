@@ -36,16 +36,26 @@ class AddressServiceTest {
 	@MockBean
 	private IAddressDAO addressRepository;
 	
+	@MockBean
+	private UserService userService;
+	
+	@MockBean
+	private StoreService storeService;
+	
 	@Test
 	void testRegisterAddress() {
 		
 		Role role = new Role(2L, "Owner");
-		User user = new User(2L, "UserName", "UserName@email.com", "Password", role, "1234567890", null, true);
+		User user = new User(2L, "UserName", "UserName1@email.com", "Password", role, "1234567890", null, true);
 		Store store = new Store(1, user, "StoreName", "StoreDescription");
 		Address address = new Address(0,user,store,"address1","address2","pincode","city","state");
 		
-		RegisterAddressRequest addressRequest = new RegisterAddressRequest("UserName@email.com","StoreName","address1","address2","pincode","city","state"); 
+		
+		RegisterAddressRequest addressRequest = new RegisterAddressRequest("UserName1@email.com","StoreName","address1","address2","pincode","city","state"); 
 		when(addressRepository.save(address)).thenReturn(address);
+		when(userService.getUser(addressRequest.getEmail())).thenReturn(Optional.of(user));
+		when(storeService.findStoreByName(addressRequest.getName())).thenReturn(Optional.of(store));
+		
 		addressService.registerAddress(addressRequest);
 		verify(addressRepository,times(1)).save(address);	
 	
