@@ -1,7 +1,9 @@
 package com.psl.controller;
 
+import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
 
 import lombok.AllArgsConstructor;
 
@@ -22,16 +25,17 @@ public class HomeController {
 		return "Hello";
 	}
 	
-	@RequestMapping(value = "/Medify/Image/{id:.+}", method = RequestMethod.GET)
+	@GetMapping("/Image/{id}")
 	public ResponseEntity<byte[]> getImage(@PathVariable("id") String id) {
 		String UPLOAD_DIR = null;
+		byte[] image = new byte[0];
 		try {
 			UPLOAD_DIR = new ClassPathResource("static/image/").getFile().getAbsolutePath();
+			image = FileUtils.readFileToByteArray(new File(UPLOAD_DIR+id));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println(UPLOAD_DIR);
-		return ResponseEntity.ok().contentType(MediaType.valueOf(FileTypeMap.getDefaultFileTypeMap().getContentType(img))).body(Files.readAllBytes(img.toPath()));
+		return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
 	}
 }
