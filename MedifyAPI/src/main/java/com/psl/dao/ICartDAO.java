@@ -12,6 +12,6 @@ import com.psl.entity.User;
 @Repository
 public interface ICartDAO extends JpaRepository<Cart, Long> {
 
-	List<Address> findByUserId(User user);
+	List<Cart> findByUserId(User user);
 
 }
