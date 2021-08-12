@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class RegisterAddressRequest {
 	
 	private String email;
-	private String name;
+	private long storeId;
 	private String address1;
 	private String address2;
 	private String pincode;

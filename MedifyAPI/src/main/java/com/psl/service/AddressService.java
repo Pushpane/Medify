@@ -10,6 +10,7 @@ import com.psl.dao.IAddressDAO;
 import com.psl.dto.RegisterAddressRequest;
 import com.psl.entity.Store;
 import com.psl.entity.User;
+import com.psl.exception.MedifyException;
 import com.psl.entity.Address;
 
 import org.springframework.stereotype.Service;
@@ -49,13 +50,13 @@ public class AddressService {
 			user = userService.getUser(request.getEmail());
 		}
 		
-		Optional<Store> store = null;
-		if(request.getName()!=null) {
-			store = storeService.findStoreByName(request.getName());
+		Store store = null;
+		if(request.getStoreId()!=0) {
+			store = storeService.getStoreById(request.getStoreId());
 		}
 
 		
-		address.setStoreId(store.get());
+		address.setStoreId(store);
 		address.setUserId(user.get());
 		
 		return address;
@@ -92,8 +93,10 @@ public class AddressService {
 			return addressDAO.findByStoreId(store);
 	}
 	//Get address for a particular store owned by user given
-	public List<Address> findByUserAndStore(User user,Store store) {
-			return addressDAO.findByUserIdAndStoreId(user,store);
+	public List<Address> findByUser(String email) {
+		Optional<User> user = userService.getUser(email);
+		user.orElseThrow(()-> new MedifyException("User not found"));
+		return addressDAO.findByUserId(user.get());
 	}
 
 	public Address getAddressById(long id){

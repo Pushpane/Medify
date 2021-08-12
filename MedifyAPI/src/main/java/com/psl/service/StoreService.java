@@ -26,10 +26,11 @@ public class StoreService {
 	private final IStoreDAO storeDAO;
 	private final UserService userService;
 	
-	public void registerStore(RegisterStoreRequest request) {
+	public Store registerStore(RegisterStoreRequest request) {
 		Store store = fillStore(request);
 		
 		storeDAO.save(store);
+		return store;
 	}
 	
 	private Store fillStore(RegisterStoreRequest request) {
@@ -72,6 +73,12 @@ public class StoreService {
 	//Listing all stores
 	public List<Store> getAllStores(){
 		return storeDAO.findAll();
+	}
+
+	public List<Store> findStoreByUser(String username) {
+		Optional<User> user = userService.getUser(username);
+		user.orElseThrow(()-> new MedifyException("User not found"));
+		return storeDAO.findByUserId(user.get());
 	}
 	
 

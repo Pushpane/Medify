@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MedifyDashboardComponent } from './medify-dashboard.component';
+import { OwnerDashboardComponent } from './owner-dashboard.component';
 
-describe('MedifyDashboardComponent', () => {
-  let component: MedifyDashboardComponent;
-  let fixture: ComponentFixture<MedifyDashboardComponent>;
+describe('OwnerDashboardComponent', () => {
+  let component: OwnerDashboardComponent;
+  let fixture: ComponentFixture<OwnerDashboardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MedifyDashboardComponent ]
+      declarations: [ OwnerDashboardComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MedifyDashboardComponent);
+    fixture = TestBed.createComponent(OwnerDashboardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

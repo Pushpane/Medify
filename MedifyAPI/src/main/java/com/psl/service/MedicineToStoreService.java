@@ -34,14 +34,13 @@ public class MedicineToStoreService {
 	private MedicineToStore fillMedicineToStore(RegisterMedicineToStoreRequest request) {
 		MedicineToStore medToStoreEntity = new MedicineToStore();
 		
-		Optional<Medicine> medicine = medicineService.findMedicineByName(request.getMedicineName());
+		Optional<Medicine> medicine = medicineService.findMedicineById(request.getMedicineId());
 		medicine.orElseThrow(()-> new MedifyException("Medicine Not Found"));
-		Optional<Store> store = storeService.findStoreByName(request.getStoreName());
-		store.orElseThrow(()-> new MedifyException("Store Not Found"));
+		Store store = storeService.getStoreById(request.getStoreId());
 
 		
 		medToStoreEntity.setMedicineId(medicine.get());
-		medToStoreEntity.setStoreId(store.get());;
+		medToStoreEntity.setStoreId(store);
 		medToStoreEntity.setAvailable(true);
 		
 		return medToStoreEntity;

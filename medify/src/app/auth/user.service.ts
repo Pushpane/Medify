@@ -78,7 +78,7 @@ export class UserService {
   refreshToken() {
     const refreshTokenPayload = {
       refreshToken: this.getRefreshToken(),
-      username: this.getUserName()
+      email: this.getUserName()
     }
     return this.http.post<ILoginResponse>(this.userUrl+'/auth/refresh/token',
       refreshTokenPayload)
@@ -103,4 +103,5 @@ export class UserService {
   getExpirationTime() {
     return this.localStorage.retrieve('expiresAt');
   }
+  
 }
