@@ -2,24 +2,17 @@ package com.psl.service;
 
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.psl.dao.ICartDAO;
-import com.psl.dao.IUserDAO;
-import com.psl.dao.IVerificationTokenDAO;
 import com.psl.dto.CartRequest;
 import com.psl.entity.Cart;
 import com.psl.entity.MedicineToStore;
 import com.psl.entity.User;
 import com.psl.exception.MedifyException;
-import com.psl.security.JwtProvider;
 
 import lombok.AllArgsConstructor;
 
@@ -29,9 +22,9 @@ import lombok.AllArgsConstructor;
 @Transactional
 public class CartService {
 
-	private final ICartDAO cartDAO = null;
+	private final ICartDAO cartDAO;
 	private final UserService userService;
-	private final MedicineService medicineService;
+	private final MedicineToStoreService medicineToStoreService;
 	
 	public void createCart(CartRequest request) {
 		Cart cart = addCart(request);
@@ -42,9 +35,9 @@ public class CartService {
 	
 	private Cart addCart(CartRequest request) {
 		Cart cart = new Cart();
-		//MedticineToStore md = medicineToStoreService.getById(request.getId());
-		//md.getMedicineId.getPrice
-		//cart.setMedicineToStoreId(md);
+		Optional<MedicineToStore> md = medicineToStoreService.getMedicinesToStoreById(request.getId());
+		md.get().getMedicineId().getPrice();
+		cart.setMedicineToStoreId(md.get());
 		cart.setQuantity(request.getQuantity());
 		
 		
@@ -52,7 +45,7 @@ public class CartService {
 		user.orElseThrow(()-> new MedifyException("User not found"));
 		
 		cart.setUserId(user.get());
-		//cart.setCost(totalCost(md));
+		cart.setCost(totalCost(md.get(),request.getQuantity()));
 		
 		return cart;
 	}
@@ -71,7 +64,7 @@ public class CartService {
 		cartDAO.save(cart);
 	}
 	
-	 public BigDecimal totalCost(MedicineToStore request, int quantity) {
+	 private BigDecimal totalCost(MedicineToStore request, int quantity) {
 	        
 	        BigDecimal totalCost = BigDecimal.valueOf(request.getMedicineId().getPrice()*quantity);
 	        return totalCost;

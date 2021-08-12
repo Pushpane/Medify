@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.psl.dto.RegisterAddressRequest;
@@ -18,6 +19,7 @@ import com.psl.dto.RegisterAddressRequest;
 
 import com.psl.entity.Address;
 import com.psl.entity.Store;
+import com.psl.entity.User;
 import com.psl.service.AddressService;
 
 
@@ -59,27 +61,31 @@ public class AddressController {
 	
 	@GetMapping("/getAddressByCity/{city}")
 	public List<Address> getAddress(@PathVariable String city) {
-		List<Address> address = addressService.findByCity(city);
+		List<Address> address = addressService.getByCity(city);
 		return address;
 	}
 	
 	@GetMapping("/getAddressByPin/{pincode}")
 	public List<Address> getAddressByPincode(@PathVariable String pincode) {
-		List<Address> address = addressService.findByPincode(pincode);
+		List<Address> address = addressService.getByPincode(pincode);
 		return address;
 	}
 	
 
 	@GetMapping("/getAddressByStore/{store}")
 	public List<Address> getAddressByStore(@PathVariable Store store) {
-		List<Address> address = addressService.findByStore(store);
+		List<Address> address = addressService.getByStore(store);
 		return address;
 	}
-	
+	@GetMapping("/getAddressById/{id}")
+	public Address getAddressById(@PathVariable Long id) {
+		Address address = addressService.getAddressById(id);
+		return address;
+	}
 	//http://localhost:8081/api/user/getAddress?user=user_email&store=store_name
-	@GetMapping("/getAddressByUser/{email}")
-	public List<Address> getAddressByUserAndStore(@PathVariable String email) {
-		List<Address> address = addressService.findByUser(email);
+	@GetMapping("/getAddress")
+	public List<Address> getAddressByUserAndStore(@RequestParam User user,@RequestParam Store store) {
+		List<Address> address = addressService.getByUserAndStore(user,store);
 		return address;
 	}
 	

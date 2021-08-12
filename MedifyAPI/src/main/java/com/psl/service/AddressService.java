@@ -50,13 +50,13 @@ public class AddressService {
 			user = userService.getUser(request.getEmail());
 		}
 		
-		Store store = null;
-		if(request.getStoreId()!=0) {
-			store = storeService.getStoreById(request.getStoreId());
+		Optional<Store> store = null;
+		if(request.getName()!=null) {
+			store = storeService.findStoreByName(request.getName());
 		}
 
 		
-		address.setStoreId(store);
+		address.setStoreId(store.get());
 		address.setUserId(user.get());
 		
 		return address;
@@ -78,29 +78,28 @@ public class AddressService {
 	}
 	
 	//Get address in a particular city
-	public List<Address> findByCity(String city) {
+	public List<Address> getByCity(String city) {
 		return addressDAO.findByCity(city);
 	}
 	
 	//Get address in a particular city
-	public List<Address> findByPincode(String pincode) {
+	public List<Address> getByPincode(String pincode) {
 		return addressDAO.findByPincode(pincode);
 	}
 	
 	
 	//Get address for a particular store
-	public List<Address> findByStore(Store store) {
+	public List<Address> getByStore(Store store) {
 			return addressDAO.findByStoreId(store);
 	}
 	//Get address for a particular store owned by user given
-	public List<Address> findByUser(String email) {
-		Optional<User> user = userService.getUser(email);
-		user.orElseThrow(()-> new MedifyException("User not found"));
-		return addressDAO.findByUserId(user.get());
+	public List<Address> getByUserAndStore(User user,Store store) {
+			return addressDAO.findByUserIdAndStoreId(user,store);
 	}
 
 	public Address getAddressById(long id){
-		return addressDAO.getById(id);
+		return addressDAO.findById(id).get();
+		
 	}
 
 }
