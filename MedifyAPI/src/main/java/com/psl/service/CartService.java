@@ -46,15 +46,13 @@ public class CartService {
         medicineToStore.orElseThrow(() -> new MedifyException("Medicine/Store not found"));
         cart.setMedicineToStoreId(medicineToStore.get());
         
-        cart.setCost(totalCost(request.getId(),request.getQuantity()));
+        cart.setCost(totalCost(medicineToStore.get(),request.getQuantity()));
         
         return cart;
 	}
 
-	private BigDecimal totalCost(long id, int quantity) {
-		Optional<MedicineToStore> medicineToStore = medicineToStoreService.getMedicinesToStoreById(id);
-        medicineToStore.orElseThrow(() -> new MedifyException("Medicine/Store not found"));
-        double price = medicineToStore.get().getMedicineId().getPrice();
+	private BigDecimal totalCost(MedicineToStore medToStore, int quantity) {
+        double price = medToStore.getMedicineId().getPrice();
 		BigDecimal totalCost = BigDecimal.valueOf(price*quantity);
 		return totalCost;
 	}
