@@ -2,6 +2,8 @@ package com.psl.controller;
 
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,20 +23,22 @@ import lombok.AllArgsConstructor;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/user")
+@Slf4j
 public class MedicineToStoreController {
-	
+
 	private final MedicineToStoreService medicineToStoreService;
 	
 	@PostMapping("/addMedicineToStore")
 	public ResponseEntity<HttpStatus> registerMedicineToStore(@RequestBody RegisterMedicineToStoreRequest registerMedicineToStoreRequest) {
 		medicineToStoreService.registerMedicineToStore(registerMedicineToStoreRequest);
-		
+		log.info("Medicine added MedicineToStore " + registerMedicineToStoreRequest.getMedicineId());
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/deleteMedicineToStore/{id}")
 	public ResponseEntity<HttpStatus> deleteMedicineToStore(@PathVariable long id){
 		medicineToStoreService.deleteMedicineToStore(id);
+		log.info("Medicine deleted MedicineToStore " + id);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 	

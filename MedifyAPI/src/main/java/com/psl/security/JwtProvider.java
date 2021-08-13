@@ -5,6 +5,8 @@ import java.security.KeyStore;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -18,9 +20,11 @@ import java.io.InputStream;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Date;
 
 @Service
+@Slf4j
 public class JwtProvider {
 
     private KeyStore keyStore;
@@ -34,6 +38,7 @@ public class JwtProvider {
             InputStream resourceAsStream = getClass().getResourceAsStream("/medifyKeyStore.jks");
             keyStore.load(resourceAsStream, "changeit".toCharArray());
         } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException e) {
+            log.error("Exception occurred while loading keystore" + Arrays.toString(e.getStackTrace()));
             throw new MedifyException("Exception occurred while loading keystore");
         }
 
@@ -48,7 +53,7 @@ public class JwtProvider {
                 .setExpiration(Date.from(Instant.now().plusMillis(jwtExpirationInMillis)))
                 .compact();
     }
-    
+
     public String generateTokenWithUserName(String username) {
         return Jwts.builder()
                 .setSubject(username)
@@ -62,7 +67,9 @@ public class JwtProvider {
         try {
             return (PrivateKey) keyStore.getKey("medifyKeyStore", "changeit".toCharArray());
         } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException e) {
-            throw new MedifyException("Exception occured while retrieving public key from keystore");
+            log.error("Exception occurred while retrieving private key from keystore"
+                    + Arrays.toString(e.getStackTrace()));
+            throw new MedifyException("Exception occurred while retrieving private key from keystore");
         }
     }
 
@@ -75,10 +82,12 @@ public class JwtProvider {
         try {
             return keyStore.getCertificate("medifyKeyStore").getPublicKey();
         } catch (KeyStoreException e) {
-            throw new MedifyException("Exception occured while retrieving public key from keystore");
+            log.error("Exception occurred while retrieving public key from keystore"
+                    + Arrays.toString(e.getStackTrace()));
+            throw new MedifyException("Exception occurred while retrieving public key from keystore");
         }
     }
-    
+
     public String getUsernameFromJWT(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(getPublickey())
@@ -88,7 +97,7 @@ public class JwtProvider {
 
         return claims.getSubject();
     }
-    
+
     public Long getJwtExpirationInMillis() {
         return jwtExpirationInMillis;
     }

@@ -33,7 +33,7 @@ public class Address {
 	@NotBlank(message = "Address1 is required.")
 	private String address1;
 	private String address2;
-	@NotBlank(message = "Pincode is requuired.")
+	@NotBlank(message = "Pincode is required.")
 	private String pincode;
 	@NotBlank(message = "City is required.")
 	private String city;

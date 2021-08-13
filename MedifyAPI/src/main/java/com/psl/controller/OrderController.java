@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.psl.dto.OrderRequest;
 import com.psl.entity.Orders;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,7 +23,7 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-
+@Slf4j
 @RequestMapping("/api/user")
 public class OrderController {
 
@@ -30,6 +32,7 @@ public class OrderController {
     @PostMapping("/addOrder")
     public void addOrder(@RequestBody OrderRequest orderRequest) {
         orderService.registerOrder(orderRequest);
+        log.info("New Oder created by" + orderRequest.getEmail());
     }
 
     @PutMapping("/updateOrder")
@@ -42,6 +45,7 @@ public class OrderController {
     @DeleteMapping("/deleteOrder/{id}")
     public ResponseEntity<HttpStatus> deleteOrder(@PathVariable long id) {
         orderService.deleteOrder(id);
+        log.info("Ordered deleted " + id);
         return new ResponseEntity<HttpStatus>(HttpStatus.OK);
     }
 

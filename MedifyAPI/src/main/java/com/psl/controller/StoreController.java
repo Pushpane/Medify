@@ -3,6 +3,8 @@ package com.psl.controller;
 import java.util.List;
 import java.util.Optional;
 
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,7 +25,7 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-
+@Slf4j
 @RequestMapping("/api/owner")
 public class StoreController {
 	
@@ -31,6 +33,7 @@ public class StoreController {
 
 	@PostMapping("/addStore")
 	public Store addStore(@RequestBody RegisterStoreRequest registerUserRequest) {
+		log.info("New store added to medify" + registerUserRequest.getEmail());
 		return storeService.registerStore(registerUserRequest);
 	}
 	
@@ -43,6 +46,7 @@ public class StoreController {
 	@DeleteMapping("/deleteStore/{id}")
 	public ResponseEntity<HttpStatus> deleteStore(@PathVariable long id) {
 		storeService.deleteStore(id);
+		log.info("New store deleted from medify" + id);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 	

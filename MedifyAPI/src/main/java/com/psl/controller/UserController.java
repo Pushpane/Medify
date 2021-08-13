@@ -2,6 +2,8 @@ package com.psl.controller;
 
 import javax.validation.Valid;
 
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,17 +28,20 @@ import lombok.AllArgsConstructor;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/auth")
+@Slf4j
 public class UserController {
-	
-	private final UserService userService;
-	private final RefreshTokenService refreshTokenService;
-	private final PasswordChangerService changerService;
-	
-	@PostMapping("/signup")
-	public ResponseEntity<HttpStatus> signup(@RequestBody RegisterUserRequest registerUserRequest) {
-		userService.registerUser(registerUserRequest);
-		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
-	}
+
+    private final UserService userService;
+    private final RefreshTokenService refreshTokenService;
+    private final PasswordChangerService changerService;
+
+    @PostMapping("/signup")
+    public ResponseEntity<HttpStatus> signup(@RequestBody RegisterUserRequest registerUserRequest) {
+        userService.registerUser(registerUserRequest);
+        log.info("New " + registerUserRequest.getRole()
+                + " registered : " + registerUserRequest.getName());
+        return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+    }
 
 	@GetMapping("/accountVerification/{token}")
 	public ResponseEntity<String> verifyAccount(@PathVariable String token) {
