@@ -4,6 +4,7 @@ import { LocalStorageService } from 'ngx-webstorage';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { IAddress } from './address';
+import { ICart } from './cart';
 import { IMedicine } from './medicine';
 import { IMedToStore } from './medToStore';
 import { IStore } from './store';
@@ -29,6 +30,11 @@ export class DashboardService {
     return this.http.get<IAddress[]>(url);
   }
 
+  getCartByUser(): Observable<ICart[]>{
+    const url = this.userUrl + "/user/getCartByUser/"+ this.localStorage.retrieve("username");
+    return this.http.get<ICart[]>(url);
+  }
+
   getAllMedToStore(): Observable<IMedToStore[]>{
     const url = this.userUrl + "/user/getAllMedicine";
     return this.http.get<IMedToStore[]>(url);
@@ -46,6 +52,23 @@ export class DashboardService {
     return this.http.post<any>(url,data);
   }
 
+  addToCart(id: number): Observable<any>{
+    const url = this.userUrl + "/user/addCart";
+    const data = {
+      id: id,
+      email: this.localStorage.retrieve('username'),
+      quantity: 1
+    };
+
+    return this.http.post<any>(url,data);
+  }
+
+  deleteCart(id: number): Observable<any>{
+    const url = this.userUrl + "/user/deleteCartByUserAndMed/"+id+"/"+this.localStorage.retrieve('username');
+
+    return this.http.delete<any>(url);
+  }
+
   addMedicine(medicine: IMedicine): Observable<any>{
     const url = this.userUrl + "/owner/addMedicine";
     const data = new FormData();
@@ -61,5 +84,21 @@ export class DashboardService {
     const url = this.userUrl + "/user/addMedicineToStore";
 
     return this.http.post<any>(url,data);
+  }
+
+  addQuantity(id: number): Observable<any>{
+    const url = this.userUrl + "/user/addQuantity";
+    const data = {
+      id: id
+    }
+    return this.http.put<any>(url,data);
+  }
+
+  removeQuantity(id: number): Observable<any>{
+    const url = this.userUrl + "/user/removeQuantity";
+    const data = {
+      id: id
+    }
+    return this.http.put<any>(url,data);
   }
 }

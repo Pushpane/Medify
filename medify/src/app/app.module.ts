@@ -65,6 +65,10 @@ import { FooterComponent } from './header/footer.component';
 import { CommonModule } from '@angular/common';
 import { TokenInterceptor } from './auth/token-interceptor';
 import { AddMedicinesComponent } from './dashboard/add-medicines.component';
+import { UserDashboardComponent } from './dashboard/user-dashboard.component';
+import { CartComponent } from './dashboard/cart.component';
+import { UserCheckerGuard } from './dashboard/checker.guard';
+import { OwnerCheckerGuard } from './dashboard/owner-checker.guard';
 
 @NgModule({
   declarations: [
@@ -81,6 +85,8 @@ import { AddMedicinesComponent } from './dashboard/add-medicines.component';
     OwnerDashboardComponent,
     FooterComponent,
     AddMedicinesComponent,
+    UserDashboardComponent,
+    CartComponent,
   ],
   imports: [
     BrowserModule,
@@ -137,9 +143,11 @@ import { AddMedicinesComponent } from './dashboard/add-medicines.component';
     NgxWebstorageModule.forRoot(),
     ToastrModule.forRoot(),
     RouterModule.forRoot([
-      { path: '', component:OwnerDashboardComponent },
-      { path: 'AddMedicines', component:AddMedicinesComponent },
-      { path: 'OwnerDashboard', component:OwnerDashboardComponent },
+      { path: '', canActivate: [UserCheckerGuard],component:UserDashboardComponent },
+      { path: 'Dashboard', canActivate: [UserCheckerGuard],component:UserDashboardComponent },
+      { path: 'Cart',canActivate: [UserCheckerGuard], component:CartComponent },
+      { path: 'AddMedicines', canActivate: [OwnerCheckerGuard],component:AddMedicinesComponent },
+      { path: 'OwnerDashboard', canActivate: [OwnerCheckerGuard],component:OwnerDashboardComponent },
       { path: 'Signup', component: SignupComponent },
       { path: 'OwnerSignup', component: OwnerSignupComponent},
       { path: 'OwnerLogin', component: OwnerLoginComponent },

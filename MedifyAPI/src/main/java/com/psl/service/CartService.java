@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.psl.dao.ICartDAO;
 import com.psl.dto.CartRequest;
-import com.psl.entity.Address;
 import com.psl.entity.Cart;
 import com.psl.entity.MedicineToStore;
 import com.psl.entity.User;
@@ -71,10 +70,39 @@ public class CartService {
 		return cartDAO.findAll();
 	}
 
-	public List<Address> getCartByUser(String email) {
+	public List<Cart> getCartByUser(String email) {
 		Optional<User> user = userService.getUser(email);
 		user.orElseThrow(()-> new MedifyException("User not found"));
 		return cartDAO.findByUserId(user.get());
 	}
+	
+	public void deleteByMedToStoreAndUser(CartRequest request) {
+		Optional<User> user=userService.getUser(request.getEmail());
+		user.orElseThrow(()-> new MedifyException("User not found"));
+		Optional<MedicineToStore> medToStore = medicineToStoreService.getMedicinesToStoreById(request.getId());
+		medToStore.orElseThrow(()-> new MedifyException("Medicine To Store not found"));
+		
+		cartDAO.deleteByMedicineToStoreIdAndUserId(medToStore.get(), user.get());
+	}
+	
+	public void updateQuantity(long id) {
+		Optional<Cart> cart = cartDAO.findById(id);
+		cart.orElseThrow(()-> new MedifyException("Cart Item Not Fund"));
+		cart.get().setQuantity(cart.get().getQuantity()+1);
+		cart.get().setCost(BigDecimal.valueOf(cart.get().getQuantity() * cart.get().getMedicineToStoreId().getMedicineId().getPrice()));
+		
+		cartDAO.save(cart.get());
+	}
 
+	public void removeQuantity(long id) {
+		Optional<Cart> cart = cartDAO.findById(id);
+		cart.orElseThrow(()-> new MedifyException("Cart Item Not Fund"));
+		if(cart.get().getQuantity()==1) {
+			throw new MedifyException("Item quantity can't be less than 1");
+		}
+		cart.get().setQuantity(cart.get().getQuantity()-1);
+		cart.get().setCost(BigDecimal.valueOf(cart.get().getQuantity() * cart.get().getMedicineToStoreId().getMedicineId().getPrice()));
+		
+		cartDAO.save(cart.get());
+	}
 }

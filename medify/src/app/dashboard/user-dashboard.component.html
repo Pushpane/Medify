@@ -1,0 +1,33 @@
+<app-header [inputSideNav]="sideNav"></app-header>
+<mat-drawer-container class="example-container" autosize [hasBackdrop]='true'>
+  <mat-drawer mode="over" #sideNav >
+    
+    <mat-nav-list>
+      <h2 mat-subheader>Pages</h2>
+      <a mat-list-item routerLink="/Dashboard">Home</a>
+      <a mat-list-item routerLink="/Cart">Cart</a>
+      <a mat-list-item routerLink="/OwnerSignu">Join Medify</a>
+    </mat-nav-list>
+  </mat-drawer>
+  <mat-drawer-content class="p-3">
+
+    <div class="row">
+    <mat-card class="card m-3" *ngFor="let item of medToStore">
+        <mat-card-header>
+          <mat-card-title>{{item.name}}</mat-card-title>
+        </mat-card-header>
+        <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <h2 class="text-danger">Rs. {{item.price}}</h2>
+        </mat-card-content>
+        <mat-card-actions>
+          <button *ngIf="!item.cart" mat-raised-button color="accent" (click)="addToCart(item.id)" >Add to cart</button>
+          <button *ngIf="item.cart" mat-raised-button color="warn" (click)="removeFromCart(item.id)" >Remove From cart</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+
+  </mat-drawer-content>
+</mat-drawer-container>
+<app-footer></app-footer>

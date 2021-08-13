@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.psl.dto.CartRequest;
+import com.psl.dto.RequestQuantity;
 import com.psl.service.CartService;
-import com.psl.entity.Address;
 import com.psl.entity.Cart;
 
 import lombok.AllArgsConstructor;
@@ -34,13 +34,13 @@ public class CartController {
 	}
 
 	@DeleteMapping("/deleteCart/{id}")
-	public ResponseEntity<HttpStatus> deleteRole(@PathVariable long id) {
+	public ResponseEntity<HttpStatus> deleteCart(@PathVariable long id) {
 		cartService.deleteCart(id);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 	
 	@PutMapping("/updateCart")
-	public ResponseEntity<HttpStatus> updateAddress(@RequestBody Cart cart) {
+	public ResponseEntity<HttpStatus> updateCart(@RequestBody Cart cart) {
 		cartService.updateCart(cart);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
@@ -55,5 +55,24 @@ public class CartController {
 		List<Cart> cart = cartService.getCartByUser(email);
 		return cart;
 	}
+	
+	@DeleteMapping("/deleteCartByUserAndMed/{id}/{email}")
+	public ResponseEntity<HttpStatus> deleteCartByUserAndMed(@PathVariable long id,@PathVariable String email ){
+		CartRequest request = new CartRequest(email, id, 0);
+		cartService.deleteByMedToStoreAndUser(request);
+		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+	}
+	
+	@PutMapping("/addQuantity")
+	public ResponseEntity<HttpStatus> quantityUpdate(@RequestBody RequestQuantity request){
+		cartService.updateQuantity(request.getId());
+		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+	}
 
+	@PutMapping("/removeQuantity")
+	public ResponseEntity<HttpStatus> removeQuantity(@RequestBody RequestQuantity request){
+		System.out.println(request.getId());
+		cartService.removeQuantity(request.getId());
+		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+	}
 }
