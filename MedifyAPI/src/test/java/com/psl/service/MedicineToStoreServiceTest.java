@@ -68,7 +68,11 @@ class MedicineToStoreServiceTest {
 		Medicine medicine = new Medicine(1L, "MedicineName", "Description", 200L, "Image");
 		MedicineToStore medicineToStore =new MedicineToStore(1L, medicine, store, true);
 		
+		when(repository.save(medicineToStore)).thenReturn(medicineToStore);
+		when(medicineService.findMedicineByName("MedicineName")).thenReturn(Optional.of(medicine));
+		when(storeService.findStoreByName("StoreName")).thenReturn(Optional.of(store));
 		when(repository.findByStoreId(store)).thenReturn(Stream.of(medicineToStore).collect(Collectors.toList()));
+		when(medicineToStoreService.getMedicinesByStore("StoreName")).thenReturn(Stream.of(medicineToStore).collect(Collectors.toList()));
 		assertEquals(1, medicineToStoreService.getMedicinesByStore("StoreName").size());
 	}
 
@@ -79,7 +83,9 @@ class MedicineToStoreServiceTest {
 		Store store = new Store(1L, user, "StoreName", "StoreDescription");
 		Medicine medicine = new Medicine(1L, "MedicineName", "Description", 200L, "Image");
 		MedicineToStore medicineToStore =new MedicineToStore(1L, medicine, store, true);
-		//when(repository.save(medicineToStore)).thenReturn(medicineToStore);
+		when(repository.save(medicineToStore)).thenReturn(medicineToStore);
+		when(medicineService.findMedicineByName("MedicineName")).thenReturn(Optional.of(medicine));
+		when(storeService.findStoreByName("StoreName")).thenReturn(Optional.of(store));
 		when(repository.findByMedicineId(medicine)).thenReturn(Stream.of(medicineToStore).collect(Collectors.toList()));
 		assertEquals(1, medicineToStoreService.getStoreByMedicine("MedicineName").size());
 		
