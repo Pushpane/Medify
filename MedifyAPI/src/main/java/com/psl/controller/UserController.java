@@ -55,9 +55,9 @@ public class UserController {
     }
 	
 	@PostMapping("/logout")
-    public ResponseEntity<String> logout(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
+    public ResponseEntity<HttpStatus> logout(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
         refreshTokenService.deleteRefreshToken(refreshTokenRequest.getRefreshToken());
-        return ResponseEntity.status(HttpStatus.OK).body("Refresh Token Deleted Successfully!!");
+        return new ResponseEntity<HttpStatus>(HttpStatus.OK);
     }
 	
 	@PostMapping("/forgotPassword")

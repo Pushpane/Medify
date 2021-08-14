@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { LocalStorageService } from 'ngx-webstorage';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { IOrderPayload } from '../order/order-payload';
 import { IAddress } from './address';
 import { ICart } from './cart';
 import { IMedicine } from './medicine';
@@ -23,6 +24,16 @@ export class DashboardService {
 
     //returning observable
     return this.http.get<any>(url);
+  }
+
+  getOrderReceived(): Observable<IOrderPayload[]>{
+    const url = this.userUrl + "/user/orderReceived/"+this.localStorage.retrieve("username");
+    return this.http.get<IOrderPayload[]>(url);
+  }
+
+  getAllOrders(): Observable<IOrderPayload[]>{
+    const url= this.userUrl + "/user/getUserOrder/"+this.localStorage.retrieve("username");
+    return this.http.get<IOrderPayload[]>(url);
   }
 
   getAllAddressByUser(): Observable<IAddress[]>{
@@ -100,5 +111,52 @@ export class DashboardService {
       id: id
     }
     return this.http.put<any>(url,data);
+  }
+
+  getMedicineDetails(id: any):Observable<IMedToStore>{
+    const url= this.userUrl + "/user/getMedToStoreById/"+id;
+    return this.http.get<IMedToStore>(url);
+  }
+
+  deleteItem(id: any): Observable<any>{
+    const url = this.userUrl + "/user/deleteCart/"+ id;
+    return this.http.delete<any>(url);
+  }
+
+  order(): Observable<any>{
+    const url = this.userUrl + "/user/order/"+this.localStorage.retrieve("username");
+    return this.http.delete<any>(url);
+  }
+
+  markPacked(id: number):Observable<IOrderPayload>{
+    const url = this.userUrl + "/user/changeStatus";
+    const data = {
+      id: id
+    };
+    return this.http.put<IOrderPayload>(url,data);
+  }
+  
+  declineOrder(id: number):Observable<IOrderPayload>{
+    const url = this.userUrl + "/user/declineOrder";
+    const data = {
+      id: id
+    };
+    return this.http.put<IOrderPayload>(url,data);
+  }
+  
+  cancelOrder(id: number):Observable<IOrderPayload>{
+    const url = this.userUrl + "/user/cancelOrder";
+    const data = {
+      id: id
+    };
+    return this.http.put<IOrderPayload>(url,data);
+  }
+  
+  markDelivered(id: number):Observable<IOrderPayload>{
+    const url = this.userUrl + "/user/orderDelivered";
+    const data = {
+      id: id
+    };
+    return this.http.put<IOrderPayload>(url,data);
   }
 }

@@ -104,4 +104,13 @@ export class UserService {
     return this.localStorage.retrieve('expiresAt');
   }
   
+  logout(): Observable<any> {
+    const url = this.userUrl + "/auth/logout";
+    const data = {
+      refreshToken: this.localStorage.retrieve("refreshToken"),
+      email: this.localStorage.retrieve("username")
+    }
+
+    return this.http.post<any>(url,data);
+  }
 }

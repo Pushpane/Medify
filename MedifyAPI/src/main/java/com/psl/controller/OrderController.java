@@ -2,6 +2,7 @@ package com.psl.controller;
 
 import java.util.List;
 
+import com.psl.dto.OrderPayloadDto;
 import com.psl.dto.OrderRequest;
 import com.psl.entity.Orders;
 import org.springframework.http.HttpStatus;
@@ -51,11 +52,35 @@ public class OrderController {
         return orderService.getAllOrders();
     }
 
-    @GetMapping("/getUserOrder/{UserId}")
-    public List<Orders> getAllUserOrders(@PathVariable long UserId) {
-        return orderService.getAllOrdersByUser(UserId);
+    @GetMapping("/getUserOrder/{email}")
+    public List<Orders> getAllUserOrders(@PathVariable String email) {
+        return orderService.getAllOrdersByUser(email);
     }
 
+    @GetMapping("/orderReceived/{email}")
+    public List<Orders> getAllOrdersByUser(@PathVariable String email) {
+    	return orderService.getOrdersReceived(email);
+    }
+    
+    @PutMapping("/changeStatus")
+    public Orders changeStatus(@RequestBody OrderPayloadDto order) {
+    	return orderService.changeStatus(order.getId());
+    }
+    
+    @PutMapping("/orderDelivered")
+    public Orders changeStatusDelivered(@RequestBody OrderPayloadDto order) {
+    	return orderService.changeStatusDelivered(order.getId());
+    }
+    
+    @PutMapping("/declineOrder")
+    public Orders declineOrder(@RequestBody OrderPayloadDto order) {
+    	return orderService.declineOrder(order.getId());
+    }
+    
+    @PutMapping("/cancelOrder")
+    public Orders cancelOrder(@RequestBody OrderPayloadDto order) {
+    	return orderService.cancelOrder(order.getId());
+    }
 
 }
 

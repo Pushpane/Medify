@@ -71,8 +71,8 @@ public class AddressController {
 	
 
 	@GetMapping("/getAddressByStore/{store}")
-	public List<Address> getAddressByStore(@PathVariable Store store) {
-		List<Address> address = addressService.findByStore(store);
+	public Address getAddressByStore(@PathVariable Store store) {
+		Address address = addressService.findByStore(store);
 		return address;
 	}
 	

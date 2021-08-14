@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.psl.dao.ICartDAO;
 import com.psl.dto.CartRequest;
+import com.psl.dto.OrderRequest;
+import com.psl.entity.Address;
 import com.psl.entity.Cart;
 import com.psl.entity.MedicineToStore;
 import com.psl.entity.User;
@@ -25,6 +27,8 @@ public class CartService {
 	private final ICartDAO cartDAO;
 	private final UserService userService;
 	private final MedicineToStoreService medicineToStoreService;
+	private final AddressService addressService;
+	private final OrderService orderService;
 
 	public void registerCart(CartRequest request) {
 		Cart cart = fillCart(request);
@@ -104,5 +108,24 @@ public class CartService {
 		cart.get().setCost(BigDecimal.valueOf(cart.get().getQuantity() * cart.get().getMedicineToStoreId().getMedicineId().getPrice()));
 		
 		cartDAO.save(cart.get());
+	}
+	
+	public void order(String email) {
+		List<Cart> cart = getCartByUser(email);
+		for(Cart c: cart) {
+			OrderRequest orderRequest = new OrderRequest();
+			Address addr =  addressService.findByStore(c.getMedicineToStoreId().getStoreId());
+			
+			orderRequest.setAddressId(addr.getAddressId());
+			orderRequest.setCost(c.getCost());
+			orderRequest.setEmail(c.getUserId().getEmail());
+			orderRequest.setMedicineToStoreId(c.getMedicineToStoreId().getMedicineToStoreId());
+			orderRequest.setOrderStatus("Order Placed");
+			orderRequest.setQuantity(c.getQuantity());
+			
+			orderService.registerOrder(orderRequest);
+		}
+		
+		cartDAO.deleteAll(cart);
 	}
 }

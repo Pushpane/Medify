@@ -6,13 +6,15 @@
       <h2 mat-subheader>Pages</h2>
       <a mat-list-item routerLink="/Dashboard">Home</a>
       <a mat-list-item routerLink="/Cart">Cart</a>
+      <a mat-list-item routerLink="/OrderStatus">Order Status</a>
+      <a mat-list-item routerLink="/AllOrders">Total Orders</a>
       <a mat-list-item routerLink="/OwnerSignup">Join Medify</a>
     </mat-nav-list>
   </mat-drawer>
   <mat-drawer-content class="p-3"> 
 
     <div class="container mt-4">
-      <h2><b>All Medicines</b></h2>
+      <h2><b>Cart Items</b></h2>
     </div>
 
     <div class="container">
@@ -47,10 +49,18 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Cost </th>
         <td mat-cell *matCellDef="let element">{{element.cost | currency:'INR'}}</td>
       </ng-container>
+
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Delete Item </th>
+        <td mat-cell *matCellDef="let element"> <button mat-raised-button color="accent" (click)='deleteElement(element.id)'>Delete</button></td>
+      </ng-container>
     
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+    <div class="container mt-2  text-end">
+      <button mat-raised-button color="accent" (click)='order()' *ngIf='cart'>Buy All</button>
+    </div>
   </div>
 
     

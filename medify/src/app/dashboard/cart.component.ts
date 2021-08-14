@@ -15,7 +15,7 @@ import { IOrderCart } from './order-cart';
 })
 export class CartComponent implements OnInit {
 
-  displayedColumns: string[] = ['name', 'description', 'price', 'storeName','quantity','cost'];
+  displayedColumns: string[] = ['name', 'description', 'price', 'storeName','quantity','cost', 'id'];
   cart: IOrderCart[];
   dataSource: MatTableDataSource<any>;
   
@@ -29,9 +29,10 @@ export class CartComponent implements OnInit {
     this.fetch();
   }
 
-  fetch(){
+  fetch(){ 
     this.dashboardService.getCartByUser().subscribe({
       next: data => {
+        if(data.length>0){
         console.log(data); this.cart = data.map(x => {
           return {
             id: x.cartId,
@@ -48,6 +49,9 @@ export class CartComponent implements OnInit {
         });
         console.log(this.cart);
         this.loadTable();
+      }else{
+        this.cart =null;
+      }
       },
       error: err => console.log(err)
     });
@@ -87,5 +91,19 @@ export class CartComponent implements OnInit {
     }else{
       this.toastr.error("Cart Item quantity can't be less than 1!");
     }
+  }
+
+  deleteElement(id: any){
+    this.dashboardService.deleteItem(id).subscribe({
+      next: data=> {console.log(data); this.cart= this.cart.filter(x=> x.id!=id); this.loadTable();},
+      error: err=> console.log(err)
+    })
+  }
+
+  order(): void{
+    this.dashboardService.order().subscribe({
+      next: data=> {this.cart = null; this.loadTable();},
+      error: err=> this.toastr.error("Order Not Placed! Try again.")
+    });
   }
 }

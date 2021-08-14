@@ -1,5 +1,6 @@
 package com.psl.entity;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 
 import javax.persistence.Entity;
@@ -38,4 +39,5 @@ public class Orders {
 	private String orderStatus;
 	@NotBlank(message = "CreatedAt is required")
 	private Instant createdAt;
+	private BigDecimal cost;
 }

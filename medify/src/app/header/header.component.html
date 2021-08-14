@@ -11,14 +11,8 @@
       <a mat-raised-button color="accent" routerLink="Login">Login</a>
   </div>
   <div fxLayoutGap="10px" *ngIf="logedIn">
-    <button mat-button [matMenuTriggerFor]="logout">
-      <mat-icon>person_outline</mat-icon> {{title}}
+    <button mat-button (click)='logout()'>
+      <mat-icon>exit_to_app</mat-icon> {{title}}
     </button>
-    
-    <mat-menu #logout="matMenu">
-      <button mat-menu-item>
-        <mat-icon>exit_to_app</mat-icon> Sign out
-      </button>
-    </mat-menu>
 </div>
 </mat-toolbar>

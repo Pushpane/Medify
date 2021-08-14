@@ -75,4 +75,10 @@ public class CartController {
 		cartService.removeQuantity(request.getId());
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
+	
+	@DeleteMapping("/order/{email}")
+	public ResponseEntity<HttpStatus> order(@PathVariable String email){
+		cartService.order(email);
+		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+	}
 }

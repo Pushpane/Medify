@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MatMenu } from '@angular/material/menu';
 import { MatDrawer, MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
+import { UserService } from '../auth/user.service';
 
 @Component({
   selector: 'app-header',
@@ -11,9 +13,11 @@ import { LocalStorageService } from 'ngx-webstorage';
 export class HeaderComponent implements OnInit {
   @Input() inputSideNav: MatDrawer;
 
+  mat: MatMenu;
   title: String;
   logedIn: Boolean = false;
   constructor(private router: Router,
+    private userService: UserService,
     private localStorage : LocalStorageService) { }
 
   ngOnInit(): void {
@@ -23,11 +27,12 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  logout() : void{
-    this.localStorage.clear();
-    localStorage.clear();
-    console.log('Loged Out!');
-    this.router.navigate(['/']);
+  logout() : any{
+    
+    this.userService.logout().subscribe({
+      next: data=> {console.log(data); this.localStorage.clear();localStorage.clear();window.location.reload();},
+      error: err=> console.log(err)
+    });
   }
 
 }

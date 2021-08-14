@@ -6,17 +6,21 @@
       <h2 mat-subheader>Pages</h2>
       <a mat-list-item routerLink="/Dashboard">Home</a>
       <a mat-list-item routerLink="/Cart">Cart</a>
-      <a mat-list-item routerLink="/OwnerSignu">Join Medify</a>
+      <a mat-list-item routerLink="/OrderStatus">Order Status</a>
+      <a mat-list-item routerLink="/AllOrders">Total Orders</a>
+      <a mat-list-item routerLink="/OwnerSignup">Join Medify</a>
     </mat-nav-list>
   </mat-drawer>
   <mat-drawer-content class="p-3">
 
     <div class="row">
     <mat-card class="card m-3" *ngFor="let item of medToStore">
+      <a class="no-deco" [routerLink]="['/MedicineDetail',item.id]">
         <mat-card-header>
           <mat-card-title>{{item.name}}</mat-card-title>
         </mat-card-header>
-        <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+        <img mat-card-image src="{{item.image}}" height="200px" alt="Photo of a Shiba Inu">
+      </a>
         <mat-card-content>
           <h2 class="text-danger">Rs. {{item.price}}</h2>
         </mat-card-content>

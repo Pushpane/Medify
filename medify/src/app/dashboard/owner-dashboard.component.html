@@ -5,148 +5,17 @@
     <mat-nav-list>
       <h2 mat-subheader>Pages</h2>
       <a mat-list-item routerLink="/OwnerDashboard">Home</a>
+      <a mat-list-item routerLink="/AddStore">Add Store</a>
       <a mat-list-item routerLink="/AddMedicines">Add Medicines</a>
-      <a mat-list-item >Highlight</a>
+      <a mat-list-item routerLink="/OrderReceived">Order Received</a>
+      <a mat-list-item routerLink="/OrderPacked">Order Packed</a>
+      <a mat-list-item routerLink="/TotalOrders">Total Orders</a>
     </mat-nav-list>
   </mat-drawer>
   <mat-drawer-content class="p-3">
-
-    <div class="container">
-      <h2><b>Add Store</b></h2>
-    </div>
-
-
-    <div class="container p-4 bg-white" >
-      <form fxLayoutGap="10%" [formGroup]="storeForm" (ngSubmit)="addStore()">
-      <mat-form-field appearance="fill" class="cover-input">
-        <mat-label>Store Name</mat-label>
-        <input [formControlName]="'name'" matInput required>
-      </mat-form-field>
-      <span class="text-danger">
-        <span *ngIf="storeForm.get('name')?.errors?.required && storeForm.get('name').touched">
-          Please enter your Store Name.
-        </span>
-        <span *ngIf="storeForm.get('name')?.errors?.minlength">
-          Store Name must be longer than 5 characters.
-        </span>
-      </span>
-      <mat-form-field appearance="fill" class="cover-input-area">
-        <mat-label>Description</mat-label>
-        <textarea [formControlName]="'description'" matInput required></textarea>
-      </mat-form-field>
-      <span class="text-danger">
-        <span *ngIf="storeForm.get('description')?.errors?.required && storeForm.get('description').touched">
-          Please enter Store Description.
-        </span>
-        <span *ngIf="storeForm.get('description')?.errors?.minlength">
-          Store Description should be longer than 10 characters.
-        </span>
-      </span>
-      <mat-form-field appearance="fill" class="cover-input-area">
-        <mat-label>Address Line 1</mat-label>
-        <textarea [formControlName]="'address1'" matInput required></textarea>
-      </mat-form-field>
-      <span class="text-danger">
-        <span *ngIf="storeForm.get('address1')?.errors?.required && storeForm.get('address1').touched">
-          Please enter Address Line 1.
-        </span>
-        <span *ngIf="storeForm.get('address1')?.errors?.minlength">
-          Address Line 1 should be longer than 10 characters.
-        </span>
-      </span>
-      <mat-form-field appearance="fill" class="cover-input-area">
-        <mat-label>Address Line 2 (Optional)</mat-label>
-        <textarea [formControlName]="'address2'" matInput></textarea>
-      </mat-form-field><mat-form-field appearance="fill" class="cover-input">
-        <mat-label>City</mat-label>
-        <input [formControlName]="'city'" matInput required>
-      </mat-form-field>
-      <span class="text-danger">
-        <span *ngIf="storeForm.get('city')?.errors?.required && storeForm.get('city').touched">
-          Please enter your Store City Name.
-        </span>
-        <span *ngIf="storeForm.get('city')?.errors?.minlength">
-          Store City Name must be longer than 3 characters.
-        </span>
-      </span>
-      <mat-form-field appearance="fill" class="cover-input">
-        <mat-label>State</mat-label>
-        <input [formControlName]="'state'" matInput required>
-      </mat-form-field>
-      <span class="text-danger">
-        <span *ngIf="storeForm.get('state')?.errors?.required && storeForm.get('state').touched">
-          Please enter your Store State Name.
-        </span>
-        <span *ngIf="storeForm.get('state')?.errors?.minlength">
-          Store State Name must be longer than 3 characters.
-        </span>
-      </span>
-      <mat-form-field appearance="fill" class="cover-input">
-        <mat-label>Pincode</mat-label>
-        <input [formControlName]="'pincode'" matInput required>
-      </mat-form-field>
-      <span class="text-danger">
-        <span *ngIf="storeForm.get('pincode')?.errors?.required && storeForm.get('pincode').touched">
-          Please enter your Store address pincode.
-        </span>
-        <span *ngIf="storeForm.get('pincode')?.errors?.minlength">
-          Store address pincode must be longer than 3 characters.
-        </span>
-      </span>
-      <mat-divider></mat-divider><br>
-      <button mat-raised-button type="submit" color="accent">Add Store</button>
-    </form>
-    </div>
-
-    <div class="container mt-4">
-      <h2><b>All Stores</b></h2>
-    </div>
-
-    <div class="container">
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Store Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}}</td>
-      </ng-container>
-    
-      <ng-container matColumnDef="description">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
-        <td mat-cell *matCellDef="let element"> {{element.description}} </td>
-      </ng-container>
-    
-      <ng-container matColumnDef="address1">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Address Line 1 </th>
-        <td mat-cell *matCellDef="let element"> {{element.address1}} </td>
-      </ng-container>
-    
-      <ng-container matColumnDef="address2">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Address Line 2  </th>
-        <td mat-cell *matCellDef="let element"> {{element.address2}} </td>
-      </ng-container>
-    
-      <ng-container matColumnDef="city">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> City </th>
-        <td mat-cell *matCellDef="let element"> {{element.city}} </td>
-      </ng-container>
-    
-      <ng-container matColumnDef="state">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> State  </th>
-        <td mat-cell *matCellDef="let element"> {{element.state}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="pincode">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Pincode  </th>
-        <td mat-cell *matCellDef="let element"> {{element.pincode}} </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-  </div>
-
-
-
+<div class="container">
+    <app-analytics-chart></app-analytics-chart>
+</div>
   </mat-drawer-content>
 </mat-drawer-container>
 <app-footer></app-footer>

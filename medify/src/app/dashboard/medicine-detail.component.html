@@ -1,0 +1,38 @@
+<app-header [inputSideNav]="sideNav"></app-header>
+<mat-drawer-container class="example-container" autosize [hasBackdrop]='true'>
+  <mat-drawer mode="over" #sideNav >
+    
+    <mat-nav-list>
+      <h2 mat-subheader>Pages</h2>
+      <a mat-list-item routerLink="/Dashboard">Home</a>
+      <a mat-list-item routerLink="/Cart">Cart</a>
+      <a mat-list-item routerLink="/OwnerSignup">Join Medify</a>
+    </mat-nav-list>
+  </mat-drawer>
+  <mat-drawer-content class="p-3">
+    <div class="container mt-4">
+        <h2><b>Medicines Details</b></h2>
+      </div>
+
+<div class="container">
+    <mat-card>
+        <mat-card-header>
+          <mat-card-title>{{medToStore.medicineId.name}}</mat-card-title>
+          <mat-card-subtitle>Medicine Details</mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image src="{{medToStore.medicineId.image}}" height="450px" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <p>
+            {{medToStore.medicineId.description}}
+          </p>
+        </mat-card-content>
+        <mat-card-content>
+            <h2 class="text-danger">Rs. {{medToStore.medicineId.price}}</h2>
+          </mat-card-content>
+      </mat-card>
+
+</div>
+
+  </mat-drawer-content>
+</mat-drawer-container>
+<app-footer></app-footer>

@@ -50,9 +50,8 @@ public class MedicineToStoreService {
 		medicineToStoreDAO.deleteById(id);
 	}
 	
-	public List<MedicineToStore> getMedicinesByStore(String storeName){
-		Optional<Store> store = storeService.findStoreByName(storeName);
-		return medicineToStoreDAO.findByStoreId(store.get());
+	public List<MedicineToStore> getMedicinesByStore(Store store){
+		return medicineToStoreDAO.findByStoreId(store);
 	}
 	
 	public List<MedicineToStore> getStoreByMedicine(String medicineName){

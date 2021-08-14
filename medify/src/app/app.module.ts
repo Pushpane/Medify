@@ -69,6 +69,15 @@ import { UserDashboardComponent } from './dashboard/user-dashboard.component';
 import { CartComponent } from './dashboard/cart.component';
 import { UserCheckerGuard } from './dashboard/checker.guard';
 import { OwnerCheckerGuard } from './dashboard/owner-checker.guard';
+import { MedicineDetailComponent } from './dashboard/medicine-detail.component';
+import { OrderPlacedComponent } from './order/order-placed.component';
+import { OrderReceivedComponent } from './order/order-received.component';
+import { OrderPackedComponent } from './order/order-packed.component';
+import { AllOrdersComponent } from './order/all-orders.component';
+import { TotalOrdersComponent } from './order/total-orders.component';
+import { AddStoreComponent } from './dashboard/add-store.component';
+import { AnalyticsChartComponent } from './widgets/analytics-chart.component';
+import { HighchartsChartModule } from 'highcharts-angular';
 
 @NgModule({
   declarations: [
@@ -87,6 +96,14 @@ import { OwnerCheckerGuard } from './dashboard/owner-checker.guard';
     AddMedicinesComponent,
     UserDashboardComponent,
     CartComponent,
+    MedicineDetailComponent,
+    OrderPlacedComponent,
+    OrderReceivedComponent,
+    OrderPackedComponent,
+    AllOrdersComponent,
+    TotalOrdersComponent,
+    AddStoreComponent,
+    AnalyticsChartComponent,
   ],
   imports: [
     BrowserModule,
@@ -139,15 +156,23 @@ import { OwnerCheckerGuard } from './dashboard/owner-checker.guard';
     OverlayModule,
     PortalModule,
     ScrollingModule,
+    HighchartsChartModule,
     ReactiveFormsModule,
     NgxWebstorageModule.forRoot(),
     ToastrModule.forRoot(),
     RouterModule.forRoot([
       { path: '', canActivate: [UserCheckerGuard],component:UserDashboardComponent },
+      { path: 'AllOrders', canActivate: [UserCheckerGuard],component:TotalOrdersComponent },
+      { path: 'OrderReceived', canActivate: [OwnerCheckerGuard],component:OrderReceivedComponent },
+      { path: 'TotalOrders', canActivate: [OwnerCheckerGuard],component:AllOrdersComponent },
+      { path: 'OrderPacked', canActivate: [OwnerCheckerGuard],component:OrderPackedComponent },
+      { path: 'OrderStatus', canActivate: [UserCheckerGuard],component:OrderPlacedComponent },
+      { path: 'MedicineDetail/:id', canActivate: [UserCheckerGuard],component:MedicineDetailComponent },
       { path: 'Dashboard', canActivate: [UserCheckerGuard],component:UserDashboardComponent },
       { path: 'Cart',canActivate: [UserCheckerGuard], component:CartComponent },
       { path: 'AddMedicines', canActivate: [OwnerCheckerGuard],component:AddMedicinesComponent },
       { path: 'OwnerDashboard', canActivate: [OwnerCheckerGuard],component:OwnerDashboardComponent },
+      { path: 'AddStore', canActivate: [OwnerCheckerGuard],component:AddStoreComponent },
       { path: 'Signup', component: SignupComponent },
       { path: 'OwnerSignup', component: OwnerSignupComponent},
       { path: 'OwnerLogin', component: OwnerLoginComponent },

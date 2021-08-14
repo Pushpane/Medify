@@ -40,8 +40,8 @@ public class MedicineService {
 		try {
 
 			//final String UPLOAD_DIR = System.getProperty("user.dir")+"/src/main/resources/static/image/";
-			final String UPLOAD_DIR = new ClassPathResource("static/image/").getFile().getAbsolutePath();
-			System.out.println(UPLOAD_DIR);
+			String UPLOAD_DIR = new ClassPathResource("static/image/").getFile().getAbsolutePath();
+
 			new File(UPLOAD_DIR).mkdir();
 			
 			if (request.getImage().isEmpty()) {
@@ -54,6 +54,14 @@ public class MedicineService {
 					request.getImage().getInputStream(), Paths.get(UPLOAD_DIR + File.separator
 							+ uuid + request.getImage().getOriginalFilename()),
 					StandardCopyOption.REPLACE_EXISTING);
+			UPLOAD_DIR = System.getProperty("user.dir")+"/src/main/resources/static/image/";
+			new File(UPLOAD_DIR).mkdir();
+			
+			Files.copy(
+					request.getImage().getInputStream(), Paths.get(UPLOAD_DIR + File.separator
+							+ uuid + request.getImage().getOriginalFilename()),
+					StandardCopyOption.REPLACE_EXISTING);
+			
 		} catch (Exception e) {
 			throw new MedifyException(e.toString());
 		}

@@ -89,7 +89,7 @@ public class AddressService {
 	
 	
 	//Get address for a particular store
-	public List<Address> findByStore(Store store) {
+	public Address findByStore(Store store) {
 			return addressDAO.findByStoreId(store);
 	}
 	//Get address for a particular store owned by user given
