@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 @Transactional
+@Slf4j
 public class MedicineService {
 
 	private final IMedicinesDAO medicineDAO;
@@ -45,9 +47,11 @@ public class MedicineService {
 			new File(UPLOAD_DIR).mkdir();
 			
 			if (request.getImage().isEmpty()) {
+				log.error("File is empty please provide a file" + request.getImage());
 				throw new MedifyException("File is empty please provide a file");
 			}
 			if (!request.getImage().getContentType().equals("image/jpeg")) {
+				log.error("Only Jpeg files are allowed");
 				throw new MedifyException("Only Jpeg files are allowed");
 			}
 			Files.copy(
@@ -63,6 +67,7 @@ public class MedicineService {
 					StandardCopyOption.REPLACE_EXISTING);
 			
 		} catch (Exception e) {
+			log.error(e.getMessage());
 			throw new MedifyException(e.toString());
 		}
 

@@ -13,6 +13,7 @@ import com.psl.entity.User;
 import com.psl.exception.MedifyException;
 import com.psl.entity.Address;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +24,7 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 @Transactional
-
+@Slf4j
 public class AddressService {
 	private final IAddressDAO addressDAO;
 	private final StoreService storeService;
@@ -95,7 +96,10 @@ public class AddressService {
 	//Get address for a particular store owned by user given
 	public List<Address> findByUser(String email) {
 		Optional<User> user = userService.getUser(email);
-		user.orElseThrow(()-> new MedifyException("User not found"));
+		user.orElseThrow(() -> {
+			log.error("User not found" + email);
+			return new MedifyException("User not found");
+		});
 		return addressDAO.findByUserId(user.get());
 	}
 

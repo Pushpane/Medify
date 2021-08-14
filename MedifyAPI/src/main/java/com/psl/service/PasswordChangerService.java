@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 @Transactional
+@Slf4j
 public class PasswordChangerService {
 
 	private IPasswordChangerTokenDAO changerTokenDAO;
@@ -41,11 +43,17 @@ public class PasswordChangerService {
 	
 	public void changePassword(PasswordChangerRequest request) {
 		 Optional<PasswordChangerToken> pcToken=  changerTokenDAO.findByToken(request.getToken());
-		 pcToken.orElseThrow(()-> new MedifyException("Token Not found"));
-		 
+		pcToken.orElseThrow(() -> {
+			log.error("Token not found " + request.getEmail());
+			return new MedifyException("Token Not found");
+		});
+
 		 Optional<User> user = userService.getUser(pcToken.get().getEmail());
-		 user.orElseThrow(()-> new MedifyException("User Not found"));
-		 
+		user.orElseThrow(() -> {
+			log.error("User not found " + request.getEmail());
+			return new MedifyException("User Not found");
+		});
+
 		 user.get().setPassword(passwordEncoder.encode(request.getPassword()));
 		 userService.updateUser(user.get());
 		 

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import com.psl.dao.IMedicineToStoreDAO;
@@ -19,6 +20,7 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 @Transactional
+@Slf4j
 public class MedicineToStoreService {
 	
 	private IMedicineToStoreDAO medicineToStoreDAO;
@@ -35,7 +37,10 @@ public class MedicineToStoreService {
 		MedicineToStore medToStoreEntity = new MedicineToStore();
 		
 		Optional<Medicine> medicine = medicineService.findMedicineById(request.getMedicineId());
-		medicine.orElseThrow(()-> new MedifyException("Medicine Not Found"));
+		medicine.orElseThrow(() -> {
+			log.info("Medicine not found in the database");
+			return new MedifyException("Medicine Not Found");
+		});
 		Store store = storeService.getStoreById(request.getStoreId());
 
 		

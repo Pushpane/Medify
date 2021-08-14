@@ -11,6 +11,7 @@ import com.psl.entity.User;
 import com.psl.exception.MedifyException;
 import lombok.AllArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 @Transactional
+@Slf4j
 public class OrderService {
 
     private IOrdersDAO ordersDAO;
@@ -45,14 +47,23 @@ public class OrderService {
         order.setQuantity(request.getQuantity());
 
         Optional<User> user = userService.getUser(request.getEmail());
-        user.orElseThrow(() -> new MedifyException("Role not found"));
+        user.orElseThrow(() -> {
+            log.error("Role not found " + request.getEmail());
+            return new MedifyException("Role not found");
+        });
 
         Optional<Address> address = Optional.ofNullable(addressService.getAddressById(request.getAddressId()));
-        address.orElseThrow(() -> new MedifyException("Address not found"));
+        address.orElseThrow(() -> {
+            log.error("Address not found " + request.getMedicineToStoreId());
+            return new MedifyException("Address not found");
+        });
 
         Optional<MedicineToStore> medicineToStore = medicineToStoreService.getMedicinesToStoreById(request.getMedicineToStoreId());
-        medicineToStore.orElseThrow(() -> new MedifyException("Medicine/Store not found"));
-        
+        medicineToStore.orElseThrow(() -> {
+            log.error("Address not found " + request.getMedicineToStoreId());
+            return new MedifyException("Medicine/Store not found");
+        });
+
         order.setUserId(user.get());
         order.setAddressId(address.get());
         order.setMedicineToStoreId(medicineToStore.get());
@@ -76,7 +87,10 @@ public class OrderService {
 
     public List<Orders> getAllOrdersByUser(String userId) {
         Optional<User> user = userService.getUser(userId);
-        user.orElseThrow(() -> new MedifyException("User not found"));
+        user.orElseThrow(() -> {
+            log.error("Role not found " + userId);
+            return new MedifyException("Role not found");
+        });
         return ordersDAO.findAllByUserId(user.get());
     }
 

@@ -28,7 +28,7 @@ public class Orders {
 	@NotBlank(message = "User is required")
 	private User userId;
 	@ManyToOne
-	@NotBlank(message = "Address is rqeuired")
+	@NotBlank(message = "Address is required")
 	private Address addressId;
 	@ManyToOne
 	@NotBlank(message = "Medicine to Store is required")

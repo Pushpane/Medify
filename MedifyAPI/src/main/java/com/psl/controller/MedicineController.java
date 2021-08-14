@@ -3,6 +3,7 @@ package com.psl.controller;
 import java.util.List;
 import java.util.Optional;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,12 +26,13 @@ import lombok.AllArgsConstructor;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/owner")
-
+@Slf4j
 public class MedicineController {
 	private final MedicineService medicineService;
 	
 	@PostMapping("/addMedicine")
 	public ResponseEntity<?> addMedicine(@ModelAttribute RegisterMedicineRequest registerMedicineRequest) {
+		log.info("Medicine added" + registerMedicineRequest.getName());
 		return new ResponseEntity<>( medicineService.registerMedicine(registerMedicineRequest),HttpStatus.OK);
 	}
 	
@@ -43,6 +45,7 @@ public class MedicineController {
 	@DeleteMapping("/deleteMedicine/{id}")
 	public ResponseEntity<HttpStatus> deleteMedicine(@PathVariable long id) {
 		medicineService.deleteMedicine(id);
+		log.info("Medicine deleted" + id);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 	
