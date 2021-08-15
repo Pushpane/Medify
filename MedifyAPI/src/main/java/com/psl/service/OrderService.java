@@ -1,6 +1,7 @@
 package com.psl.service;
 
 import com.psl.dao.IOrdersDAO;
+import com.psl.dto.AnalyticsResponse;
 import com.psl.dto.OrderRequest;
 import com.psl.entity.Address;
 import com.psl.entity.MedicineToStore;
@@ -15,8 +16,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DateFormatSymbols;
 import java.time.Instant;
+import java.time.Period;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -139,4 +145,39 @@ public class OrderService {
 		return order.get();
 	}
 
+	public List<AnalyticsResponse> getAnalytics(String email) {
+		List<Store> stores = storeService.findStoreByUser(email);
+        List<Orders> orders = new ArrayList<>();
+        Instant date = Instant.now().minus(Period.ofDays(5));
+        List<MedicineToStore> medToStores = new ArrayList<MedicineToStore>();
+        for(Store store: stores) {
+        	medToStores.addAll(medicineToStoreService.getMedicinesByStore(store));
+        }
+        for(MedicineToStore medStore: medToStores) {
+        	orders.addAll(ordersDAO.findAllByMedicineToStoreIdAndCreatedAtAfter(medStore,date));
+        }
+    	Calendar c = Calendar.getInstance();
+        
+    	List<AnalyticsResponse> result = new ArrayList<AnalyticsResponse>();
+    	for(int day=0;day<5;day++) {
+    		c.setTime(Date.from(Instant.now().minus(Period.ofDays(day))));
+    		int dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
+    		int month = c.get(Calendar.MONTH);
+    		int year = c.get(Calendar.YEAR);
+    		List<Orders> ordersOfDay = orders.stream().filter(x-> {c.setTime(Date.from(x.getCreatedAt())); if(dayOfMonth==c.get(Calendar.DAY_OF_MONTH)) return true; return false;}).toList();
+    		long orderCount = ordersOfDay.stream().count();
+    		long delivered = ordersOfDay.stream().filter(x-> x.getOrderStatus().equals("Delivered")).count();
+    		long cancelled = ordersOfDay.stream().filter(x-> x.getOrderStatus().equals("Cancelled")).count();
+    		double totalCost =0;
+    		for(Orders item: ordersOfDay) {
+    			totalCost +=  item.getCost().doubleValue();
+    		}
+            DateFormatSymbols dfs = new DateFormatSymbols();
+            String[] months = dfs.getMonths();
+            result.add(AnalyticsResponse.builder().month(months[month]).year(year).totalCancelled(cancelled)
+            	.totalDelivered(delivered).totalEarning(totalCost).day(dayOfMonth).totalOrders(orderCount).build());
+    	}
+    	Collections.reverse(result);
+    	return result;
+	}
 }

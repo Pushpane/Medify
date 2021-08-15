@@ -2,6 +2,7 @@ package com.psl.controller;
 
 import java.util.List;
 
+import com.psl.dto.AnalyticsResponse;
 import com.psl.dto.OrderPayloadDto;
 import com.psl.dto.OrderRequest;
 import com.psl.entity.Orders;
@@ -83,6 +84,11 @@ public class OrderController {
     @PutMapping("/cancelOrder")
     public Orders cancelOrder(@RequestBody OrderPayloadDto order) {
     	return orderService.cancelOrder(order.getId());
+    }
+    
+    @GetMapping("/getAnalytics/{email}")
+    public List<AnalyticsResponse> getAnalytics(@PathVariable String email) {
+    	return orderService.getAnalytics(email);
     }
 
 }

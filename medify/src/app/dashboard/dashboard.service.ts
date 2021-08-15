@@ -4,6 +4,7 @@ import { LocalStorageService } from 'ngx-webstorage';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { IOrderPayload } from '../order/order-payload';
+import { IAnalytics } from '../widgets/analytics';
 import { IAddress } from './address';
 import { ICart } from './cart';
 import { IMedicine } from './medicine';
@@ -49,6 +50,11 @@ export class DashboardService {
   getAllMedToStore(): Observable<IMedToStore[]>{
     const url = this.userUrl + "/user/getAllMedicine";
     return this.http.get<IMedToStore[]>(url);
+  }
+
+  getAnalytics(): Observable<IAnalytics[]> {
+    const url = this.userUrl + "/user/getAnalytics/"+ this.localStorage.retrieve("username");
+    return this.http.get<IAnalytics[]>(url);
   }
 
   addStore(store: any): Observable<any>{

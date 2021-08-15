@@ -7,6 +7,7 @@ import com.psl.entity.MedicineToStore;
 import com.psl.entity.Orders;
 import com.psl.entity.User;
 
+import java.time.Instant;
 import java.util.List;
 
 @Repository
@@ -14,4 +15,5 @@ public interface IOrdersDAO extends JpaRepository<Orders, Long>{
 
     List<Orders> findAllByUserId(User userId);
     List<Orders> findAllByMedicineToStoreId(MedicineToStore store);
+    List<Orders> findAllByMedicineToStoreIdAndCreatedAtAfter(MedicineToStore store, Instant date);
 }
