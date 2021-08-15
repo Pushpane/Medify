@@ -1,2 +1,0 @@
-# Medify
-Simplifying medical stores
