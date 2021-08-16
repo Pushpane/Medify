@@ -8,6 +8,7 @@ class MedifyApiApplicationTests {
 
 	@Test
 	void contextLoads() {
+		//
 	}
 
 }
