@@ -10,5 +10,5 @@ phases:
             - echo Build completed successfully
 artifacts:
     files:
-        - target/medify-api.jar
+         - target/MedifyAPI-0.0.1-SNAPSHOT.jar
     discard-paths: yes
