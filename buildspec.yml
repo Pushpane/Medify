@@ -11,5 +11,5 @@ phases:
       - mvn clean install 
 artifacts:
   files:
-    - target/medify-api.jar
+    - MedifyAPI/target/medify-api.jar
   discard-paths: yes
