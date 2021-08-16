@@ -30,6 +30,7 @@ import com.psl.entity.User;
 @SpringBootTest
 class AddressServiceTest {
 	
+	
 	@Autowired
 	private AddressService addressService;
 	
@@ -51,10 +52,10 @@ class AddressServiceTest {
 		Address address = new Address(0,user,store,"address1","address2","pincode","city","state");
 		
 		
-		RegisterAddressRequest addressRequest = new RegisterAddressRequest("UserName1@email.com","StoreName","address1","address2","pincode","city","state"); 
+		RegisterAddressRequest addressRequest = new RegisterAddressRequest("UserName1@email.com",1,"address1","address2","pincode","city","state"); 
 		when(addressRepository.save(address)).thenReturn(address);
 		when(userService.getUser(addressRequest.getEmail())).thenReturn(Optional.of(user));
-		when(storeService.findStoreByName(addressRequest.getName())).thenReturn(Optional.of(store));
+		when(storeService.getStoreById(addressRequest.getStoreId())).thenReturn(store);
 		
 		addressService.registerAddress(addressRequest);
 		verify(addressRepository,times(1)).save(address);	
@@ -132,22 +133,11 @@ class AddressServiceTest {
 		Address address = new Address(1L,userId,storeId,"address1","address2","pincode","city","state");
 		
 		
-		when(addressRepository.findByStoreId(storeId)).thenReturn(Stream.of(address).collect(Collectors.toList()));
-		assertEquals(1, addressService.getByStore(storeId).size());	
+		when(addressRepository.findByStoreId(storeId)).thenReturn(address);
+		assertEquals(address, addressService.findByStore(storeId));	
 		
 	}
 
-	@Test
-	void testFindByUserAndStore() {
-		Role roleId = new Role(1L,"role");
-		User userId = new User(1L,"name","email","password",roleId,"phoneNumber",null,true);
-		Store storeId = new Store(1L,userId,"name","description");
-		Address address = new Address(1L,userId,storeId,"address1","address2","pincode","city","state");
-		
-		
-		when(addressRepository.findByUserIdAndStoreId(userId,storeId)).thenReturn(Stream.of(address).collect(Collectors.toList()));
-		assertEquals(1, addressService.getByUserAndStore(userId,storeId).size());
-	}
 	@Test
 	void testGetAddressById() {
 		Role roleId = new Role(1L,"role");

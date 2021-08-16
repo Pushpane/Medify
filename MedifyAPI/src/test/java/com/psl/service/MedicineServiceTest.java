@@ -2,6 +2,7 @@ package com.psl.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -11,14 +12,26 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
 
 import com.psl.dao.IMedicinesDAO;
 import com.psl.dto.RegisterMedicineRequest;
 import com.psl.entity.Medicine;
+
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -32,11 +45,21 @@ class MedicineServiceTest {
 
 
 	@Test
-	void testRegisterMedicine() {
-		Medicine medicine = new Medicine(0, "MedicineName1", "Description", 200L, "Image");
-		RegisterMedicineRequest request = new RegisterMedicineRequest("MedicineName1", "Description", 200L, "Image");
+	void testRegisterMedicine() throws IOException {
 		
-		when(repository.save(medicine)).thenReturn(medicine);
+		MockMultipartFile imageFile = new MockMultipartFile("image", "image1.jpeg", "image/jpeg", "image1.jpeg".getBytes());
+	       
+        String tokenExpected = "ab46fe80-aa7a-45d9-a83f-0ae4333d40f1";
+        UUID uuid = UUID.fromString(tokenExpected);
+        mockStatic(UUID.class);
+        when(UUID.randomUUID()).thenReturn(uuid);
+       
+        String image = "http://localhost/image/"+uuid.toString()+"image1.jpeg";
+       
+        Medicine medicine = new Medicine(0, "MedicineName1", "Description", 200L, image);
+        RegisterMedicineRequest request = new RegisterMedicineRequest("MedicineName1", "Description", 200.00, imageFile);
+		
+        when(repository.save(medicine)).thenReturn(medicine);
 		medicineService.registerMedicine(request);
 		verify(repository,times(1)).save(medicine);
 	}

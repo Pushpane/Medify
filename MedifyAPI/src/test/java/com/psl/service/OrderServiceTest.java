@@ -7,6 +7,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.Optional;
@@ -73,8 +74,8 @@ class OrderServiceTest {
 		Medicine medicineId = new Medicine(1L,"MedicineName","Description",200.00,"Image");
 		MedicineToStore medicineToStoreId = new MedicineToStore(1L,medicineId,storeId,true);
 		
-		Orders order = new Orders(0L,userId,addressId,medicineToStoreId,10,"orderStatus",instant);
-		OrderRequest orderRequest = new OrderRequest(1L,10,"orderStatus","UserName1@email.com",1L);
+		Orders order = new Orders(0L,userId,addressId,medicineToStoreId,10,"orderStatus",instant,new BigDecimal("100"));
+		OrderRequest orderRequest = new OrderRequest(1L,10,"orderStatus","UserName1@email.com",1L,new BigDecimal("100"));
 		
 		when(orderRepository.save(order)).thenReturn(order);
 		when(userService.getUser(orderRequest.getEmail())).thenReturn(Optional.of(userId));
@@ -94,7 +95,7 @@ class OrderServiceTest {
 		Medicine medicineId = new Medicine(1L,"medicineName","description",100.00,"image");
 		MedicineToStore medicineToStoreId = new MedicineToStore(1L,medicineId,storeId,true);
 		
-		Orders order = new Orders(1L,userId,addressId,medicineToStoreId,10,"orderStatus",null);
+		Orders order = new Orders(1L,userId,addressId,medicineToStoreId,10,"orderStatus",null,new BigDecimal("100"));
 		
 		orderService.saveOrder(order);
 		verify(orderRepository, times(1)).save(order);	
@@ -116,9 +117,9 @@ class OrderServiceTest {
 		Medicine medicineId = new Medicine(1L,"medicineName","description",100.00,"image");
 		MedicineToStore medicineToStoreId = new MedicineToStore(1L,medicineId,storeId,true);
 		
-		Orders order1 = new Orders(1L,userId,addressId,medicineToStoreId,10,"orderStatus",null);
+		Orders order1 = new Orders(1L,userId,addressId,medicineToStoreId,10,"orderStatus",null,new BigDecimal("100"));
 		
-		Orders order2 = new Orders(2L,userId,addressId,medicineToStoreId,10,"orderStatus",null);
+		Orders order2 = new Orders(2L,userId,addressId,medicineToStoreId,10,"orderStatus",null,new BigDecimal("100"));
 		
 		when(orderRepository.findAll()).thenReturn(Stream.of( order1, order2).collect(Collectors.toList()));
 		assertEquals(2, orderService.getAllOrders().size());
@@ -134,12 +135,12 @@ class OrderServiceTest {
 		Medicine medicineId = new Medicine(1L,"medicineName","description",100.00,"image");
 		MedicineToStore medicineToStoreId = new MedicineToStore(1L,medicineId,storeId,true);
 		
-		Orders order = new Orders(1L,userId,addressId,medicineToStoreId,10,"orderStatus",null);
+		Orders order = new Orders(1L,userId,addressId,medicineToStoreId,10,"orderStatus",null,new BigDecimal("100"));
 		when(orderRepository.save(order)).thenReturn(order);
-		when(userService.getUserById(userId.getUserId())).thenReturn(Optional.of(userId));
+		when(userService.getUser(userId.getEmail())).thenReturn(Optional.of(userId));
 		
 		when(orderRepository.findAllByUserId(userId)).thenReturn(Stream.of( order).collect(Collectors.toList()));
-		assertEquals(1, orderService.getAllOrdersByUser(2L).size());
+		assertEquals(1, orderService.getAllOrdersByUser("UserName@email.com").size());
 	}
 
 }

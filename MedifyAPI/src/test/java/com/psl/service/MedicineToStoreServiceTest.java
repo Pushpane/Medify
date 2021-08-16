@@ -46,10 +46,10 @@ class MedicineToStoreServiceTest {
 		Medicine medicine = new Medicine(1L, "MedicineName1", "Description", 200L, "Image");
 		MedicineToStore medicineToStore = new MedicineToStore(0L, medicine, store, true);
 		
-		RegisterMedicineToStoreRequest request = new RegisterMedicineToStoreRequest("MedicineName1", "StoreName1");
+		RegisterMedicineToStoreRequest request = new RegisterMedicineToStoreRequest(1L, 1L);
 		when(repository.save(medicineToStore)).thenReturn(medicineToStore);
-		when(medicineService.findMedicineByName(request.getMedicineName())).thenReturn(Optional.of(medicine));
-		when(storeService.findStoreByName(request.getStoreName())).thenReturn(Optional.of(store));
+		when(medicineService.findMedicineById(request.getMedicineId())).thenReturn(Optional.of(medicine));
+		when(storeService.getStoreById(request.getStoreId())).thenReturn(store);
 		medicineToStoreService.registerMedicineToStore(request);
 		verify(repository, times(1)).save(medicineToStore);
 	}
@@ -72,8 +72,8 @@ class MedicineToStoreServiceTest {
 		when(medicineService.findMedicineByName("MedicineName")).thenReturn(Optional.of(medicine));
 		when(storeService.findStoreByName("StoreName")).thenReturn(Optional.of(store));
 		when(repository.findByStoreId(store)).thenReturn(Stream.of(medicineToStore).collect(Collectors.toList()));
-		when(medicineToStoreService.getMedicinesByStore("StoreName")).thenReturn(Stream.of(medicineToStore).collect(Collectors.toList()));
-		assertEquals(1, medicineToStoreService.getMedicinesByStore("StoreName").size());
+		when(medicineToStoreService.getMedicinesByStore(store)).thenReturn(Stream.of(medicineToStore).collect(Collectors.toList()));
+		assertEquals(1, medicineToStoreService.getMedicinesByStore(store).size());
 	}
 
 	@Test
