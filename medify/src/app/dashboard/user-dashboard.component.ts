@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { IAddress } from './address';
 import { ICart } from './cart';
 import { ICartPayload } from './cartPayload';
 import { DashboardService } from './dashboard.service';
@@ -15,6 +16,55 @@ export class UserDashboardComponent implements OnInit {
 
   medToStore: ICartPayload[];
   cart: ICartPayload[];
+  filteredMedToStore: ICartPayload[];
+  filteredCart: ICartPayload[];
+  state: any[]=[];
+  city: any[]=[];
+
+  address: IAddress[];
+
+  private _listFilter: string = '';
+  private _stateFilter: string = '';
+  private _cityFilter: string = '';
+  
+  get stateFilter(): string {
+    return this._stateFilter;
+  }
+  set stateFilter(value: string){
+    this._stateFilter = value;
+    console.log('In setter: ', value);
+    this.city = Array.from(new Set(this.address.filter(x=> x.state === value).map(x=>{
+      return x.city;
+    })));
+    this.performFilter();
+  }
+
+  get cityFilter(): string {
+    return this._cityFilter;
+  }
+  set cityFilter(value: string){
+    this._cityFilter = value;
+    console.log('In setter: ', value);
+    this.performFilter();
+  }
+
+  get listFilter(): string {
+      return this._listFilter;
+  }
+  set listFilter(value: string) {
+      this._listFilter = value;
+      console.log('In setter: ', value);
+      this.performFilter();
+  }
+
+
+  performFilter(){
+    this.filteredMedToStore = this.medToStore.filter(x=> x.name.toLowerCase().includes(this.listFilter.toLowerCase()) && 
+    x.address.state.includes(this.stateFilter) && x.address.city.includes(this.cityFilter));
+    this.filteredCart = this.cart.filter(x=> x.name.includes(this.listFilter) && 
+    x.address.state.includes(this.stateFilter) && x.address.city.includes(this.cityFilter));
+  }
+
   constructor(private formBuilder: FormBuilder, private router: Router,
     private dashboardService: DashboardService,
     private toastr: ToastrService) { }
@@ -24,9 +74,23 @@ export class UserDashboardComponent implements OnInit {
   }
 
   fetch() {
+    this.dashboardService.getAllAddress().subscribe({
+      next: data => {
+        this.address = data;
+        this.state = Array.from(new Set(data.map(x=>{
+          return x.state;
+        })));
+        console.log(this.state);
+        this.fetchAgain();
+      },
+      error: err=> console.log(err)
+    });
+  }
+  fetchAgain(){
     this.dashboardService.getAllMedToStore().subscribe({
       next: data => {
         this.medToStore = data.map(x => {
+          let address= this.address.find(y=> y.storeId.storeId === x.storeId.storeId);
           return {
             id: x.medicineToStoreId,
             name: x.medicineId.name,
@@ -35,7 +99,8 @@ export class UserDashboardComponent implements OnInit {
             storeName: x.storeId.name,
             image: String(x.medicineId.image),
             available: x.available ? 'Available' : 'Not Available',
-            cart: false
+            cart: false,
+            address: address
           }
         });
         this.fetchCart();
@@ -49,6 +114,7 @@ export class UserDashboardComponent implements OnInit {
       this.dashboardService.getCartByUser().subscribe({
         next: data => {
           console.log(data); this.cart = data.map(x => {
+            let address = this.address.find(y=> y.storeId.storeId === x.medicineToStoreId.storeId.storeId);
             return {
               id: x.medicineToStoreId.medicineToStoreId,
               name: x.medicineToStoreId.medicineId.name,
@@ -57,7 +123,8 @@ export class UserDashboardComponent implements OnInit {
               storeName: x.medicineToStoreId.storeId.name,
               image: String(x.medicineToStoreId.medicineId.image),
               available: x.medicineToStoreId.available ? 'Available' : 'Not Available',
-              cart: true
+              cart: true,
+              address: address
             }
           });
           this.filterData();
@@ -75,6 +142,7 @@ export class UserDashboardComponent implements OnInit {
       }
       return x;
     });
+    this.performFilter();
   }
 
   addToCart(id: any) {

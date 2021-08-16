@@ -146,6 +146,7 @@
 				<version>3.0.0</version>
 			</plugin>
 		</plugins>
+		<finalName>medify-api</finalName>
 	</build>
 
 	<reporting>

@@ -1,3 +1,5 @@
+import { IAddress } from "./address";
+
 export interface ICartPayload {
     id: number;
     name: String;
@@ -7,4 +9,5 @@ export interface ICartPayload {
     image: String;
     available: String;
     cart: boolean;
+    address: IAddress;
 }

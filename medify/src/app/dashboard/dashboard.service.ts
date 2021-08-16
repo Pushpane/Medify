@@ -42,6 +42,11 @@ export class DashboardService {
     return this.http.get<IAddress[]>(url);
   }
 
+  getAllAddress(): Observable<IAddress[]> {
+    const url = this.userUrl + "/user/getAllAddress";
+    return this.http.get<IAddress[]>(url);
+  }
+
   getCartByUser(): Observable<ICart[]>{
     const url = this.userUrl + "/user/getCartByUser/"+ this.localStorage.retrieve("username");
     return this.http.get<ICart[]>(url);

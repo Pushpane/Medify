@@ -13,8 +13,38 @@
   </mat-drawer>
   <mat-drawer-content class="p-3">
 
+    <div class="container p-2 bg-white">
     <div class="row">
-    <mat-card class="card m-3" *ngFor="let item of medToStore">
+      <div class="col">
+        <mat-form-field appearance="fill">
+          <mat-label>Filter By</mat-label>
+          <input matInput [(ngModel)]='listFilter'>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field appearance="fill">
+          <mat-label>Select city</mat-label>
+          <mat-select [(ngModel)]='cityFilter'>
+            <mat-option *ngFor='let element of city' value='{{element}}'>{{element}}</mat-option>
+            <mat-option *ngIf='!city.length' value=''>None</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field appearance="fill">
+          <mat-label>Select State</mat-label>
+          <mat-select [(ngModel)]='stateFilter'>
+            <mat-option *ngFor='let element of state' value="{{element}}">{{element}}</mat-option>
+            <mat-option *ngIf='!state.length' value=''>None</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <mat-card class="card m-3" *ngFor="let item of filteredMedToStore">
       <a class="no-deco" [routerLink]="['/MedicineDetail',item.id]">
         <mat-card-header>
           <mat-card-title>{{item.name}}</mat-card-title>
@@ -22,6 +52,8 @@
         <img mat-card-image src="{{item.image}}" height="200px" alt="Photo of a Shiba Inu">
       </a>
         <mat-card-content>
+          <p>Store: {{item.storeName}}</p>
+          <p>Address: {{item.address.address1}}, {{item.address.address2 }}, {{item.address.city }}, {{item.address.state }}, Pin: {{item.address.pincode }}</p>
           <h2 class="text-danger">Rs. {{item.price}}</h2>
         </mat-card-content>
         <mat-card-actions>
