@@ -1,10 +1,18 @@
 <mat-toolbar color="primary" fxLayoutAlign="space-between center" class="mat-elevation-z4">
   <div fxLayoutGap="10px">
+    <button mat-icon-button (click)="inputSideNav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
   <span><mat-icon>volunteer_activism</mat-icon>  Medify</span>
-  <a mat-button class="white" routerLink="OwnerSignup">Join Medify</a>
+  <a mat-button class="white" routerLink="OwnerSignup" *ngIf="!logedIn">Join Medify</a>
 </div>
-  <div fxLayoutGap="10px">
+  <div fxLayoutGap="10px" *ngIf="!logedIn">
       <a mat-raised-button color="accent" routerLink="Signup">Sign Up</a>
       <a mat-raised-button color="accent" routerLink="Login">Login</a>
   </div>
+  <div fxLayoutGap="10px" *ngIf="logedIn">
+    <button mat-button (click)='logout()'>
+      <mat-icon>exit_to_app</mat-icon> {{title}}
+    </button>
+</div>
 </mat-toolbar>

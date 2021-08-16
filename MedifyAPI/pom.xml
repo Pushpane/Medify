@@ -93,6 +93,11 @@
 			<artifactId>jjwt-jackson</artifactId>
 			<version>0.11.2</version>
 		</dependency>
+		<dependency>
+  			<groupId>commons-io</groupId>
+  			<artifactId>commons-io</artifactId>
+  			<version>2.11.0</version>
+		</dependency>
 
 	</dependencies>
 
@@ -131,10 +136,6 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
 				<version>3.7.1</version>
@@ -145,6 +146,7 @@
 				<version>3.0.0</version>
 			</plugin>
 		</plugins>
+		<finalName>medify-api</finalName>
 	</build>
 
 	<reporting>

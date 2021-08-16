@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import com.psl.dao.IMedicineToStoreDAO;
@@ -19,6 +20,7 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 @Transactional
+@Slf4j
 public class MedicineToStoreService {
 	
 	private IMedicineToStoreDAO medicineToStoreDAO;
@@ -34,14 +36,16 @@ public class MedicineToStoreService {
 	private MedicineToStore fillMedicineToStore(RegisterMedicineToStoreRequest request) {
 		MedicineToStore medToStoreEntity = new MedicineToStore();
 		
-		Optional<Medicine> medicine = medicineService.findMedicineByName(request.getMedicineName());
-		medicine.orElseThrow(()-> new MedifyException("Medicine Not Found"));
-		Optional<Store> store = storeService.findStoreByName(request.getStoreName());
-		store.orElseThrow(()-> new MedifyException("Store Not Found"));
+		Optional<Medicine> medicine = medicineService.findMedicineById(request.getMedicineId());
+		medicine.orElseThrow(() -> {
+			log.info("Medicine not found in the database");
+			return new MedifyException("Medicine Not Found");
+		});
+		Store store = storeService.getStoreById(request.getStoreId());
 
 		
 		medToStoreEntity.setMedicineId(medicine.get());
-		medToStoreEntity.setStoreId(store.get());;
+		medToStoreEntity.setStoreId(store);
 		medToStoreEntity.setAvailable(true);
 		
 		return medToStoreEntity;
@@ -51,9 +55,8 @@ public class MedicineToStoreService {
 		medicineToStoreDAO.deleteById(id);
 	}
 	
-	public List<MedicineToStore> getMedicinesByStore(String storeName){
-		Optional<Store> store = storeService.findStoreByName(storeName);
-		return medicineToStoreDAO.findByStoreId(store.get());
+	public List<MedicineToStore> getMedicinesByStore(Store store){
+		return medicineToStoreDAO.findByStoreId(store);
 	}
 	
 	public List<MedicineToStore> getStoreByMedicine(String medicineName){

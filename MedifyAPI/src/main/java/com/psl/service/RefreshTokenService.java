@@ -3,6 +3,7 @@ package com.psl.service;
 import java.time.Instant;
 import java.util.UUID;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,7 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 @Transactional
+@Slf4j
 public class RefreshTokenService {
 
 	private final IRefreshTokenDAO refreshTokenDAO;
@@ -29,10 +31,14 @@ public class RefreshTokenService {
 
     void validateRefreshToken(String token) {
         refreshTokenDAO.findByToken(token)
-                .orElseThrow(() -> new MedifyException("Invalid refresh Token"));
+                .orElseThrow(() -> {
+                    log.error("Invalid refresh token" );
+                    return new MedifyException("Invalid refresh Token");
+                });
     }
 
     public void deleteRefreshToken(String token) {
         refreshTokenDAO.deleteByToken(token);
+        log.info("Token deleted successfully" );
     }
 }

@@ -1,6 +1,9 @@
 package com.psl.dto;
 
 
+
+import java.math.BigDecimal;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,5 +19,5 @@ public class OrderRequest {
     private String orderStatus;
     private String email;
     private long medicineToStoreId;
-
+    private BigDecimal cost;
 }

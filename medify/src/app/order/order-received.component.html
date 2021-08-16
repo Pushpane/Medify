@@ -1,0 +1,78 @@
+<app-header [inputSideNav]="sideNav"></app-header>
+<mat-drawer-container class="example-container" autosize [hasBackdrop]='true'>
+  <mat-drawer mode="over" #sideNav >
+    
+    <mat-nav-list>
+      <h2 mat-subheader>Pages</h2>
+      <a mat-list-item routerLink="/OwnerDashboard">Home</a>
+      <a mat-list-item routerLink="/AddStore">Add Store</a>
+      <a mat-list-item routerLink="/AddMedicines">Add Medicines</a>
+      <a mat-list-item routerLink="/OrderReceived">Order Received</a>
+      <a mat-list-item routerLink="/OrderPacked">Order Packed</a>
+      <a mat-list-item routerLink="/TotalOrders">Total Orders</a>
+    </mat-nav-list>
+  </mat-drawer>
+  <mat-drawer-content class="p-3">
+
+
+    
+    <div class="container mt-4">
+        <h2><b>Orders Received</b> ( Place same user orders under one packet! Identify unique users using email)</h2>
+      </div>
+  
+      <div class="container">
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+  
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Order Id </th>
+            <td mat-cell *matCellDef="let element"> {{element.id}}</td>
+          </ng-container>
+
+        <ng-container matColumnDef="userName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> User Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.userName}}</td>
+        </ng-container>
+      
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> User Email </th>
+          <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="medicine">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Medicine Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.medicine}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="storeName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Store Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.storeName}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="quantity">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Quantity </th>
+          <td mat-cell *matCellDef="let element">{{element.quantity}}</td>
+        </ng-container>
+        
+        <ng-container matColumnDef="cost">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Cost </th>
+          <td mat-cell *matCellDef="let element">{{element.cost | currency:'INR'}}</td>
+        </ng-container>
+        
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+          <td mat-cell *matCellDef="let element"><button mat-raised-button color="accent" (click)='markPacked(element.id)'>Mark Packed</button></td>
+        </ng-container>
+
+        <ng-container matColumnDef="decline">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Decline </th>
+          <td mat-cell *matCellDef="let element"><button mat-raised-button color="warn" (click)='declineOrder(element.id)'>Decline Order</button></td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+
+  </mat-drawer-content>
+</mat-drawer-container>
+<app-footer></app-footer>

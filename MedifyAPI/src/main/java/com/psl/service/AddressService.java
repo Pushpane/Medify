@@ -13,6 +13,7 @@ import com.psl.entity.User;
 import com.psl.exception.MedifyException;
 import com.psl.entity.Address;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +24,7 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 @Transactional
-
+@Slf4j
 public class AddressService {
 	private final IAddressDAO addressDAO;
 	private final StoreService storeService;
@@ -50,13 +51,13 @@ public class AddressService {
 			user = userService.getUser(request.getEmail());
 		}
 		
-		Optional<Store> store = null;
-		if(request.getName()!=null) {
-			store = storeService.findStoreByName(request.getName());
+		Store store = null;
+		if(request.getStoreId()!=0) {
+			store = storeService.getStoreById(request.getStoreId());
 		}
 
 		
-		address.setStoreId(store.get());
+		address.setStoreId(store);
 		address.setUserId(user.get());
 		
 		return address;
@@ -89,12 +90,26 @@ public class AddressService {
 	
 	
 	//Get address for a particular store
+<<<<<<< HEAD
 	public List<Address> getByStore(Store store) {
 			return addressDAO.findByStoreId(store);
 	}
 	//Get address for a particular store owned by user given
 	public List<Address> getByUserAndStore(User user,Store store) {
 			return addressDAO.findByUserIdAndStoreId(user,store);
+=======
+	public Address findByStore(Store store) {
+			return addressDAO.findByStoreId(store);
+	}
+	//Get address for a particular store owned by user given
+	public List<Address> findByUser(String email) {
+		Optional<User> user = userService.getUser(email);
+		user.orElseThrow(() -> {
+			log.error("User not found" + email);
+			return new MedifyException("User not found");
+		});
+		return addressDAO.findByUserId(user.get());
+>>>>>>> 77623ce32bc14a358a66b653c6fba7dd9d4fbf38
 	}
 
 	public Address getAddressById(long id){

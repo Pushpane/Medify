@@ -1,0 +1,45 @@
+:host{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+mat-drawer{
+    width: 230px;
+}
+mat-drawer-container {
+    height: 100%;
+}
+.no-deco{
+    text-decoration: none;
+    color: black;
+}
+.bg-white{
+    background-color: white;
+}
+.cover-input {
+    width: 45%;
+}
+.cover-input-area {
+    width: 70%;
+}
+table {
+    width: 100%;
+
+}
+th.mat-sort-header-sorted {
+    color: black;
+}
+.card{
+    max-width: 250px;
+    border-radius: 5px;
+    border-width: 1px;
+}
+
+@media screen and (max-width: 600px) {
+    .cover-input {
+        width: 100%;
+    }
+    .cover-input-area {
+        width: 100%;
+    }
+  }

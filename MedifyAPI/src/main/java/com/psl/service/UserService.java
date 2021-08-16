@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import javax.validation.Valid;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -32,6 +33,7 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 @Transactional
+@Slf4j
 public class UserService {
 	
 	private final IUserDAO userDAO;
@@ -52,6 +54,9 @@ public class UserService {
 		mailService.sendMail(new NotificationEmail("Please Activate your Medify Account",request.getEmail(),
 				"Thank you for signing up to Medify, please click on the below url to activate " +
 				"your account : http://localhost:8081/Medify/api/auth/accountVerification/"+token));
+		log.info("Verification email sent successfully to the user " + request.getName()
+				+ "with role: " + request.getRole()
+				+ "Email: " + request.getEmail());
 	}
 	
 	private String generateVerificationToken(User user) {
@@ -97,7 +102,10 @@ public class UserService {
 	
 	private void fetchUserAndEnable(VerificationToken verificationToken) {
         String username = verificationToken.getUser().getEmail();
-        User user = userDAO.findByEmail(username).orElseThrow(() -> new MedifyException("User Not Found with username - " + username));
+		User user = userDAO.findByEmail(username).orElseThrow(() -> {
+			log.error("User Not Found with username - " + username);
+			return new MedifyException("User Not Found with username - " + username);
+		});
         user.setEnabled(true);
         userDAO.save(user);
     }

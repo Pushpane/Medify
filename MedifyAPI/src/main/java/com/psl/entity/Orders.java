@@ -1,5 +1,6 @@
 package com.psl.entity;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 
 import javax.persistence.Entity;
@@ -27,7 +28,7 @@ public class Orders {
 	@NotBlank(message = "User is required")
 	private User userId;
 	@ManyToOne
-	@NotBlank(message = "Address is rqeuired")
+	@NotBlank(message = "Address is required")
 	private Address addressId;
 	@ManyToOne
 	@NotBlank(message = "Medicine to Store is required")
@@ -38,4 +39,5 @@ public class Orders {
 	private String orderStatus;
 	@NotBlank(message = "CreatedAt is required")
 	private Instant createdAt;
+	private BigDecimal cost;
 }

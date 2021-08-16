@@ -2,6 +2,7 @@ package com.psl.controller;
 
 import javax.validation.Valid;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,7 @@ import lombok.AllArgsConstructor;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/auth")
+@Slf4j
 public class UserController {
 	
 	private final UserService userService;
@@ -35,6 +37,8 @@ public class UserController {
 	@PostMapping("/signup")
 	public ResponseEntity<HttpStatus> signup(@RequestBody RegisterUserRequest registerUserRequest) {
 		userService.registerUser(registerUserRequest);
+		log.info("New " + registerUserRequest.getRole()
+				+ " registered : " + registerUserRequest.getName());
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 
@@ -55,9 +59,9 @@ public class UserController {
     }
 	
 	@PostMapping("/logout")
-    public ResponseEntity<String> logout(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
+    public ResponseEntity<HttpStatus> logout(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
         refreshTokenService.deleteRefreshToken(refreshTokenRequest.getRefreshToken());
-        return ResponseEntity.status(HttpStatus.OK).body("Refresh Token Deleted Successfully!!");
+        return new ResponseEntity<HttpStatus>(HttpStatus.OK);
     }
 	
 	@PostMapping("/forgotPassword")

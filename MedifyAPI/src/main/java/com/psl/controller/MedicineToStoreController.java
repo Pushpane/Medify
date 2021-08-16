@@ -1,7 +1,9 @@
 package com.psl.controller;
 
 import java.util.List;
+import java.util.Optional;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.psl.dto.RegisterMedicineToStoreRequest;
 import com.psl.entity.MedicineToStore;
+import com.psl.exception.MedifyException;
 import com.psl.service.MedicineToStoreService;
 
 import lombok.AllArgsConstructor;
@@ -21,6 +24,7 @@ import lombok.AllArgsConstructor;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/user")
+@Slf4j
 public class MedicineToStoreController {
 	
 	private final MedicineToStoreService medicineToStoreService;
@@ -28,22 +32,16 @@ public class MedicineToStoreController {
 	@PostMapping("/addMedicineToStore")
 	public ResponseEntity<HttpStatus> registerMedicineToStore(@RequestBody RegisterMedicineToStoreRequest registerMedicineToStoreRequest) {
 		medicineToStoreService.registerMedicineToStore(registerMedicineToStoreRequest);
-		
+		log.info("Medicine added MedicineToStore " + registerMedicineToStoreRequest.getMedicineId());
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/deleteMedicineToStore/{id}")
 	public ResponseEntity<HttpStatus> deleteMedicineToStore(@PathVariable long id){
 		medicineToStoreService.deleteMedicineToStore(id);
+		log.info("Medicine deleted MedicineToStore " + id);
 		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 	}
-	
-	@GetMapping("/getMedicinesByStore/{storeName}")
-	public List<MedicineToStore> getMedicinesByStore(@PathVariable String storeName) {
-		List<MedicineToStore> medicines = medicineToStoreService.getMedicinesByStore(storeName);
-		return medicines;
-	}
-	
 
 	@GetMapping("/getStoreByMedicines/{medicineName}")
 	public List<MedicineToStore> getStoreByMedicines(@PathVariable String medicineName) {
@@ -58,5 +56,12 @@ public class MedicineToStoreController {
 		return med;
 
 	}
-	
+
+	@GetMapping("/getMedToStoreById/{id}")
+	public MedicineToStore getMedToStoreById(@PathVariable long id) {
+		Optional<MedicineToStore> med = medicineToStoreService.getMedicinesToStoreById(id);
+		med.orElseThrow(()-> new MedifyException("MedToStore not found"));
+		return med.get();
+
+	}
 }

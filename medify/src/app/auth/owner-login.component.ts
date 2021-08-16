@@ -44,6 +44,6 @@ export class OwnerLoginComponent implements OnInit {
     this.loginForm.reset();
     localStorage.setItem('role','Owner');
     this.toastr.success('Login Successful.');
-    this.router.navigate(['/']);
+    this.router.navigate(['/OwnerDashboard']);
   }
 }

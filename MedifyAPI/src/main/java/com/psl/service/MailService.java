@@ -13,6 +13,8 @@ import com.psl.exception.MedifyException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Arrays;
+
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -33,6 +35,10 @@ public class MailService {
 			mailSender.send(messagePreparator);
 			log.info("Activation email sent!!");
 		} catch (MailException e) {
+			log.error("Exception occurred when sending mail to "
+					+ notificationEmail.getRecipient()
+					+ Arrays.toString(e.getStackTrace()));
+
 			throw new MedifyException(
 					"Exception occurred when sending mail to " + notificationEmail.getRecipient());
 		}

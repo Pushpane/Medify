@@ -49,19 +49,35 @@ import {MatTreeModule} from '@angular/material/tree';
 import {OverlayModule} from '@angular/cdk/overlay';
 import { ToastrModule } from 'ngx-toastr';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { SignupComponent } from './auth/signup.component';
 import { LoginComponent } from './auth/login.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OwnerSignupComponent } from './auth/owner-signup.component';
 import { OwnerLoginComponent } from './auth/owner-login.component';
 import { AdminSignupComponent } from './auth/admin-signup.component';
 import { AdminLoginComponent } from './auth/admin-login.component';
 import { ForgotPasswordComponent } from './auth/forgot-password.component';
 import { UpdatePasswordComponent } from './auth/update-password.component';
-import { OrderStatusComponent } from './order-status/order-status.component';
-import { OrderStatusCancelComponent } from './order-status/order-status-cancel.component';
+import { OwnerDashboardComponent } from './dashboard/owner-dashboard.component';
+import { FooterComponent } from './header/footer.component';
+import { CommonModule } from '@angular/common';
+import { TokenInterceptor } from './auth/token-interceptor';
+import { AddMedicinesComponent } from './dashboard/add-medicines.component';
+import { UserDashboardComponent } from './dashboard/user-dashboard.component';
+import { CartComponent } from './dashboard/cart.component';
+import { UserCheckerGuard } from './dashboard/checker.guard';
+import { OwnerCheckerGuard } from './dashboard/owner-checker.guard';
+import { MedicineDetailComponent } from './dashboard/medicine-detail.component';
+import { OrderPlacedComponent } from './order/order-placed.component';
+import { OrderReceivedComponent } from './order/order-received.component';
+import { OrderPackedComponent } from './order/order-packed.component';
+import { AllOrdersComponent } from './order/all-orders.component';
+import { TotalOrdersComponent } from './order/total-orders.component';
+import { AddStoreComponent } from './dashboard/add-store.component';
+import { AnalyticsChartComponent } from './widgets/analytics-chart.component';
+import { HighchartsChartModule } from 'highcharts-angular';
 
 @NgModule({
   declarations: [
@@ -75,11 +91,24 @@ import { OrderStatusCancelComponent } from './order-status/order-status-cancel.c
     AdminLoginComponent,
     ForgotPasswordComponent,
     UpdatePasswordComponent,
-    OrderStatusComponent,
-    OrderStatusCancelComponent
+    OwnerDashboardComponent,
+    FooterComponent,
+    AddMedicinesComponent,
+    UserDashboardComponent,
+    CartComponent,
+    MedicineDetailComponent,
+    OrderPlacedComponent,
+    OrderReceivedComponent,
+    OrderPackedComponent,
+    AllOrdersComponent,
+    TotalOrdersComponent,
+    AddStoreComponent,
+    AnalyticsChartComponent,
   ],
   imports: [
     BrowserModule,
+    CommonModule,
+    FormsModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
     HttpClientModule,
@@ -127,11 +156,23 @@ import { OrderStatusCancelComponent } from './order-status/order-status-cancel.c
     OverlayModule,
     PortalModule,
     ScrollingModule,
+    HighchartsChartModule,
     ReactiveFormsModule,
     NgxWebstorageModule.forRoot(),
     ToastrModule.forRoot(),
     RouterModule.forRoot([
-      { path: '', component:HeaderComponent },
+      { path: '', canActivate: [UserCheckerGuard],component:UserDashboardComponent },
+      { path: 'AllOrders', canActivate: [UserCheckerGuard],component:TotalOrdersComponent },
+      { path: 'OrderReceived', canActivate: [OwnerCheckerGuard],component:OrderReceivedComponent },
+      { path: 'TotalOrders', canActivate: [OwnerCheckerGuard],component:AllOrdersComponent },
+      { path: 'OrderPacked', canActivate: [OwnerCheckerGuard],component:OrderPackedComponent },
+      { path: 'OrderStatus', canActivate: [UserCheckerGuard],component:OrderPlacedComponent },
+      { path: 'MedicineDetail/:id', canActivate: [UserCheckerGuard],component:MedicineDetailComponent },
+      { path: 'Dashboard', canActivate: [UserCheckerGuard],component:UserDashboardComponent },
+      { path: 'Cart',canActivate: [UserCheckerGuard], component:CartComponent },
+      { path: 'AddMedicines', canActivate: [OwnerCheckerGuard],component:AddMedicinesComponent },
+      { path: 'OwnerDashboard', canActivate: [OwnerCheckerGuard],component:OwnerDashboardComponent },
+      { path: 'AddStore', canActivate: [OwnerCheckerGuard],component:AddStoreComponent },
       { path: 'Signup', component: SignupComponent },
       { path: 'OwnerSignup', component: OwnerSignupComponent},
       { path: 'OwnerLogin', component: OwnerLoginComponent },
@@ -143,7 +184,9 @@ import { OrderStatusCancelComponent } from './order-status/order-status-cancel.c
       { path: '**', redirectTo: 'Signup', pathMatch: 'full' },
     ]),
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

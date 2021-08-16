@@ -44,12 +44,12 @@ export class TokenInterceptor implements HttpInterceptor {
                 })
             )
         }
+        return null;
     }
     private addToken(req: HttpRequest<any>, jwtToken: String) {
         return req.clone({
             headers: req.headers.set('Authorization',
-                'Bearer ' + jwtToken)
-        });
+                'Bearer ' + jwtToken)});
     }
 
 }
