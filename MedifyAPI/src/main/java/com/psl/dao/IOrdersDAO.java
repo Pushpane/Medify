@@ -11,7 +11,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Repository
-public interface IOrderDAO extends JpaRepository<Orders, Long>{
+public interface IOrdersDAO extends JpaRepository<Orders, Long>{
 
     List<Orders> findAllByUserId(User userId);
     List<Orders> findAllByMedicineToStoreId(MedicineToStore store);

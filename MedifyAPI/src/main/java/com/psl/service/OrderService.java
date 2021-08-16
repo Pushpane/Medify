@@ -1,11 +1,8 @@
 package com.psl.service;
 
-<<<<<<< HEAD
-import com.psl.dao.IOrderDAO;
-=======
+
 import com.psl.dao.IOrdersDAO;
 import com.psl.dto.AnalyticsResponse;
->>>>>>> 77623ce32bc14a358a66b653c6fba7dd9d4fbf38
 import com.psl.dto.OrderRequest;
 import com.psl.entity.Address;
 import com.psl.entity.MedicineToStore;
@@ -37,7 +34,7 @@ import java.util.Optional;
 @Slf4j
 public class OrderService {
 
-    private IOrderDAO ordersDAO;
+    private IOrdersDAO ordersDAO;
     private UserService userService;
     private AddressService addressService;
     private MedicineToStoreService medicineToStoreService;

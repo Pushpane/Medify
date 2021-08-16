@@ -22,7 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.psl.dao.IOrderDAO;
+import com.psl.dao.IOrdersDAO;
 import com.psl.dao.IStoreDAO;
 import com.psl.dto.OrderRequest;
 import com.psl.entity.Address;
@@ -40,7 +40,7 @@ class OrderServiceTest {
 	private OrderService orderService;
 	
 	@MockBean
-	private IOrderDAO orderRepository;
+	private IOrdersDAO orderRepository;
 	@MockBean
 	private UserService userService;
 	@MockBean

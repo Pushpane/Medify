@@ -13,6 +13,7 @@ import com.psl.dao.IStoreDAO;
 import com.psl.dto.RegisterStoreRequest;
 import com.psl.entity.Store;
 import com.psl.entity.User;
+import com.psl.exception.MedifyException;
 
 import lombok.AllArgsConstructor;
 
