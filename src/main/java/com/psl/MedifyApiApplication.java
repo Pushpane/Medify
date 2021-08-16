@@ -14,6 +14,7 @@ public class MedifyApiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MedifyApiApplication.class, args);
+		//testing
 	}
 
 }
