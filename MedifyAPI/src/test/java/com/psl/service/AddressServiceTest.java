@@ -137,7 +137,19 @@ class AddressServiceTest {
 		assertEquals(address, addressService.findByStore(storeId));	
 		
 	}
-
+	@Test
+	void testFindByUser() {
+		Role roleId = new Role(1L,"role");
+		User userId = new User(1L,"name","email","password",roleId,"phoneNumber",null,true);
+		Store storeId = new Store(1L,userId,"name","description");
+		Address address1 = new Address(1L,userId,storeId,"address1","address2","pincode","city","state");
+		Address address2 = new Address(2L,userId,storeId,"address1","address2","pincode","city","state");
+		
+		when(userService.getUser(userId.getEmail())).thenReturn(Optional.of(userId));
+		when(addressRepository.findByUserId(userId)).thenReturn(Stream.of(address1,address2).collect(Collectors.toList()));
+		assertEquals(2,addressService.findByUser(userId.getEmail()).size());
+	}
+	
 	@Test
 	void testGetAddressById() {
 		Role roleId = new Role(1L,"role");
