@@ -5,7 +5,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +22,7 @@ import com.psl.dto.RegisterStoreRequest;
 import com.psl.entity.Role;
 import com.psl.entity.Store;
 import com.psl.entity.User;
+import com.psl.exception.MedifyException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -118,4 +121,21 @@ class StoreServiceTest {
 		assertEquals(2,storeService.findStoreByUser(user.getEmail()).size());
 	}
 
+	@Test
+	public void findStoreByUserException() {
+		Assertions.assertThrows(MedifyException.class, new Executable() {
+			Role role = new Role(1L, "Owner");
+			User user = new User(1L, "UserName", "UserName@email.com", "Password", role, "1234567890", null, true);
+			Store store1 = new Store(1L, user, "StoreName", "StoreDescription");
+			Store store2 = new Store(2L, user, "StoreName", "StoreDescription");
+			
+			
+			@Override
+			public void execute() throws Throwable {
+				when(userService.getUser(user.getEmail())).thenReturn(Optional.of(user));
+				when(storeService.findStoreByUser(user.getEmail())).thenReturn(Stream.of(store1,store2).collect(Collectors.toList()));
+				assertEquals(2,storeService.findStoreByUser("username1@email.com").size());
+				
+			}});
+	}
 }

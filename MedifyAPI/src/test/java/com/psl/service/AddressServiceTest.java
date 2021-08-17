@@ -11,7 +11,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.Before;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +27,7 @@ import com.psl.entity.Address;
 import com.psl.entity.Role;
 import com.psl.entity.Store;
 import com.psl.entity.User;
+import com.psl.exception.MedifyException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -149,7 +152,29 @@ class AddressServiceTest {
 		when(addressRepository.findByUserId(userId)).thenReturn(Stream.of(address1,address2).collect(Collectors.toList()));
 		assertEquals(2,addressService.findByUser(userId.getEmail()).size());
 	}
-	
+	@Test
+	void testFindByUserException() {
+		Assertions.assertThrows(MedifyException.class, new Executable() {
+			
+		Role roleId = new Role(1L,"role");
+		User userId = new User(1L,"name","email","password",roleId,"phoneNumber",null,true);
+		Store storeId = new Store(1L,userId,"name","description");
+		Address address1 = new Address(1L,userId,storeId,"address1","address2","pincode","city","state");
+		Address address2 = new Address(2L,userId,storeId,"address1","address2","pincode","city","state");
+		
+		
+		@Override
+		public void execute() throws Throwable {
+			when(userService.getUser(userId.getEmail())).thenReturn(Optional.of(userId));
+			when(addressRepository.findByUserId(userId)).thenReturn(Stream.of(address1,address2).collect(Collectors.toList()));
+			assertEquals(2,addressService.findByUser("email1").size());
+						
+		}
+		
+		
+		});
+		
+	}
 	@Test
 	void testGetAddressById() {
 		Role roleId = new Role(1L,"role");
@@ -161,5 +186,9 @@ class AddressServiceTest {
 		when(addressRepository.findById(1L)).thenReturn(Optional.of(address));
 		assertEquals(address, addressService.getAddressById(1L));
 	}
-
+	
+	
+	
 }
+
+

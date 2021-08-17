@@ -173,10 +173,7 @@ class OrderServiceTest {
 			when(orderRepository.findAllByUserId(userId)).thenReturn(Stream.of( order).collect(Collectors.toList()));
 			assertEquals(1, orderService.getAllOrdersByUser("UserName@email.com").size());
 			
-		}
-		
-		
-		});
+		}});
 		
 		
 	}

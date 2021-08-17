@@ -7,7 +7,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,6 +32,7 @@ import java.util.stream.Collectors;
 import com.psl.dao.IMedicinesDAO;
 import com.psl.dto.RegisterMedicineRequest;
 import com.psl.entity.Medicine;
+import com.psl.exception.MedifyException;
 
 
 
@@ -92,6 +95,72 @@ class MedicineServiceTest {
 		String medicineName="MedicineName";
 		when(repository.findByName(medicineName)).thenReturn(medicine);
 		assertEquals(medicine, medicineService.findMedicineByName(medicineName));
+	}
+	
+	@Test
+	void testFindMedicineById() {
+		Medicine medicine = new Medicine(1, "MedicineName", "Description", 200L, "Image");
+		repository.save(medicine);
+		medicineService.findMedicineById(1);
+		verify(repository, times(1)).findById(1L);
+	}
+	
+	
+	@Test
+	void testRegisterMedicineJpegException(){
+		Assertions.assertThrows(MedifyException.class, new Executable() {
+			
+			MockMultipartFile file 
+		      = new MockMultipartFile(
+		        "file", 
+		        "hello.txt", 
+		        MediaType.TEXT_PLAIN_VALUE, 
+		        "Hello, World!".getBytes()
+		      );   
+        String tokenExpected = "ab46fe80-aa7a-45d9-a83f-0ae4333d40f1";
+        UUID uuid = UUID.fromString(tokenExpected);
+        
+        String image = "http://localhost/image/"+uuid.toString()+"image1.jpeg";
+       
+        Medicine medicine = new Medicine(0, "MedicineName1", "Description", 200L, image);
+        RegisterMedicineRequest request = new RegisterMedicineRequest("MedicineName1", "Description", 200.00, file);
+		
+        
+		@Override
+		public void execute() throws Throwable {
+			mockStatic(UUID.class);
+	        when(UUID.randomUUID()).thenReturn(uuid);
+	       
+			when(repository.save(medicine)).thenReturn(medicine);
+			medicineService.registerMedicine(request);
+			verify(repository,times(1)).save(medicine);
+			
+		}});
+	}
+	@Test
+	void testRegisterMedicineFileEmptyException(){
+		Assertions.assertThrows(MedifyException.class, new Executable() {
+			
+			MockMultipartFile file = new MockMultipartFile("image", "image1.jpeg", "image/jpeg", "".getBytes());
+        String tokenExpected = "ab46fe80-aa7a-45d9-a83f-0ae4333d40f1";
+        UUID uuid = UUID.fromString(tokenExpected);
+        
+        String image = "http://localhost/image/"+uuid.toString()+"image1.jpeg";
+       
+        Medicine medicine = new Medicine(0, "MedicineName1", "Description", 200L, image);
+        RegisterMedicineRequest request = new RegisterMedicineRequest("MedicineName1", "Description", 200.00, file);
+		
+        
+		@Override
+		public void execute() throws Throwable {
+			mockStatic(UUID.class);
+	        when(UUID.randomUUID()).thenReturn(uuid);
+	       
+			when(repository.save(medicine)).thenReturn(medicine);
+			medicineService.registerMedicine(request);
+			verify(repository,times(1)).save(medicine);
+			
+		}});
 	}
 
 }

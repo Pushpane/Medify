@@ -85,5 +85,6 @@ public class StoreService {
 		return storeDAO.findByUserId(user.get());
 	}
 	
+	
 
 }
