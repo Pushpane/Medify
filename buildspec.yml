@@ -1,15 +1,24 @@
 version: 0.2
- 
+
+env:
+  variables:
+    CACHE_CONTROL: "86400"
+    S3_BUCKET: "{{s3_bucket_url}}"
+    BUILD_FOLDER: "dist"
 phases:
   install:
     runtime-versions:
-      java: corretto11
+      nodejs: 14
+    commands:
+      - echo Installing source NPM dependencies...
+      - npm install
+      - npm install -g @angular/cli
   build:
     commands:
-      - echo Build started on `date`
-      - cd MedifyAPI
-      - mvn clean install 
+    - echo Build STarted
+    - ng build
 artifacts:
   files:
-    - MedifyAPI/target/medify-api.jar
+    - '**/*'
+  base-directory: 'dist*'
   discard-paths: yes
