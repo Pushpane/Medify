@@ -165,10 +165,7 @@ public class OrderService {
     		int dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
     		int month = c.get(Calendar.MONTH);
     		int year = c.get(Calendar.YEAR);
-    		List<Orders> ordersOfDay = orders.stream().filter(x-> {
-    		    c.setTime(Date.from(x.getCreatedAt()));
-    		    if(dayOfMonth==c.get(Calendar.DAY_OF_MONTH))
-    		        return true;return false;}).collect(Collectors.toList());
+    		List<Orders> ordersOfDay = orders.stream().filter(x-> {c.setTime(Date.from(x.getCreatedAt())); if(dayOfMonth==c.get(Calendar.DAY_OF_MONTH)) return true; return false;}).collect(Collectors.toList());
     		long orderCount = ordersOfDay.stream().count();
     		long delivered = ordersOfDay.stream().filter(x-> x.getOrderStatus().equals("Delivered")).count();
     		long cancelled = ordersOfDay.stream().filter(x-> x.getOrderStatus().equals("Cancelled")).count();
