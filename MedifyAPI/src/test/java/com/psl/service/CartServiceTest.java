@@ -108,11 +108,11 @@ class CartServiceTest {
 			Medicine medicineId = new Medicine(1L,"MedicineName","Description",200,"Image");
 			MedicineToStore medicineToStoreId = new MedicineToStore(1L,medicineId,storeId,true);
 			Cart cart = new Cart(0L,userId,medicineToStoreId,1,new BigDecimal("200.0"));
-			CartRequest request = new CartRequest("UserName@email.com",2L,1);
+			CartRequest request = new CartRequest("UserName@email.com",0L,1);
 			@Override
 			public void execute() throws Throwable {
 				when(userService.getUser(request.getEmail())).thenReturn(Optional.of(userId));
-				when(medicineToStoreService.getMedicinesToStoreById(request.getId())).thenReturn(Optional.of(medicineToStoreId));
+				when(medicineToStoreService.getMedicinesToStoreById(2L)).thenReturn(Optional.of(medicineToStoreId));
 
 				cartService.registerCart(request);
 				verify(cartRepository,times(1)).save(cart);
