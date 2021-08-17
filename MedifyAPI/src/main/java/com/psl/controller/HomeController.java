@@ -3,6 +3,7 @@ package com.psl.controller;
 import java.io.File;
 
 import org.apache.commons.io.FileUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
@@ -17,6 +18,7 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
+@Slf4j
 //@RequestMapping("/api/user")
 public class HomeController {
 
