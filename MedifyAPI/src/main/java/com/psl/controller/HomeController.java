@@ -2,6 +2,7 @@ package com.psl.controller;
 
 import java.io.File;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
@@ -18,23 +19,25 @@ import lombok.AllArgsConstructor;
 @RestController
 @AllArgsConstructor
 //@RequestMapping("/api/user")
+@Slf4j
 public class HomeController {
 
-	@GetMapping("/hello")
-	public String sayHello() {
-		return "Hello";
-	}
-	
-	@GetMapping("/image/{id}")
-	public ResponseEntity<ByteArrayResource> getImage(@PathVariable String id) {
-		byte[] image = new byte[0];
-		try {
-			String UPLOAD_DIR = new ClassPathResource("static/image/").getFile().getAbsolutePath();
-			image = FileUtils.readFileToByteArray(new File(UPLOAD_DIR+"\\"+id));
-			ByteArrayResource resource = new ByteArrayResource(image);
-		    return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).contentLength(resource.contentLength()).body(resource);
-		} catch (Exception e) {
-			throw new MedifyException("Error occured");
-		}
-	}
+    @GetMapping("/hello")
+    public String sayHello() {
+        return "Hello";
+    }
+
+    @GetMapping("/image/{id}")
+    public ResponseEntity<ByteArrayResource> getImage(@PathVariable String id) {
+        byte[] image = new byte[0];
+        try {
+            String UPLOAD_DIR = new ClassPathResource("static/image/").getFile().getAbsolutePath();
+            image = FileUtils.readFileToByteArray(new File(UPLOAD_DIR + "\\" + id));
+            ByteArrayResource resource = new ByteArrayResource(image);
+            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).contentLength(resource.contentLength()).body(resource);
+        } catch (Exception e) {
+            log.error(String.valueOf(e.getStackTrace()));
+            throw new MedifyException("Error occurred");
+        }
+    }
 }
