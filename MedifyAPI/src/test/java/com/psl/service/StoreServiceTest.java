@@ -29,7 +29,6 @@ import com.psl.exception.MedifyException;
 class StoreServiceTest {
 	
 	@Autowired
-//	@MockBean
 	private StoreService storeService;
 	
 	@MockBean
@@ -39,8 +38,6 @@ class StoreServiceTest {
 	
 	@Test
 	public void registerStoreTest() {
-//		RegisterStoreRequest request = new RegisterStoreRequest("abcd12@gmail.com", "StoreName1", "StoreDescription");
-		//UserService userService = Mockito.mock(UserService.class);
 		Role role = new Role(2L, "Owner");
 		User user = new User(2L, "UserName", "UserName1@email.com", "Password", role, "1234567890", null, true);
 		Store store = new Store(0L, user, "StoreName", "StoreDescription");

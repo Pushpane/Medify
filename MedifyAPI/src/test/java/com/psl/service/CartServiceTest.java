@@ -201,7 +201,7 @@ class CartServiceTest {
 
 		Cart cart1 = new Cart(1L,userId,medicineToStoreId,9,new BigDecimal("90"));
 		when(cartRepository.findById(1L)).thenReturn(Optional.of(cart1));
-		cartService.removeQuantity(cart1.getCartId());
+		cartService.updateQuantity(cart1.getCartId());
 
 		cart1.setCost(new BigDecimal(100));
 		verify(cartRepository,times(1)).save(cart1);
