@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
@@ -23,9 +24,12 @@ import com.psl.entity.Role;
 import com.psl.entity.Store;
 import com.psl.entity.User;
 import com.psl.exception.MedifyException;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@ContextConfiguration(classes = StoreService.class, loader = AnnotationConfigContextLoader.class)
+
 class StoreServiceTest {
 
 	@Autowired

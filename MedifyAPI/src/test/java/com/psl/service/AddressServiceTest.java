@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.psl.dao.IAddressDAO;
@@ -34,9 +35,11 @@ import com.psl.entity.User;
 import com.psl.exception.MedifyException;
 
 import junit.framework.AssertionFailedError;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@ContextConfiguration(classes = AddressService.class, loader = AnnotationConfigContextLoader.class)
 class AddressServiceTest {
 
 

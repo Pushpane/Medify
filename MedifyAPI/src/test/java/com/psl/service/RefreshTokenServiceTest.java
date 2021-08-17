@@ -18,15 +18,19 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.psl.dao.IRefreshTokenDAO;
 import com.psl.entity.RefreshToken;
 import com.psl.exception.MedifyException;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@ContextConfiguration(classes = RefreshTokenService.class, loader = AnnotationConfigContextLoader.class)
+
 class RefreshTokenServiceTest {
 
 	@Autowired

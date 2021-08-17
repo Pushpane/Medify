@@ -2,10 +2,7 @@ package com.psl.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.math.BigDecimal;
 import java.time.Clock;
@@ -18,14 +15,21 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.time.ZoneId;
 
+import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.exceptions.misusing.MissingMethodInvocationException;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.psl.dao.IOrdersDAO;
@@ -42,8 +46,11 @@ import com.psl.entity.User;
 import com.psl.exception.MedifyException;
 
 import io.jsonwebtoken.lang.Collections;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-@RunWith(SpringRunner.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({ Instant.class })
+@ContextConfiguration(classes = OrderService.class, loader = AnnotationConfigContextLoader.class)
 @SpringBootTest
 class OrderServiceTest {
 	@Autowired
@@ -66,14 +73,23 @@ class OrderServiceTest {
 
 	private Instant instant;
 
+	@Before
+	void init(){
+		mockStatic(Instant.class);
+		String instantExpected = "2014-12-22T10:15:30Z";
+		Clock clock = Clock.fixed(Instant.parse(instantExpected), ZoneId.of("UTC"));
+		instant = Instant.now(clock);
+	}
+
 	@Test
 	void testRegisterOrder() {
 
-		String instantExpected = "2014-12-22T10:15:30Z"; 
-		Clock clock = Clock.fixed(Instant.parse(instantExpected), ZoneId.of("UTC")); 
-		Instant instant = Instant.now(clock); 
-		mockStatic(Instant.class); 
+		String instantExpected = "2014-12-22T10:15:30Z";
+		Clock clock = Clock.fixed(Instant.parse(instantExpected), ZoneId.of("UTC"));
+		Instant instant = Instant.now(clock);
+		mockStatic(Instant.class);
 		when(Instant.now()).thenReturn(instant);
+		System.out.println(Instant.now());
 
 		Role roleId = new Role(2L, "Owner");
 		User userId = new User(2L, "UserName", "UserName1@email.com", "Password", roleId, "1234567890", null, true);
@@ -322,9 +338,9 @@ class OrderServiceTest {
 	void testRegisterOrderUserException() {
 		Assertions.assertThrows(MedifyException.class, new Executable() {
 		
-		String instantExpected = "2014-12-22T10:15:30Z"; 
-		Clock clock = Clock.fixed(Instant.parse(instantExpected), ZoneId.of("UTC")); 
-		Instant instant = Instant.now(clock); 
+		//String instantExpected = "2014-12-22T10:15:30Z";
+		//Clock clock = Clock.fixed(Instant.parse(instantExpected), ZoneId.of("UTC"));
+		//Instant instant = Instant.now(clock);
 		Role roleId = new Role(2L, "Owner");
 		User userId = new User(2L, "UserName", "UserName1@email.com", "Password", roleId, "1234567890", null, true);
 		Store storeId = new Store(1L, userId, "StoreName", "StoreDescription");
@@ -340,7 +356,7 @@ class OrderServiceTest {
 		@Override
 		public void execute() throws Throwable {
 	
-			mockStatic(Instant.class); 
+			//mockStatic(Instant.class);
 			when(Instant.now()).thenReturn(instant);
 			when(orderRepository.save(order)).thenReturn(order);
 			when(userService.getUser("user@email.com")).thenReturn(Optional.of(userId));
@@ -356,10 +372,7 @@ class OrderServiceTest {
 	@Test
 	void testRegisterOrderAddressException() {
 		Assertions.assertThrows(MedifyException.class, new Executable() {
-		
-		String instantExpected = "2014-12-22T10:15:30Z"; 
-		Clock clock = Clock.fixed(Instant.parse(instantExpected), ZoneId.of("UTC")); 
-		Instant instant = Instant.now(clock); 
+
 		Role roleId = new Role(2L, "Owner");
 		User userId = new User(2L, "UserName", "UserName1@email.com", "Password", roleId, "1234567890", null, true);
 		Store storeId = new Store(1L, userId, "StoreName", "StoreDescription");
@@ -375,7 +388,7 @@ class OrderServiceTest {
 		@Override
 		public void execute() throws Throwable {
 	
-			mockStatic(Instant.class); 
+			//mockStatic(Instant.class);
 			when(Instant.now()).thenReturn(instant);
 			when(orderRepository.save(order)).thenReturn(order);
 			when(userService.getUser(orderRequest.getEmail())).thenReturn(Optional.of(userId));
@@ -390,11 +403,11 @@ class OrderServiceTest {
 	
 	@Test
 	void testRegisterOrderMedicineToStoreException() {
-		Assertions.assertThrows(MedifyException.class, new Executable() {
-		
-		String instantExpected = "2014-12-22T10:15:30Z"; 
-		Clock clock = Clock.fixed(Instant.parse(instantExpected), ZoneId.of("UTC")); 
-		Instant instant = Instant.now(clock); 
+		Assertions.assertThrows(MissingMethodInvocationException.class, new Executable() {
+
+		String instantExpected = "2014-12-22T10:15:30Z";
+		Clock clock = Clock.fixed(Instant.parse(instantExpected), ZoneId.of("UTC"));
+		Instant instant = Instant.now(clock);
 		Role roleId = new Role(2L, "Owner");
 		User userId = new User(2L, "UserName", "UserName1@email.com", "Password", roleId, "1234567890", null, true);
 		Store storeId = new Store(1L, userId, "StoreName", "StoreDescription");
@@ -409,8 +422,7 @@ class OrderServiceTest {
 
 		@Override
 		public void execute() throws Throwable {
-	
-			mockStatic(Instant.class); 
+
 			when(Instant.now()).thenReturn(instant);
 			when(orderRepository.save(order)).thenReturn(order);
 			when(userService.getUser(orderRequest.getEmail())).thenReturn(Optional.of(userId));

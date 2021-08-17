@@ -11,12 +11,16 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -36,8 +40,10 @@ import com.psl.exception.MedifyException;
 
 
 
-@RunWith(SpringRunner.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(UUID.class)
 @SpringBootTest
+@ContextConfiguration(classes = MedicineService.class, loader = AnnotationConfigContextLoader.class)
 class MedicineServiceTest {
 
 	@Autowired
@@ -51,12 +57,12 @@ class MedicineServiceTest {
 	void testRegisterMedicine() throws IOException {
 		
 		MockMultipartFile imageFile = new MockMultipartFile("image", "image1.jpeg", "image/jpeg", "image1.jpeg".getBytes());
-	       
+
         String tokenExpected = "ab46fe80-aa7a-45d9-a83f-0ae4333d40f1";
         UUID uuid = UUID.fromString(tokenExpected);
         mockStatic(UUID.class);
         when(UUID.randomUUID()).thenReturn(uuid);
-       
+
         String image = "http://localhost/image/"+uuid.toString()+"image1.jpeg";
        
         Medicine medicine = new Medicine(0, "MedicineName1", "Description", 200L, image);
@@ -145,7 +151,7 @@ class MedicineServiceTest {
         String tokenExpected = "ab46fe80-aa7a-45d9-a83f-0ae4333d40f1";
         UUID uuid = UUID.fromString(tokenExpected);
         
-        String image = "http://localhost/image/"+uuid.toString()+"image1.jpeg";
+        String image = "http://localhost/image/"+uuid+"image1.jpeg";
        
         Medicine medicine = new Medicine(0, "MedicineName1", "Description", 200L, image);
         RegisterMedicineRequest request = new RegisterMedicineRequest("MedicineName1", "Description", 200.00, file);

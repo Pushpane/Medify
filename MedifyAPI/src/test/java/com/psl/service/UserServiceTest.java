@@ -28,6 +28,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.psl.dao.IUserDAO;
 import com.psl.dao.IVerificationTokenDAO;
@@ -39,8 +40,10 @@ import com.psl.entity.User;
 import com.psl.entity.VerificationToken;
 import com.psl.exception.MedifyException;
 import com.psl.security.JwtProvider;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 @RunWith(SpringRunner.class)
+@ContextConfiguration(classes = UserService.class, loader = AnnotationConfigContextLoader.class)
 @SpringBootTest
 public class UserServiceTest {
 
