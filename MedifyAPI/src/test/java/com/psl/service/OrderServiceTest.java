@@ -142,5 +142,78 @@ class OrderServiceTest {
 		when(orderRepository.findAllByUserId(userId)).thenReturn(Stream.of( order).collect(Collectors.toList()));
 		assertEquals(1, orderService.getAllOrdersByUser("UserName@email.com").size());
 	}
+	
+	@Test
+	void testGetOrdersReceived() {
+		
+	}
+	
+	@Test
+	void testChangeStatus() {
+		Role roleId = new Role(2L, "Owner");
+		User userId = new User(2L, "UserName", "UserName@email.com", "Password", roleId, "1234567890", null, true);
+		Store storeId = new Store(0L, userId, "StoreName", "StoreDescription");
+		
+		Address addressId = new Address(1L,userId,storeId,"address1","address2","pincode","city","state");
+		Medicine medicineId = new Medicine(1L,"medicineName","description",100.00,"image");
+		MedicineToStore medicineToStoreId = new MedicineToStore(1L,medicineId,storeId,true);
+		
+		Orders order = new Orders(1L,userId,addressId,medicineToStoreId,10,"orderStatus",null,new BigDecimal("100"));
+		
+		when(orderRepository.findById(order.getOrderId())).thenReturn(Optional.of(order));
+		order.setOrderStatus("Packed");
+		assertEquals(order, orderService.changeStatus(order.getOrderId()));
+	}
+	
+	@Test
+	void testChangeStatusDelivered() {
+		Role roleId = new Role(2L, "Owner");
+		User userId = new User(2L, "UserName", "UserName@email.com", "Password", roleId, "1234567890", null, true);
+		Store storeId = new Store(0L, userId, "StoreName", "StoreDescription");
+		
+		Address addressId = new Address(1L,userId,storeId,"address1","address2","pincode","city","state");
+		Medicine medicineId = new Medicine(1L,"medicineName","description",100.00,"image");
+		MedicineToStore medicineToStoreId = new MedicineToStore(1L,medicineId,storeId,true);
+		
+		Orders order = new Orders(1L,userId,addressId,medicineToStoreId,10,"orderStatus",null,new BigDecimal("100"));
+		
+		when(orderRepository.findById(order.getOrderId())).thenReturn(Optional.of(order));
+		order.setOrderStatus("Delivered");
+		assertEquals(order, orderService.changeStatusDelivered(order.getOrderId()));
+	}
+	
+	@Test
+	void testDeclineOrder() {
+		Role roleId = new Role(2L, "Owner");
+		User userId = new User(2L, "UserName", "UserName@email.com", "Password", roleId, "1234567890", null, true);
+		Store storeId = new Store(0L, userId, "StoreName", "StoreDescription");
+		
+		Address addressId = new Address(1L,userId,storeId,"address1","address2","pincode","city","state");
+		Medicine medicineId = new Medicine(1L,"medicineName","description",100.00,"image");
+		MedicineToStore medicineToStoreId = new MedicineToStore(1L,medicineId,storeId,true);
+		
+		Orders order = new Orders(1L,userId,addressId,medicineToStoreId,10,"orderStatus",null,new BigDecimal("100"));
+		
+		when(orderRepository.findById(order.getOrderId())).thenReturn(Optional.of(order));
+		order.setOrderStatus("Declined");
+		assertEquals(order, orderService.declineOrder(order.getOrderId()));
+	}
+	
+	@Test
+	void testCancelOrder() {
+		Role roleId = new Role(2L, "Owner");
+		User userId = new User(2L, "UserName", "UserName@email.com", "Password", roleId, "1234567890", null, true);
+		Store storeId = new Store(0L, userId, "StoreName", "StoreDescription");
+		
+		Address addressId = new Address(1L,userId,storeId,"address1","address2","pincode","city","state");
+		Medicine medicineId = new Medicine(1L,"medicineName","description",100.00,"image");
+		MedicineToStore medicineToStoreId = new MedicineToStore(1L,medicineId,storeId,true);
+		
+		Orders order = new Orders(1L,userId,addressId,medicineToStoreId,10,"orderStatus",null,new BigDecimal("100"));
+		
+		when(orderRepository.findById(order.getOrderId())).thenReturn(Optional.of(order));
+		order.setOrderStatus("Cancelled");
+		assertEquals(order, orderService.cancelOrder(order.getOrderId()));
+	}
 
 }
