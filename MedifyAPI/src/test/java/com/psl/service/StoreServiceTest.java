@@ -105,5 +105,17 @@ class StoreServiceTest {
 		when(repository.findAll()).thenReturn(Stream.of( store1, store2).collect(Collectors.toList()));
 		assertEquals(2, storeService.getAllStores().size());
 	}
+	
+	@Test
+	public void findStoreByUserTest() {
+		Role role = new Role(1L, "Owner");
+		User user = new User(1L, "UserName", "UserName@email.com", "Password", role, "1234567890", null, true);
+		Store store1 = new Store(1L, user, "StoreName", "StoreDescription");
+		Store store2 = new Store(2L, user, "StoreName", "StoreDescription");
+		
+		when(userService.getUser(user.getEmail())).thenReturn(Optional.of(user));
+		when(storeService.findStoreByUser(user.getEmail())).thenReturn(Stream.of(store1,store2).collect(Collectors.toList()));
+		assertEquals(2,storeService.findStoreByUser(user.getEmail()).size());
+	}
 
 }
