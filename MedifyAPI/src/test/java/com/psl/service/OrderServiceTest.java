@@ -10,7 +10,10 @@ import static org.mockito.Mockito.when;
 import java.math.BigDecimal;
 import java.time.Clock;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.time.ZoneId;
@@ -25,6 +28,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.psl.dao.IOrdersDAO;
 import com.psl.dao.IStoreDAO;
+import com.psl.dto.AnalyticsResponse;
 import com.psl.dto.OrderRequest;
 import com.psl.entity.Address;
 import com.psl.entity.Medicine;
@@ -33,6 +37,8 @@ import com.psl.entity.Orders;
 import com.psl.entity.Role;
 import com.psl.entity.Store;
 import com.psl.entity.User;
+
+import io.jsonwebtoken.lang.Collections;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -145,8 +151,55 @@ class OrderServiceTest {
 	
 	@Test
 	void testGetOrdersReceived() {
+		Role roleId = new Role(2L, "Owner");
+		User userId = new User(2L, "UserName", "UserName@email.com", "Password", roleId, "1234567890", null, true);
+		Store storeId = new Store(0L, userId, "StoreName", "StoreDescription");
 		
+		Address addressId = new Address(1L,userId,storeId,"address1","address2","pincode","city","state");
+		Medicine medicineId = new Medicine(1L,"medicineName","description",100.00,"image");
+		MedicineToStore medicineToStoreId = new MedicineToStore(1L,medicineId,storeId,true);
+		
+		Orders order = new Orders(1L,userId,addressId,medicineToStoreId,10,"orderStatus",null,new BigDecimal("100"));
+		
+		when(orderRepository.save(order)).thenReturn(order);
+		when(storeService.findStoreByUser(userId.getEmail())).thenReturn(Stream.of(storeId).collect(Collectors.toList()));
+		when(medicineToStoreService.getMedicinesByStore(storeId)).thenReturn(Stream.of(medicineToStoreId).collect(Collectors.toList()));
+		when((orderRepository.findAllByMedicineToStoreId(medicineToStoreId))).thenReturn(Stream.of(order).collect(Collectors.toList()));
+		
+		List<Orders> orders = new ArrayList<>();
+		orders.add(order);
+		
+		assertEquals(orders, orderService.getOrdersReceived(userId.getEmail()));
 	}
+	
+//	@Test
+//	void testGetAnalytics() {
+//		Role roleId = new Role(2L, "Owner");
+//		User userId = new User(2L, "UserName", "UserName@email.com", "Password", roleId, "1234567890", null, true);
+//		Store storeId = new Store(0L, userId, "StoreName", "StoreDescription");
+//		
+//		Address addressId = new Address(1L,userId,storeId,"address1","address2","pincode","city","state");
+//		Medicine medicineId = new Medicine(1L,"medicineName","description",100.00,"image");
+//		MedicineToStore medicineToStoreId = new MedicineToStore(1L,medicineId,storeId,true);
+//		
+//		Orders order = new Orders(1L,userId,addressId,medicineToStoreId,10,"orderStatus",null,new BigDecimal("100"));
+//		
+//		when(orderRepository.save(order)).thenReturn(order);
+//		when(storeService.findStoreByUser(userId.getEmail())).thenReturn(Stream.of(storeId).collect(Collectors.toList()));
+//		when(medicineToStoreService.getMedicinesByStore(storeId)).thenReturn(Stream.of(medicineToStoreId).collect(Collectors.toList()));
+//		when((orderRepository.findAllByMedicineToStoreId(medicineToStoreId))).thenReturn(Stream.of(order).collect(Collectors.toList()));
+//		
+//		List<Orders> orders = new ArrayList<>();
+//		orders.add(order);
+//		
+//		AnalyticsResponse analyticsResponse = new AnalyticsResponse(10L, 300.00, 8L, 1L, 2021, "07", 20);
+//		
+//		List<AnalyticsResponse> result = new ArrayList<AnalyticsResponse>();
+//		result.add(analyticsResponse);
+//		//Collections.reverse(result);
+//		
+//		assertEquals(result, orderService.getAnalytics(userId.getEmail()));
+//	}
 	
 	@Test
 	void testChangeStatus() {
@@ -215,5 +268,7 @@ class OrderServiceTest {
 		order.setOrderStatus("Cancelled");
 		assertEquals(order, orderService.cancelOrder(order.getOrderId()));
 	}
+	
+	
 
 }
