@@ -34,6 +34,7 @@ public class HomeController {
 			ByteArrayResource resource = new ByteArrayResource(image);
 		    return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).contentLength(resource.contentLength()).body(resource);
 		} catch (Exception e) {
+			log.error((e.toString()));
 			throw new MedifyException(e.toString());
 		}
 	}
