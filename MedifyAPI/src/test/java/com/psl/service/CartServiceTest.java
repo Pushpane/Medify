@@ -147,6 +147,28 @@ class CartServiceTest {
 		when(cartRepository.findByUserId(userId)).thenReturn(Stream.of(cart1,cart2).collect(Collectors.toList()));
 		assertEquals(2, cartService.getCartByUser(userId.getEmail()).size());
 	}
+	
+	@Test
+	void testGetCartByUserUserNotFoundException() {
+		Assertions.assertThrows(MedifyException.class, new Executable() {
+		Role roleId = new Role(2L, "Owner");
+		User userId = new User(2L, "UserName", "UserName1@email.com", "Password", roleId, "1234567890", null, true);
+		Store storeId = new Store(1L, userId, "StoreName", "StoreDescription");
+
+		Medicine medicineId = new Medicine(1L,"MedicineName","Description",200.00,"Image");
+		MedicineToStore medicineToStoreId = new MedicineToStore(1L,medicineId,storeId,true);
+
+		Cart cart1 = new Cart(1L,userId,medicineToStoreId,10,new BigDecimal(100));
+		Cart cart2 = new Cart(2L,userId,medicineToStoreId,5,new BigDecimal(100));
+		@Override
+		public void execute() throws Throwable {
+		when(userService.getUser(userId.getEmail())).thenReturn(Optional.of(userId));
+
+		when(cartRepository.findByUserId(userId)).thenReturn(Stream.of(cart1,cart2).collect(Collectors.toList()));
+		assertEquals(2, cartService.getCartByUser("UserName@email.com").size());
+		}
+		});
+	}
 
 	@Test
 	void testDeleteByMedToStoreAndUser() {
