@@ -18,7 +18,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.time.ZoneId;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,7 @@ import com.psl.entity.Orders;
 import com.psl.entity.Role;
 import com.psl.entity.Store;
 import com.psl.entity.User;
+import com.psl.exception.MedifyException;
 
 import io.jsonwebtoken.lang.Collections;
 
@@ -147,6 +150,35 @@ class OrderServiceTest {
 		
 		when(orderRepository.findAllByUserId(userId)).thenReturn(Stream.of( order).collect(Collectors.toList()));
 		assertEquals(1, orderService.getAllOrdersByUser("UserName@email.com").size());
+	}
+	
+	@Test()
+	void testGetAllOrdersByUserException() {
+		Assertions.assertThrows(MedifyException.class, new Executable() {
+		Role roleId = new Role(2L, "Owner");
+		User userId = new User(2L, "UserName", "UserName1@email.com", "Password", roleId, "1234567890", null, true);
+		Store storeId = new Store(0L, userId, "StoreName", "StoreDescription");
+		
+		Address addressId = new Address(1L,userId,storeId,"address1","address2","pincode","city","state");
+		Medicine medicineId = new Medicine(1L,"medicineName","description",100.00,"image");
+		MedicineToStore medicineToStoreId = new MedicineToStore(1L,medicineId,storeId,true);
+		
+		Orders order = new Orders(1L,userId,addressId,medicineToStoreId,10,"orderStatus",null,new BigDecimal("100"));
+
+		@Override
+		public void execute() throws Throwable {
+			when(orderRepository.save(order)).thenReturn(order);
+			when(userService.getUser(userId.getEmail())).thenReturn(Optional.of(userId));
+			
+			when(orderRepository.findAllByUserId(userId)).thenReturn(Stream.of( order).collect(Collectors.toList()));
+			assertEquals(1, orderService.getAllOrdersByUser("UserName@email.com").size());
+			
+		}
+		
+		
+		});
+		
+		
 	}
 	
 	@Test
