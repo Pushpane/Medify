@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.psl.dao.IUserDAO;
 import com.psl.dao.IVerificationTokenDAO;
@@ -51,9 +52,12 @@ public class UserService {
 		userDAO.save(user);
 		
 		String token = generateVerificationToken(user);
+//		mailService.sendMail(new NotificationEmail("Please Activate your Medify Account",request.getEmail(),
+//				"Thank you for signing up to Medify, please click on the below url to activate " +
+//				"your account : http://localhost:8081/Medify/api/auth/accountVerification/"+token));
 		mailService.sendMail(new NotificationEmail("Please Activate your Medify Account",request.getEmail(),
 				"Thank you for signing up to Medify, please click on the below url to activate " +
-				"your account : http://localhost:8081/Medify/api/auth/accountVerification/"+token));
+				"your account : "+ServletUriComponentsBuilder.fromCurrentContextPath().path("/Medify/api/auth/accountVerification/").path(token).toUriString()));
 		log.info("Verification email sent successfully to the user " + request.getName()
 				+ "with role: " + request.getRole()
 				+ "Email: " + request.getEmail());
