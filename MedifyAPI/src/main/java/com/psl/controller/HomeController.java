@@ -31,7 +31,9 @@ public class HomeController {
 	public ResponseEntity<ByteArrayResource> getImage(@PathVariable String id) {
 		byte[] image = new byte[0];
 		try {
-			String UPLOAD_DIR = new ClassPathResource("static/image/").getFile().getAbsolutePath();
+			//String UPLOAD_DIR = new ClassPathResource("static/image/").getFile().getAbsolutePath();
+			//String UPLOAD_DIR = ".\\tmp\\images";
+			String UPLOAD_DIR = System.getProperty("user.dir")+"/tmp/image/";
 			image = FileUtils.readFileToByteArray(new File(UPLOAD_DIR+"\\"+id));
 			ByteArrayResource resource = new ByteArrayResource(image);
 		    return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).contentLength(resource.contentLength()).body(resource);
