@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://medifyapi.us-east-2.elasticbeanstalk.com/Medify/api',
+  apiUrl: 'http://localhost:8081/Medify/api',
   limit: 10
 };
 

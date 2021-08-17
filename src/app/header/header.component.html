@@ -1,9 +1,15 @@
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"/>
+</head>
+
 <mat-toolbar color="primary" fxLayoutAlign="space-between center" class="mat-elevation-z4">
   <div fxLayoutGap="10px">
     <button mat-icon-button (click)="inputSideNav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
-  <span><mat-icon>volunteer_activism</mat-icon>  Medify</span>
+  <span><i class="fas fa-pills"></i>  Medify</span>
   <a mat-button class="white" routerLink="OwnerSignup" *ngIf="!logedIn">Join Medify</a>
 </div>
   <div fxLayoutGap="10px" *ngIf="!logedIn">
@@ -12,7 +18,7 @@
   </div>
   <div fxLayoutGap="10px" *ngIf="logedIn">
     <button mat-button (click)='logout()'>
-      <mat-icon>exit_to_app</mat-icon> {{title}}
+      <i class="fas fa-sign-out-alt"></i> {{title}}
     </button>
 </div>
 </mat-toolbar>

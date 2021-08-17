@@ -78,6 +78,8 @@ import { TotalOrdersComponent } from './order/total-orders.component';
 import { AddStoreComponent } from './dashboard/add-store.component';
 import { AnalyticsChartComponent } from './widgets/analytics-chart.component';
 import { HighchartsChartModule } from 'highcharts-angular';
+import {OrderStatusComponent} from "./order-status/order-status.component";
+import {OrderStatusCancelComponent} from "./order-status/order-status-cancel.component";
 
 @NgModule({
   declarations: [
@@ -104,6 +106,8 @@ import { HighchartsChartModule } from 'highcharts-angular';
     TotalOrdersComponent,
     AddStoreComponent,
     AnalyticsChartComponent,
+    OrderStatusComponent,
+    OrderStatusCancelComponent
   ],
   imports: [
     BrowserModule,
