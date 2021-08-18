@@ -41,9 +41,9 @@ public class MedicineService {
 		final String uuid = UUID.randomUUID().toString();
 		try {
 
-			//final String UPLOAD_DIR = System.getProperty("user.dir")+"/src/main/resources/static/image/";
+			String UPLOAD_DIR = "/tmp/image/";
 			//String UPLOAD_DIR = new ClassPathResource("static/image/").getFile().getAbsolutePath();
-			String UPLOAD_DIR = System.getProperty("user.dir")+"/tmp/image/";
+			//String UPLOAD_DIR = System.getProperty("user.dir")+"/tmp/image/";
 			new File(UPLOAD_DIR).mkdir();
 			
 			if (request.getImage().isEmpty()) {
