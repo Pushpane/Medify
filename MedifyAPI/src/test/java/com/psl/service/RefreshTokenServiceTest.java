@@ -37,7 +37,7 @@ class RefreshTokenServiceTest {
 
 	@Test
 	void testGenerateRefreshToken() {
-		Assertions.assertThrows(NullPointerException.class, new Executable() {
+		Assertions.assertThrows(Exception.class, new Executable() {
 			String instantExpected = "2014-12-22T10:15:30Z"; 
 			Clock clock = Clock.fixed(Instant.parse(instantExpected), ZoneId.of("UTC")); 
 			Instant instant = Instant.now(clock); 
