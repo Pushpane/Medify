@@ -1,5 +1,6 @@
 package com.psl.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -54,7 +55,7 @@ public class AddressControllerTest {
 	
 	@Test
 	public void testDeleteAddress() throws Exception {
-		this.mvc.perform(put("/api/user/deleteAddress/8")).andExpect(status().isOk());
+		this.mvc.perform(delete("/api/user/deleteAddress/8")).andExpect(status().isOk());
 	}
 	
 

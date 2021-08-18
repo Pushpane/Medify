@@ -16,18 +16,17 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.psl.security.JwtAuthenticationFilter;
-import com.psl.service.RoleService;
+import com.psl.service.MedicineToStoreService;
 import com.psl.service.UserDetailsServiceImpl;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(RoleController.class)
-public class RoleControllerTest {
-	
+@WebMvcTest(MedicineToStoreController.class)
+public class MedicineToStoreControllerTest {
 	@Autowired
 	MockMvc mvc;
 	
 	@MockBean
-	RoleService service;
+	MedicineToStoreService service;
 	
 	@MockBean
 	JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -39,21 +38,13 @@ public class RoleControllerTest {
 	UserDetailsServiceImpl userDetailsServiceImpl;
 	
 	@Test
-	public void testCreateRole() throws Exception {
-		String request= "{\"roleId\":4,\"role\":\"string\"}";
-		this.mvc.perform(post("/api/admin/createRole").contentType(MediaType.APPLICATION_JSON).content(request)).andExpect(status().isOk());
+	public void testRegisterMedicineToStore() throws Exception{
+		String request = "{\"medicineId\":9,\"storeId\":8}";
+		this.mvc.perform(post("/api/user/addMedicineToStore").contentType(MediaType.APPLICATION_JSON).content(request)).andExpect(status().isOk());
 	}
 	
 	@Test
-	public void testUpdateRole() throws Exception{
-		String request = "{\"roleId\":4,\"role\":\"stri\"}";
-		this.mvc.perform(put("/api/admin/updateRole").contentType(MediaType.APPLICATION_JSON).content(request)).andExpect(status().isOk());
+	public void testDeleteMedicineToStore() throws Exception{
+		this.mvc.perform(delete("/api/user/deleteMedicineToStore/")).andExpect(status().isOk());
 	}
-	
-	@Test
-	public void testDeleteRole() throws Exception{
-		this.mvc.perform(delete("/api/admin/deleteRole/8")).andExpect(status().isOk());
-	}
-	
-	
 }
