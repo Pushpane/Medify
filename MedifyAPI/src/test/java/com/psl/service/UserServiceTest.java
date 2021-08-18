@@ -43,7 +43,6 @@ import com.psl.security.JwtProvider;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = UserService.class, loader = AnnotationConfigContextLoader.class)
 @SpringBootTest
 public class UserServiceTest {
 
