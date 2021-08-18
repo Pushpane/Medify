@@ -1,26 +1,21 @@
 package com.psl.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
+
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.psl.config.SecurityConfig;
-import com.psl.config.WebConfig;
 import com.psl.security.JwtAuthenticationFilter;
 import com.psl.service.AddressService;
 import com.psl.service.UserDetailsServiceImpl;
@@ -50,5 +45,17 @@ public class AddressControllerTest {
 		String request = "{\"email\":\"abcd12@gmail.com\",\"storeId\":0,\"address1\":\"string\",\"address2\":\"string\",\"pincode\":\"string\",\"city\":\"string\",\"state\":\"string\"}";
 		this.mvc.perform(post("/api/user/addAddress").contentType(MediaType.APPLICATION_JSON).content(request)).andExpect(status().isOk());
 	}
+	
+	@Test
+	public void testUpdateAddress() throws Exception{
+		String request = "{\"addressId\":8,\"userId\":{\"userId\":1,\"name\":\"Abcd\",\"email\":\"abcd12@gmail.com\",\"password\":\"$2a$10$OdZ8QQfg9dzw7AsUdS9vA..Wja68leQHaxKqIIzeTFg94.Xa6By8a\",\"roleId\":{\"roleId\":2,\"role\":\"Owner\"},\"phoneNumber\":\"7854123690\",\"dateJoined\":1628429318.188148,\"enabled\":true},\"storeId\":null,\"address1\":\"string\",\"address2\":\"string\",\"pincode\":\"string\",\"city\":\"string\",\"state\":\"string\"}";
+		this.mvc.perform(put("/api/user/updateAddress").contentType(MediaType.APPLICATION_JSON).content(request)).andExpect(status().isOk());
+	}
+	
+	@Test
+	public void testDeleteAddress() throws Exception {
+		this.mvc.perform(put("/api/user/deleteAddress/8")).andExpect(status().isOk());
+	}
+	
 
 }
