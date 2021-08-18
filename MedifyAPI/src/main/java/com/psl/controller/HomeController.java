@@ -35,7 +35,7 @@ public class HomeController {
 			String UPLOAD_DIR = "/tmp/image/";
 			//String UPLOAD_DIR = System.getProperty("user.dir")+"/tmp/image/";
 			new File(UPLOAD_DIR).mkdir();
-			image = FileUtils.readFileToByteArray(new File(UPLOAD_DIR+"\\"+id));
+			image = FileUtils.readFileToByteArray(new File(UPLOAD_DIR+id));
 			ByteArrayResource resource = new ByteArrayResource(image);
 		    return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).contentLength(resource.contentLength()).body(resource);
 		} catch (Exception e) {
