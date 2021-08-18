@@ -56,7 +56,7 @@ public class UserServiceTest {
 	@Autowired
 	private UserService userService;
 	
-	@Autowired
+	@MockBean
 	private RefreshTokenService refreshTokenService;
 	
 	@MockBean
@@ -65,7 +65,7 @@ public class UserServiceTest {
 	@MockBean
 	private IVerificationTokenDAO verificationDAO;
 	
-	@Mock
+	@MockBean
 	private PasswordEncoder passwordEncoder;
 	
 	@Mock
@@ -78,35 +78,35 @@ public class UserServiceTest {
 	/* Issue With the Password Encoder needs to Resolve */
 	
 	
-//	@Test
-//	void testRegisterUser() {
-//		
-//		String instantExpected = "2021-08-10T09:40:42.257476900Z"; 
-//		Clock clock = Clock.fixed(Instant.parse(instantExpected), ZoneId.of("UTC")); 
-//		Instant instant = Instant.now(clock); 
-//		mockStatic(Instant.class); 
-//		when(Instant.now()).thenReturn(instant);
-//		Instant date = Instant.now();
-//		
-//		when(passwordEncoder.encode("Password")).thenReturn("Password");
-//		
-//		Role role = new Role(2L, "Owner");
-//		User user = new User(0, "UserName", "UserName@email.com","Password", role, "1234567890",date, false);
-//		RegisterUserRequest request = new RegisterUserRequest("UserName@email.com","UserName","Password","1234567890","Owner");
-//		
-//		
-//		
-//		
-//		String token = UUID.randomUUID().toString();
-//        VerificationToken verificationToken = new VerificationToken();
-//        verificationToken.setToken(token);
-//        verificationToken.setUser(user);
-//        
-//        userService.registerUser(request);
-//		when(verificationDAO.save(verificationToken)).thenReturn(verificationToken);
-//		when(userRepository.save(user)).thenReturn(user);
-//		verify(userRepository,times(1)).save(user);
-//	}
+	@Test
+	void testRegisterUser() {
+		
+		String instantExpected = "2021-08-10T09:40:42.257476900Z"; 
+		Clock clock = Clock.fixed(Instant.parse(instantExpected), ZoneId.of("UTC")); 
+		Instant instant = Instant.now(clock); 
+		mockStatic(Instant.class); 
+		when(Instant.now()).thenReturn(instant);
+		Instant date = Instant.now();
+		
+		when(passwordEncoder.encode("Password")).thenReturn("Password");
+		
+		Role role = new Role(2L, "Owner");
+		User user = new User(0, "UserName", "UserName@email.com","Password", role, "1234567890",date, false);
+		RegisterUserRequest request = new RegisterUserRequest("UserName@email.com","UserName","Password","1234567890","Owner");
+		
+		
+		
+		
+		String token = UUID.randomUUID().toString();
+        VerificationToken verificationToken = new VerificationToken();
+        verificationToken.setToken(token);
+        verificationToken.setUser(user);
+        
+        userService.registerUser(request);
+		when(verificationDAO.save(verificationToken)).thenReturn(verificationToken);
+		when(userRepository.save(user)).thenReturn(user);
+		verify(userRepository,times(1)).save(user);
+	}
 	
 	
 	@Test
@@ -164,8 +164,10 @@ public class UserServiceTest {
 //				.expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
 //				.username(loginRequest.getEmail())
 //				.build();
+//		String refreshToken = refreshTokenService.generateRefreshToken().getToken();
 //		when(jwtProvider.generateToken(authenticate)).thenReturn(token);
 //		when(userService.login(loginRequest)).thenReturn(res);
+//		when(refreshTokenService.generateRefreshToken().getToken()).thenReturn(refreshToken);
 //		AuthenticationResponse actual = userService.login(loginRequest);
 //		assertEquals(res, actual);
 //	}
