@@ -57,7 +57,7 @@ public class UserService {
 //				"your account : http://localhost:8081/Medify/api/auth/accountVerification/"+token));
 		mailService.sendMail(new NotificationEmail("Please Activate your Medify Account",request.getEmail(),
 				"Thank you for signing up to Medify, please click on the below url to activate " +
-				"your account : "+ServletUriComponentsBuilder.fromCurrentContextPath().path("/Medify/api/auth/accountVerification/").path(token).toUriString()));
+				"your account : "+ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/auth/accountVerification/").path(token).toUriString()));
 		log.info("Verification email sent successfully to the user " + request.getName()
 				+ "with role: " + request.getRole()
 				+ "Email: " + request.getEmail());
